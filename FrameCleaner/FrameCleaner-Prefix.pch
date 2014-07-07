@@ -6,4 +6,7 @@
 
 #ifdef __OBJC__
     #import <Cocoa/Cocoa.h>
+
+    #define kSampleSize 1024*1024
+
 #endif
