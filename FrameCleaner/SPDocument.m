@@ -11,10 +11,30 @@
 @implementation SPDocument
 
 
+- (void) loadFrames {
+    self.allFiles = [NSMutableArray arrayWithArray:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.directoryPath error:NULL]];
+}
+
+- (void) showLoadFramesSheet {
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    panel.canChooseFiles=NO;
+    panel.canCreateDirectories=YES;
+    panel.canChooseDirectories=YES;
+    
+    __weak typeof(panel) bpanel = panel;
+    [panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result) {
+        if (result == 1 && bpanel.URLs.count > 0) {
+            self.directoryPath = [bpanel.URLs objectAtIndex:0];
+            [self loadFrames];
+        }
+    }];
+
+}
+
 #pragma mark - Toolbar item callbacks
 
 - (IBAction) loadCallback:(id)sender {
-    
+    [self showLoadFramesSheet];
 }
 
 - (IBAction) processCallback:(id)sender {

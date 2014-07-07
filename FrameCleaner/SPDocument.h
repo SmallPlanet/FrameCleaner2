@@ -10,4 +10,10 @@
 
 @interface SPDocument : NSDocument
 
+@property NSString *directoryPath;
+//@property
+
+@property (nonatomic, retain) NSMutableDictionary *allFiles;
+
+
 @end
