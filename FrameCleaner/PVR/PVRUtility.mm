@@ -17,117 +17,6 @@ static NSLock * fileLock = NULL;
 
 #pragma mark -
 
-NSInteger RunTask(NSString *launchPath, NSArray *arguments, NSString *workingDirectoryPath, NSDictionary *environment, NSData *stdinData, NSData **stdoutDataPtr, NSData **stderrDataPtr)
-{
-    if (![[NSFileManager defaultManager] fileExistsAtPath:launchPath]) {
-        return -1;
-    }
-        
-    NSTask *task = [[NSTask alloc] init];
-    
-    [task setLaunchPath:launchPath];
-    [task setArguments:arguments];
-    
-    // Configure the environment
-    
-    if (environment) {
-        NSMutableDictionary *mutableEnv = [environment mutableCopy];
-        [mutableEnv setObject:@"true" forKey:@"COPY_EXTENDED_ATTRIBUTES_DISABLE"];
-        [task setEnvironment:mutableEnv];
-        [mutableEnv release];
-    } else {
-        // Make sure COPY_EXTENDED_ATTRIBUTES_DISABLE is set in the current environment, which will be inherited by the task
-        setenv("COPY_EXTENDED_ATTRIBUTES_DISABLE", "true", 1);
-    }
-    
-    if (workingDirectoryPath) {
-        [task setCurrentDirectoryPath:workingDirectoryPath];
-    } else {
-        [task setCurrentDirectoryPath:@"/tmp"];
-    }
-    
-    NSPipe *stdinPipe = nil;
-    NSPipe *stdoutPipe = nil;
-    NSPipe *stderrPipe = nil;
-    
-    if (stdinData) {
-        stdinPipe = [[[NSPipe alloc] init] autorelease];
-        [task setStandardInput:stdinPipe];
-    } else {
-        [task setStandardInput:[NSFileHandle fileHandleWithNullDevice]];
-    }
-	
-    if (stdoutDataPtr != NULL) {
-        stdoutPipe = [[[NSPipe alloc] init] autorelease];
-        [task setStandardOutput:stdoutPipe];
-    } else {
-        [task setStandardOutput:[NSFileHandle fileHandleWithNullDevice]];
-    }
-    
-    if (stderrDataPtr != NULL) {
-        stderrPipe = [[[NSPipe alloc] init] autorelease];
-        [task setStandardError:stderrPipe];
-    } else {
-        [task setStandardError:[NSFileHandle fileHandleWithNullDevice]];
-    }
-    
-    [task launch];
-    
-    if (stdinPipe) {
-        NS_DURING
-        if ([stdinData length] > 0) {
-            [[stdinPipe fileHandleForWriting] writeData:stdinData];
-        }
-		[[stdinPipe fileHandleForWriting] closeFile];
-        NS_HANDLER
-        NS_ENDHANDLER
-    }
-    
-    NSData *stdoutData = nil;
-    NSData *stderrData = nil;
-	
-    if (stdoutPipe) {
-        NS_DURING
-        stdoutData = [[stdoutPipe fileHandleForReading] readDataToEndOfFile];
-        NS_HANDLER
-        NS_ENDHANDLER
-    }
-    
-    if (stderrPipe) {
-        NS_DURING
-        stderrData = [[stderrPipe fileHandleForReading] readDataToEndOfFile];
-        NS_HANDLER
-        NS_ENDHANDLER
-    }
-	
-    @try
-    {
-        if([task isRunning])
-        {
-            [task waitUntilExit];
-        }
-    }
-    @catch(NSException *e)
-    {
-        
-    }
-	
-    NSInteger status = [task terminationStatus];
-	
-    [task release];
-    task = nil;
-	
-    if (stdoutDataPtr != NULL) {
-        *stdoutDataPtr = stdoutData;
-    }
-    
-    if (stderrDataPtr != NULL) {
-        *stderrDataPtr = stderrData;
-    }
-        
-    return status;
-}
-
 + (void) initialize
 {
 	fileLock = [[NSLock alloc] init];
@@ -176,23 +65,23 @@ NSInteger RunTask(NSString *launchPath, NSArray *arguments, NSString *workingDir
                  WithWeighting:(NSString *)weighting
                    WithSamples:(int)samplesPerPixel
 {
-	NSString * fileName = [NSString stringWithFormat:@"/tmp/tmp%0x8", (int)data];
+	NSString * fileName = [NSString stringWithFormat:@"/tmp/tmp%0lx8", (long)data];
 	NSString * pngName = [fileName stringByAppendingString:@".png"];
     NSString * pow2Name = [fileName stringByAppendingString:@".pow2"];
 	NSString * pvrName = [fileName stringByAppendingString:@".pvr"];
 	
 	NSBitmapImageRep * bitmap_rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
-																			pixelsWide:size.width
-																			pixelsHigh:size.height
-																		 bitsPerSample:8
-																	   samplesPerPixel:samplesPerPixel
-																			  hasAlpha:(samplesPerPixel == 4)
-																			  isPlanar:NO
-																		colorSpaceName:NSDeviceRGBColorSpace
-																		  bitmapFormat:NSAlphaNonpremultipliedBitmapFormat
-																		   bytesPerRow:size.width * samplesPerPixel
-																		  bitsPerPixel:samplesPerPixel * 8];
-	
+                pixelsWide:size.width
+                pixelsHigh:size.height
+             bitsPerSample:8
+           samplesPerPixel:samplesPerPixel
+                  hasAlpha:(samplesPerPixel == 4)
+                  isPlanar:NO
+            colorSpaceName:NSDeviceRGBColorSpace
+              bitmapFormat:NSAlphaNonpremultipliedBitmapFormat
+               bytesPerRow:size.width * samplesPerPixel
+              bitsPerPixel:samplesPerPixel * 8];
+
 	memcpy([bitmap_rep bitmapData], [data bytes], [data length]);
 	
 	[[bitmap_rep representationUsingType:NSPNGFileType
@@ -229,7 +118,7 @@ NSInteger RunTask(NSString *launchPath, NSArray *arguments, NSString *workingDir
 	
 	RunTask(launchPath, arguments, NULL, NULL, NULL, NULL, NULL);
 	
-	[bitmap_rep release];
+//	[bitmap_rep release];
 	
 	NSData * compressedData = [NSData dataWithContentsOfFile:pvrName];
 	

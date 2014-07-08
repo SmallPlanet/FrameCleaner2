@@ -22,3 +22,4 @@
                    WithSamples:(int)samplesPerPixel;
 
 @end
+

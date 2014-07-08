@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A950A157196C5A67002B6F6B /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A950A156196C5A67002B6F6B /* NSDataAdditions.m */; };
+		A950A15B196C5F13002B6F6B /* fastlz.c in Sources */ = {isa = PBXBuildFile; fileRef = A950A159196C5F13002B6F6B /* fastlz.c */; };
+		A950A15E196C667C002B6F6B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A950A15D196C667C002B6F6B /* libz.dylib */; };
 		A9C44EA4196B2696001065B9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C44EA3196B2696001065B9 /* Cocoa.framework */; };
 		A9C44EAE196B2696001065B9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A9C44EAC196B2696001065B9 /* InfoPlist.strings */; };
 		A9C44EB0196B2696001065B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C44EAF196B2696001065B9 /* main.m */; };
@@ -38,8 +41,6 @@
 		A9D4FA14196B519B002BE703 /* pngwrite.c in Sources */ = {isa = PBXBuildFile; fileRef = A9D4F9F5196B519B002BE703 /* pngwrite.c */; };
 		A9D4FA15196B519B002BE703 /* pngwtran.c in Sources */ = {isa = PBXBuildFile; fileRef = A9D4F9F6196B519B002BE703 /* pngwtran.c */; };
 		A9D4FA16196B519B002BE703 /* pngwutil.c in Sources */ = {isa = PBXBuildFile; fileRef = A9D4F9F7196B519B002BE703 /* pngwutil.c */; };
-		A9D4FA17196B519B002BE703 /* libPVRTexLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9D4F9FC196B519B002BE703 /* libPVRTexLib.a */; };
-		A9D4FA18196B519B002BE703 /* PVRUtility.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9D4FA04196B519B002BE703 /* PVRUtility.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A950A155196C5A67002B6F6B /* NSDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAdditions.h; sourceTree = "<group>"; };
+		A950A156196C5A67002B6F6B /* NSDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAdditions.m; sourceTree = "<group>"; };
+		A950A159196C5F13002B6F6B /* fastlz.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fastlz.c; sourceTree = "<group>"; };
+		A950A15A196C5F13002B6F6B /* fastlz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fastlz.h; sourceTree = "<group>"; };
+		A950A15D196C667C002B6F6B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		A9C44EA0196B2696001065B9 /* FrameCleaner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FrameCleaner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9C44EA3196B2696001065B9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		A9C44EA6196B2696001065B9 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -98,18 +104,6 @@
 		A9D4F9F5196B519B002BE703 /* pngwrite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngwrite.c; sourceTree = "<group>"; };
 		A9D4F9F6196B519B002BE703 /* pngwtran.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngwtran.c; sourceTree = "<group>"; };
 		A9D4F9F7196B519B002BE703 /* pngwutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngwutil.c; sourceTree = "<group>"; };
-		A9D4F9F9196B519B002BE703 /* CPVRTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPVRTexture.h; sourceTree = "<group>"; };
-		A9D4F9FA196B519B002BE703 /* CPVRTextureData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPVRTextureData.h; sourceTree = "<group>"; };
-		A9D4F9FB196B519B002BE703 /* CPVRTextureHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPVRTextureHeader.h; sourceTree = "<group>"; };
-		A9D4F9FC196B519B002BE703 /* libPVRTexLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPVRTexLib.a; sourceTree = "<group>"; };
-		A9D4F9FD196B519B002BE703 /* Pixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pixel.h; sourceTree = "<group>"; };
-		A9D4F9FE196B519B002BE703 /* PVRException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVRException.h; sourceTree = "<group>"; };
-		A9D4F9FF196B519B002BE703 /* PVRTexLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVRTexLib.h; sourceTree = "<group>"; };
-		A9D4FA00196B519B002BE703 /* PVRTexLibGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVRTexLibGlobals.h; sourceTree = "<group>"; };
-		A9D4FA01196B519B002BE703 /* PVRTexLibVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVRTexLibVersion.h; sourceTree = "<group>"; };
-		A9D4FA02196B519B002BE703 /* PVRTGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVRTGlobal.h; sourceTree = "<group>"; };
-		A9D4FA03196B519B002BE703 /* PVRUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVRUtility.h; sourceTree = "<group>"; };
-		A9D4FA04196B519B002BE703 /* PVRUtility.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PVRUtility.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9D4FA17196B519B002BE703 /* libPVRTexLib.a in Frameworks */,
+				A950A15E196C667C002B6F6B /* libz.dylib in Frameworks */,
 				A9C44EA4196B2696001065B9 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -134,6 +128,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A950A158196C5F13002B6F6B /* FastLZ */ = {
+			isa = PBXGroup;
+			children = (
+				A950A159196C5F13002B6F6B /* fastlz.c */,
+				A950A15A196C5F13002B6F6B /* fastlz.h */,
+			);
+			path = FastLZ;
+			sourceTree = "<group>";
+		};
 		A9C44E97196B2696001065B9 = {
 			isa = PBXGroup;
 			children = (
@@ -156,6 +159,7 @@
 		A9C44EA2196B2696001065B9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A950A15D196C667C002B6F6B /* libz.dylib */,
 				A9C44EA3196B2696001065B9 /* Cocoa.framework */,
 				A9C44EC5196B2697001065B9 /* XCTest.framework */,
 				A9C44EA5196B2696001065B9 /* Other Frameworks */,
@@ -176,12 +180,14 @@
 		A9C44EA9196B2696001065B9 /* FrameCleaner */ = {
 			isa = PBXGroup;
 			children = (
+				A950A158196C5F13002B6F6B /* FastLZ */,
 				A9D4F9DF196B519B002BE703 /* LZ4 */,
 				A9D4F9E4196B519B002BE703 /* png */,
-				A9D4F9F8196B519B002BE703 /* PVR */,
 				A9C44EB5196B2696001065B9 /* SPDocument.h */,
 				A9C44EB6196B2696001065B9 /* SPDocument.m */,
 				A9C44EB8196B2696001065B9 /* SPDocument.xib */,
+				A950A155196C5A67002B6F6B /* NSDataAdditions.h */,
+				A950A156196C5A67002B6F6B /* NSDataAdditions.m */,
 				A9C44EBB196B2696001065B9 /* MainMenu.xib */,
 				A9C44EBE196B2697001065B9 /* Images.xcassets */,
 				A9C44EAA196B2696001065B9 /* Supporting Files */,
@@ -256,25 +262,6 @@
 				A9D4F9F7196B519B002BE703 /* pngwutil.c */,
 			);
 			path = png;
-			sourceTree = "<group>";
-		};
-		A9D4F9F8196B519B002BE703 /* PVR */ = {
-			isa = PBXGroup;
-			children = (
-				A9D4F9F9196B519B002BE703 /* CPVRTexture.h */,
-				A9D4F9FA196B519B002BE703 /* CPVRTextureData.h */,
-				A9D4F9FB196B519B002BE703 /* CPVRTextureHeader.h */,
-				A9D4F9FC196B519B002BE703 /* libPVRTexLib.a */,
-				A9D4F9FD196B519B002BE703 /* Pixel.h */,
-				A9D4F9FE196B519B002BE703 /* PVRException.h */,
-				A9D4F9FF196B519B002BE703 /* PVRTexLib.h */,
-				A9D4FA00196B519B002BE703 /* PVRTexLibGlobals.h */,
-				A9D4FA01196B519B002BE703 /* PVRTexLibVersion.h */,
-				A9D4FA02196B519B002BE703 /* PVRTGlobal.h */,
-				A9D4FA03196B519B002BE703 /* PVRUtility.h */,
-				A9D4FA04196B519B002BE703 /* PVRUtility.mm */,
-			);
-			path = PVR;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -378,6 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9D4FA0A196B519B002BE703 /* pngmem.c in Sources */,
+				A950A157196C5A67002B6F6B /* NSDataAdditions.m in Sources */,
 				A9D4FA08196B519B002BE703 /* pnggccrd.c in Sources */,
 				A9D4FA07196B519B002BE703 /* pngerror.c in Sources */,
 				A9D4FA06196B519B002BE703 /* png.c in Sources */,
@@ -388,7 +376,6 @@
 				A9D4FA15196B519B002BE703 /* pngwtran.c in Sources */,
 				A9D4FA0C196B519B002BE703 /* pngread.c in Sources */,
 				A9D4FA16196B519B002BE703 /* pngwutil.c in Sources */,
-				A9D4FA18196B519B002BE703 /* PVRUtility.mm in Sources */,
 				A9C44EB0196B2696001065B9 /* main.m in Sources */,
 				A9D4FA11196B519B002BE703 /* pngtrans.c in Sources */,
 				A9C44EB7196B2696001065B9 /* SPDocument.m in Sources */,
@@ -397,6 +384,7 @@
 				A9D4FA0E196B519B002BE703 /* pngrtran.c in Sources */,
 				A9D4FA0B196B519B002BE703 /* pngpread.c in Sources */,
 				A9D4FA14196B519B002BE703 /* pngwrite.c in Sources */,
+				A950A15B196C5F13002B6F6B /* fastlz.c in Sources */,
 				A9D4F9DE196B4FE0002BE703 /* FCImage.m in Sources */,
 				A9D4FA10196B519B002BE703 /* pngset.c in Sources */,
 			);
@@ -537,6 +525,7 @@
 		A9C44ED5196B2697001065B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -554,6 +543,7 @@
 		A9C44ED6196B2697001065B9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

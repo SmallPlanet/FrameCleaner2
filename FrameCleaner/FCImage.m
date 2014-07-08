@@ -7,18 +7,16 @@
 //
 
 #import "FCImage.h"
-#import "PVRUtility.h"
+#import "NSDataAdditions.h"
+#import "png.h"
 
 @implementation FCImage
 
 #define SKIPPIX 4
-+ (void) dumpData:(NSData*)data size:(CGSize)size
-{
++ (void) dumpData:(NSData*)data size:(CGSize)size {
     unsigned char * ptr = (unsigned char*)[data bytes];
-    for (int i=0;i<size.height;i+=SKIPPIX)
-    {
-        for (int j=0;j<size.width;j+=SKIPPIX)
-        {
+    for (int i=0;i<size.height;i+=SKIPPIX) {
+        for (int j=0;j<size.width;j+=SKIPPIX) {
             printf("%s", (*ptr+*(ptr+1)+*(ptr+2) > 0 ? "*" : " "));
             ptr+=3*SKIPPIX;
         }
@@ -29,11 +27,9 @@
     printf("\n");
 }
 
-- (id) initWithSource:(NSString *)sourcePath
-{
+- (id) initWithSource:(NSString *)sourcePath {
     self = [super init];
-    if(self)
-    {
+    if(self) {
         self.sourceFile = sourcePath;
         
         NSData * stdoutData = NULL;
@@ -42,10 +38,8 @@
                 [NSArray arrayWithObjects:@"-q", sourcePath, NULL],
                 NULL, NULL, NULL, &stdoutData, NULL);
         
-        self.md5 = [[[NSString alloc] initWithData:stdoutData encoding:NSUTF8StringEncoding] autorelease];
-        
+        self.md5 = [[NSString alloc] initWithData:stdoutData encoding:NSUTF8StringEncoding];
     }
-    
     return self;
 }
 
@@ -56,31 +50,76 @@
 
 #pragma mark - Exporters
 
-- (void) exportLZ4To:(NSString *)exportPath withQueue:(NSOperationQueue *)queue
-{
+- (void) exportImageWithFormat:(FCImageExportFormat)format toFileName:(NSString*)fileName queue:(NSOperationQueue*)_queue cropped:(BOOL)cropped toMin:(CGPoint)min max:(CGPoint)max {
     // We want to prepend the width and height to the pixel data, unsigned shorts for each
-    unsigned short width = 0;
-    unsigned short height = 0;
-    NSData * pixels = NULL;
+    width = 0;
+    height = 0;
+    pixels = nil;
     
-    if(gShouldTrimImages)
-    {
-        width = globalMax.x-globalMin.x;
-        height = globalMax.y-globalMin.y;
-        pixels = [self croppedPixelsWithMin:globalMin
-                                     andMax:globalMax];
-    }
-    else
-    {
+    if(cropped) {
+        width = max.x - min.x;
+        height = max.y - min.y;
+        pixels = [self croppedPixelsWithMin:min andMax:max];
+    } else {
         pixels = [self pixelData];
         width = pixelsWide;
         height = pixelsHigh;
     }
+
+    switch(format) {
+        case PNG:
+            [self exportPNGTo:fileName withQueue:_queue];
+            break;
+        case LZ4:
+            [self exportLZ4To:fileName withQueue:_queue];
+            break;
+        case PVR_Photo:
+            [self exportPVRPhotoTo:fileName withQueue:_queue];
+            break;
+        case PVR_Gradient:
+            [self exportPVRGradientTo:fileName withQueue:_queue];
+            break;
+        case PNG_Quant_256:
+            [self exportPNGQuantTo:fileName withQueue:_queue withTableSize:256];
+            break;
+        case PNG_Quant_128:
+            [self exportPNGQuantTo:fileName withQueue:_queue withTableSize:128];
+            break;
+        case PNG_Quant_64:
+            [self exportPNGQuantTo:fileName withQueue:_queue withTableSize:64];
+            break;
+        case SP1:
+            [self exportSP1To:fileName withQueue:_queue withTableSize:64];
+            break;
+    }
+}
+
+- (NSString *) extensionForExportFormat:(FCImageExportFormat)format {
+    switch(format) {
+        case PNG:
+        case PNG_Quant_256:
+        case PNG_Quant_128:
+        case PNG_Quant_64:
+        case SP1:
+            return @"png";
+            break;
+        case LZ4:
+            return @"lz4";
+            break;
+        case PVR_Photo:
+        case PVR_Gradient:
+            return @"pvr";
+            break;
+    }
+    return @"";
+}
+
+- (void) exportLZ4To:(NSString *)exportPath withQueue:(NSOperationQueue *)queue {
     
     [queue addOperationWithBlock:^{
-        NSString * ePath = [exportPath stringByAppendingPathExtension:@"lz4"];
         
         @autoreleasepool {
+            NSString * ePath = [exportPath stringByAppendingPathExtension:@"lz4"];
             NSMutableData * data = [NSMutableData data];
             
             [data appendBytes:&width length:2];
@@ -92,27 +131,7 @@
     }];
 }
 
-- (void) exportPNGTo:(NSString *)exportPath withQueue:(NSOperationQueue *)queue
-{
-    // We want to prepend the width and height to the pixel data, unsigned shorts for each
-    unsigned short width = 0;
-    unsigned short height = 0;
-    NSData * pixels = NULL;
-    
-    if(gShouldTrimImages)
-    {
-        width = globalMax.x-globalMin.x;
-        height = globalMax.y-globalMin.y;
-        pixels = [self croppedPixelsWithMin:globalMin
-                                     andMax:globalMax];
-    }
-    else
-    {
-        pixels = [self pixelData];
-        width = pixelsWide;
-        height = pixelsHigh;
-    }
-    
+- (void) exportPNGTo:(NSString *)exportPath withQueue:(NSOperationQueue *)queue {
     [queue addOperationWithBlock:^{
         NSString * ePath = [exportPath stringByAppendingPathExtension:@"png"];
         
@@ -136,7 +155,7 @@
 
             NSData * pngData = [bitmap representationUsingType:NSPNGFileType properties:[NSDictionary dictionary]];
             
-            [bitmap release];
+//            [bitmap release];
             
             NSString * tempPath = [ePath stringByAppendingPathExtension:@"orig"];
             
@@ -161,25 +180,6 @@
                 withQueue:(NSOperationQueue *)queue
             withTableSize:(int)tableSize
 {
-    // We want to prepend the width and height to the pixel data, unsigned shorts for each
-    unsigned short width = 0;
-    unsigned short height = 0;
-    NSData * pixels = NULL;
-    
-    if(gShouldTrimImages)
-    {
-        width = globalMax.x-globalMin.x;
-        height = globalMax.y-globalMin.y;
-        pixels = [self croppedPixelsWithMin:globalMin
-                                     andMax:globalMax];
-    }
-    else
-    {
-        pixels = [self pixelData];
-        width = pixelsWide;
-        height = pixelsHigh;
-    }
-    
     [queue addOperationWithBlock:^{
         NSString * ePath = [exportPath stringByAppendingPathExtension:@"png"];
         
@@ -203,7 +203,7 @@
             
             NSData * pngData = [bitmap representationUsingType:NSPNGFileType properties:[NSDictionary dictionary]];
             
-            [bitmap release];
+//            [bitmap release];
             
             [pngData writeToFile:ePath atomically:NO];
             
@@ -227,76 +227,38 @@
 
 - (void) exportPVRGradientTo:(NSString *)exportPath withQueue:(NSOperationQueue *)queue
 {
-    // We want to prepend the width and height to the pixel data, unsigned shorts for each
-    unsigned short width = 0;
-    unsigned short height = 0;
-    NSData * pixels = NULL;
-    
-    if(gShouldTrimImages)
-    {
-        width = globalMax.x-globalMin.x;
-        height = globalMax.y-globalMin.y;
-        pixels = [self croppedPixelsWithMin:globalMin
-                                     andMax:globalMax];
-    }
-    else
-    {
-        pixels = [self pixelData];
-        width = pixelsWide;
-        height = pixelsHigh;
-    }
-    
-    [queue addOperationWithBlock:^{
-        NSString * ePath = [exportPath stringByAppendingPathExtension:@"pvr"];
-        
-        @autoreleasepool {
-            int altSize;
-            NSData * pvrData = [PVRUtility CompressDataLossy:pixels
-                                                      OfSize:NSMakeSize(width, height)
-                                                 AltTileSize:&altSize
-                                               WithWeighting:@"--channel-weighting-linear"
-                                                 WithSamples:samplesPerPixel];
-            
-            [pvrData writeToFile:ePath atomically:NO];
-        }
-    }];
+//    [queue addOperationWithBlock:^{
+//        NSString * ePath = [exportPath stringByAppendingPathExtension:@"pvr"];
+//        
+//        @autoreleasepool {
+//            int altSize;
+//            NSData * pvrData = [PVRUtility CompressDataLossy:pixels
+//                                                      OfSize:NSMakeSize(width, height)
+//                                                 AltTileSize:&altSize
+//                                               WithWeighting:@"--channel-weighting-linear"
+//                                                 WithSamples:samplesPerPixel];
+//            
+//            [pvrData writeToFile:ePath atomically:NO];
+//        }
+//    }];
 }
 
 - (void) exportPVRPhotoTo:(NSString *)exportPath withQueue:(NSOperationQueue *)queue
 {
-    // We want to prepend the width and height to the pixel data, unsigned shorts for each
-    unsigned short width = 0;
-    unsigned short height = 0;
-    NSData * pixels = NULL;
-    
-    if(gShouldTrimImages)
-    {
-        width = globalMax.x-globalMin.x;
-        height = globalMax.y-globalMin.y;
-        pixels = [self croppedPixelsWithMin:globalMin
-                                     andMax:globalMax];
-    }
-    else
-    {
-        pixels = [self pixelData];
-        width = pixelsWide;
-        height = pixelsHigh;
-    }
-    
-    [queue addOperationWithBlock:^{
-        NSString * ePath = [exportPath stringByAppendingPathExtension:@"pvr"];
-        
-        @autoreleasepool {
-            int altSize;
-            NSData * pvrData = [PVRUtility CompressDataLossy:pixels
-                                                      OfSize:NSMakeSize(width, height)
-                                                 AltTileSize:&altSize
-                                               WithWeighting:@"--channel-weighting-perceptual"
-                                                 WithSamples:samplesPerPixel];
-            
-            [pvrData writeToFile:ePath atomically:NO];
-        }
-    }];
+//    [queue addOperationWithBlock:^{
+//        NSString * ePath = [exportPath stringByAppendingPathExtension:@"pvr"];
+//        
+//        @autoreleasepool {
+//            int altSize;
+//            NSData * pvrData = [PVRUtility CompressDataLossy:pixels
+//                                                      OfSize:NSMakeSize(width, height)
+//                                                 AltTileSize:&altSize
+//                                               WithWeighting:@"--channel-weighting-perceptual"
+//                                                 WithSamples:samplesPerPixel];
+//            
+//            [pvrData writeToFile:ePath atomically:NO];
+//        }
+//    }];
 }
 
 - (void) exportSP1To:(NSString *)exportPath
@@ -311,24 +273,6 @@
     // To do this, we run pngnq on our source image, read in the quantized image, extract
     // the color palette and 1 byte image array from that, and output the image.sp1 and
     // image.fsh
-    unsigned short width = 0;
-    unsigned short height = 0;
-    NSData * pixels = NULL;
-    
-    if(gShouldTrimImages)
-    {
-        width = globalMax.x-globalMin.x;
-        height = globalMax.y-globalMin.y;
-        pixels = [self croppedPixelsWithMin:globalMin
-                                     andMax:globalMax];
-    }
-    else
-    {
-        pixels = [self pixelData];
-        width = pixelsWide;
-        height = pixelsHigh;
-    }
-    
     [queue addOperationWithBlock:^{
         NSString * ePath = [exportPath stringByAppendingPathExtension:@"png"];
         
@@ -352,7 +296,7 @@
 
             NSData * pngData = [bitmap representationUsingType:NSPNGFileType properties:[NSDictionary dictionary]];
             
-            [bitmap release];
+//            [bitmap release];
             
             NSString * tempPath = [ePath stringByAppendingPathExtension:@"orig"];
             
@@ -368,10 +312,7 @@
             
             [[NSFileManager defaultManager] removeItemAtPath:tempPath error:NULL];
             
-            
             // The file we want to process is at ePath; get a source RGBA bytes from the file.
-            
-            
         }
     }];
 }
@@ -385,12 +326,12 @@
 
 - (BOOL) compare:(FCImage*)other
 {
-    if([md5 isEqualToString:[other md5]])
+    if([self.md5 isEqualToString:[other md5]])
     {
         return YES;
     }
     
-    if(gCompareUsingMD5)
+    if(self.compareUsingMD5)
     {
         return NO;
     }
@@ -438,7 +379,7 @@
 
 - (BOOL) compare:(FCImage*)other pixelsWithMin:(CGPoint)min andMax:(CGPoint)max
 {
-    if([md5 isEqualToString:[other md5]])
+    if([self.md5 isEqualToString:[other md5]])
     {
         return YES;
     }
@@ -607,8 +548,8 @@
 typedef struct
 {
     unsigned char* data;
-    int size;
-    int offset;
+    NSUInteger size;
+    NSUInteger offset;
 }tImageSource;
 
 static void pngReadCallback(png_structp png_ptr, png_bytep data, png_size_t length)
@@ -628,8 +569,7 @@ static void pngReadCallback(png_structp png_ptr, png_bytep data, png_size_t leng
 
 - (void) dropMemory
 {
-    [storePixelData release];
-    storePixelData = NULL;
+    storePixelData = nil;
 }
 
 - (CGSize) size
@@ -655,146 +595,245 @@ static void pngReadCallback(png_structp png_ptr, png_bytep data, png_size_t leng
 
 - (NSData *) pixelData
 {
-    if(storePixelData)
+    if(storePixelData) {
         return storePixelData;
+    }
     
+    @autoreleasepool {
     
-    
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    
-    // NSImage sucks in regards to premultiplication of alpha.  So, lets save this out to PNG
-    // then load using libpng, and read the raw bytes that way
-    NSData * pngData = [NSData dataWithContentsOfFile:sourceFile];
-    
-    const void * pData = [pngData bytes];
-    int nDatalen = [pngData length];
-    
-    //bool CCImage::_initWithPngData(void * pData, int nDatalen)
-    {
-        // length of bytes to check if it is a valid png file
-#define PNGSIGSIZE  8
-        bool bRet = false;
-        png_byte        header[PNGSIGSIZE]   = {0};
-        png_structp     png_ptr     =   0;
-        png_infop       info_ptr    = 0;
+        // NSImage sucks in regards to premultiplication of alpha.  So, lets save this out to PNG
+        // then load using libpng, and read the raw bytes that way
+        NSData * pngData = [NSData dataWithContentsOfFile:self.sourceFile];
         
-        int m_nWidth;
-        int m_nHeight;
-        int m_nBitsPerComponent;
-        int m_bHasAlpha;
-        int m_nChannels;
-        unsigned char * m_pData = NULL;
+        const void * pData = [pngData bytes];
+        NSUInteger nDatalen = [pngData length];
         
-        do
+        //bool CCImage::_initWithPngData(void * pData, int nDatalen)
         {
-            // png header len is 8 bytes
-            if(nDatalen < PNGSIGSIZE)
-                break;
+            // length of bytes to check if it is a valid png file
+    #define PNGSIGSIZE  8
+            bool bRet = false;
+            png_byte        header[PNGSIGSIZE]   = {0};
+            png_structp     png_ptr     =   0;
+            png_infop       info_ptr    = 0;
             
-            // check the data is png or not
-            memcpy(header, pData, PNGSIGSIZE);
-            if(png_sig_cmp(header, 0, PNGSIGSIZE))
-                break;
+            NSUInteger m_nWidth = 0;
+            NSUInteger m_nHeight = 0;
+            int m_nBitsPerComponent;
+            int m_bHasAlpha;
+            int m_nChannels = 0;
+            unsigned char * m_pData = NULL;
             
-            // init png_struct
-            png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
-            if(! png_ptr)
-                break;
-            
-            // init png_info
-            info_ptr = png_create_info_struct(png_ptr);
-            if(!info_ptr)
-                break;
-            
-            // set the read call back function
-            tImageSource imageSource;
-            imageSource.data    = (unsigned char*)pData;
-            imageSource.size    = nDatalen;
-            imageSource.offset  = 0;
-            png_set_read_fn(png_ptr, &imageSource, pngReadCallback);
-            
-            // read png header info
-            
-            // read png file info
-            png_read_info(png_ptr, info_ptr);
-            
-            m_nWidth = png_get_image_width(png_ptr, info_ptr);
-            m_nHeight = png_get_image_height(png_ptr, info_ptr);
-            m_nBitsPerComponent = png_get_bit_depth(png_ptr, info_ptr);
-            png_uint_32 channels = png_get_channels(png_ptr, info_ptr);
-            png_uint_32 color_type = png_get_color_type(png_ptr, info_ptr);
-            
-            // only support color type: PNG_COLOR_TYPE_RGB, PNG_COLOR_TYPE_RGB_ALPHA PNG_COLOR_TYPE_PALETTE
-            // and expand bit depth to 8
-            if(color_type == PNG_COLOR_TYPE_RGB ||
-               color_type == PNG_COLOR_TYPE_RGB_ALPHA)
-            {
+            do {
+                // png header len is 8 bytes
+                if(nDatalen < PNGSIGSIZE)
+                    break;
                 
+                // check the data is png or not
+                memcpy(header, pData, PNGSIGSIZE);
+                if(png_sig_cmp(header, 0, PNGSIGSIZE))
+                    break;
                 
-                if (m_nBitsPerComponent == 16)
-                {
-                    png_set_strip_16(png_ptr);
-                    m_nBitsPerComponent = 8;
-                }
+                // init png_struct
+                png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
+                if(! png_ptr)
+                    break;
                 
-                m_nChannels = 3;
-                m_bHasAlpha = (color_type & PNG_COLOR_MASK_ALPHA) ? true : false;
-                if (m_bHasAlpha)
-                {
-                    m_nChannels = channels = 4;
-                }
+                // init png_info
+                info_ptr = png_create_info_struct(png_ptr);
+                if(!info_ptr)
+                    break;
                 
-                // read png data
-                // m_nBitsPerComponent will always be 8
-                m_pData = (unsigned char *)malloc(m_nWidth * m_nHeight * channels);
-                memset(m_pData, 255, m_nWidth * m_nHeight * channels);
+                // set the read call back function
+                tImageSource imageSource;
+                imageSource.data    = (unsigned char*)pData;
+                imageSource.size    = nDatalen;
+                imageSource.offset  = 0;
+                png_set_read_fn(png_ptr, &imageSource, pngReadCallback);
                 
-                png_bytep* row_pointers = (png_bytep*)malloc(sizeof(png_bytep)*m_nHeight);
-                if (row_pointers)
-                {
-                    const unsigned int stride = m_nWidth * channels;
-                    for (unsigned short i = 0; i < m_nHeight; ++i)
-                    {
-                        png_uint_32 q = i * stride;
-                        row_pointers[i] = (png_bytep)m_pData + q;
-                    }
-                    png_read_image(png_ptr, row_pointers);
+                // read png header info
+                
+                // read png file info
+                png_read_info(png_ptr, info_ptr);
+                
+                m_nWidth = png_get_image_width(png_ptr, info_ptr);
+                m_nHeight = png_get_image_height(png_ptr, info_ptr);
+                m_nBitsPerComponent = png_get_bit_depth(png_ptr, info_ptr);
+                png_uint_32 channels = png_get_channels(png_ptr, info_ptr);
+                png_uint_32 color_type = png_get_color_type(png_ptr, info_ptr);
+                
+                // only support color type: PNG_COLOR_TYPE_RGB, PNG_COLOR_TYPE_RGB_ALPHA PNG_COLOR_TYPE_PALETTE
+                // and expand bit depth to 8
+                if(color_type == PNG_COLOR_TYPE_RGB || color_type == PNG_COLOR_TYPE_RGB_ALPHA) {
                     
-                    free(row_pointers);
-                    bRet = true;
+                    if (m_nBitsPerComponent == 16) {
+                        png_set_strip_16(png_ptr);
+                        m_nBitsPerComponent = 8;
+                    }
+                    
+                    m_nChannels = 3;
+                    m_bHasAlpha = (color_type & PNG_COLOR_MASK_ALPHA) ? true : false;
+                    if (m_bHasAlpha)
+                    {
+                        m_nChannels = channels = 4;
+                    }
+                    
+                    // read png data
+                    // m_nBitsPerComponent will always be 8
+                    m_pData = (unsigned char *)malloc(m_nWidth * m_nHeight * channels);
+                    memset(m_pData, 255, m_nWidth * m_nHeight * channels);
+                    
+                    png_bytep* row_pointers = (png_bytep*)malloc(sizeof(png_bytep)*m_nHeight);
+                    if (row_pointers)
+                    {
+                        const unsigned int stride = ((int)(m_nWidth * channels));
+                        for (unsigned short i = 0; i < m_nHeight; ++i)
+                        {
+                            png_uint_32 q = i * stride;
+                            row_pointers[i] = (png_bytep)m_pData + q;
+                        }
+                        png_read_image(png_ptr, row_pointers);
+                        
+                        free(row_pointers);
+                        bRet = true;
+                    }
                 }
-            }
-        } while (0);
-        
-        if(m_pData)
-        {
-            pixelsWide = m_nWidth;
-            pixelsHigh = m_nHeight;
-            samplesPerPixel = m_nChannels;
+            } while (0);
             
-            // create a sample set for quick analysis...
-            if(SHOULD_SAMPLE())
-            {
-                srand(kSampleSeed);
-                int totalSize = (m_nWidth * m_nHeight * m_nChannels);
-                for(int i = 0; i < kSampleSize; i++)
-                {
-                    int k = rand() % totalSize;
-                    sampleSet[i] = m_pData[k];
+            if(m_pData) {
+                pixelsWide = m_nWidth;
+                pixelsHigh = m_nHeight;
+                samplesPerPixel = m_nChannels;
+                
+                // create a sample set for quick analysis...
+                if(SHOULD_SAMPLE()) {
+                    srand(kSampleSeed);
+                    NSUInteger totalSize = (m_nWidth * m_nHeight * m_nChannels);
+                    for(int i = 0; i < kSampleSize; i++) {
+                        int k = rand() % totalSize;
+                        sampleSet[i] = m_pData[k];
+                    }
                 }
-            }
-            
-            @autoreleasepool
-            {
-                storePixelData = [[NSData dataWithBytesNoCopy:m_pData length:(m_nWidth * m_nHeight * m_nChannels) freeWhenDone:YES] retain];
+                
+                @autoreleasepool {
+                    storePixelData = [NSData dataWithBytesNoCopy:m_pData length:(m_nWidth * m_nHeight * m_nChannels) freeWhenDone:YES];
+                }
             }
         }
     }
-    
-    [pool release];
-    
-    
     return storePixelData;
 }
 
 @end
+
+
+extern NSInteger RunTask(NSString *launchPath, NSArray *arguments, NSString *workingDirectoryPath, NSDictionary *environment, NSData *stdinData, NSData **stdoutDataPtr, NSData **stderrDataPtr)
+{
+    if (![[NSFileManager defaultManager] fileExistsAtPath:launchPath]) {
+        return -1;
+    }
+    
+    NSTask *task = [[NSTask alloc] init];
+    
+    [task setLaunchPath:launchPath];
+    [task setArguments:arguments];
+    
+    // Configure the environment
+    
+    if (environment) {
+        NSMutableDictionary *mutableEnv = [environment mutableCopy];
+        [mutableEnv setObject:@"true" forKey:@"COPY_EXTENDED_ATTRIBUTES_DISABLE"];
+        [task setEnvironment:mutableEnv];
+        //        [mutableEnv release];
+    } else {
+        // Make sure COPY_EXTENDED_ATTRIBUTES_DISABLE is set in the current environment, which will be inherited by the task
+        setenv("COPY_EXTENDED_ATTRIBUTES_DISABLE", "true", 1);
+    }
+    
+    if (workingDirectoryPath) {
+        [task setCurrentDirectoryPath:workingDirectoryPath];
+    } else {
+        [task setCurrentDirectoryPath:@"/tmp"];
+    }
+    
+    NSPipe *stdinPipe = nil;
+    NSPipe *stdoutPipe = nil;
+    NSPipe *stderrPipe = nil;
+    
+    if (stdinData) {
+        stdinPipe = [[NSPipe alloc] init];
+        [task setStandardInput:stdinPipe];
+    } else {
+        [task setStandardInput:[NSFileHandle fileHandleWithNullDevice]];
+    }
+	
+    if (stdoutDataPtr != NULL) {
+        stdoutPipe = [[NSPipe alloc] init];
+        [task setStandardOutput:stdoutPipe];
+    } else {
+        [task setStandardOutput:[NSFileHandle fileHandleWithNullDevice]];
+    }
+    
+    if (stderrDataPtr != NULL) {
+        stderrPipe = [[NSPipe alloc] init];
+        [task setStandardError:stderrPipe];
+    } else {
+        [task setStandardError:[NSFileHandle fileHandleWithNullDevice]];
+    }
+    
+    [task launch];
+    
+    if (stdinPipe) {
+        NS_DURING
+        if ([stdinData length] > 0) {
+            [[stdinPipe fileHandleForWriting] writeData:stdinData];
+        }
+		[[stdinPipe fileHandleForWriting] closeFile];
+        NS_HANDLER
+        NS_ENDHANDLER
+    }
+    
+    NSData *stdoutData = nil;
+    NSData *stderrData = nil;
+	
+    if (stdoutPipe) {
+        NS_DURING
+        stdoutData = [[stdoutPipe fileHandleForReading] readDataToEndOfFile];
+        NS_HANDLER
+        NS_ENDHANDLER
+    }
+    
+    if (stderrPipe) {
+        NS_DURING
+        stderrData = [[stderrPipe fileHandleForReading] readDataToEndOfFile];
+        NS_HANDLER
+        NS_ENDHANDLER
+    }
+	
+    @try
+    {
+        if([task isRunning])
+        {
+            [task waitUntilExit];
+        }
+    }
+    @catch(NSException *e)
+    {
+        
+    }
+	
+    NSInteger status = [task terminationStatus];
+	
+    //    [task release];
+    task = nil;
+	
+    if (stdoutDataPtr != NULL) {
+        *stdoutDataPtr = stdoutData;
+    }
+    
+    if (stderrDataPtr != NULL) {
+        *stderrDataPtr = stderrData;
+    }
+    
+    return status;
+}

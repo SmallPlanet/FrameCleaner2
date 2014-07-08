@@ -8,16 +8,34 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum : NSUInteger {
+    PNG,
+    LZ4,
+    PVR_Photo,
+    PVR_Gradient,
+    PNG_Quant_256,
+    PNG_Quant_128,
+    PNG_Quant_64,
+    SP1
+} FCImageExportFormat;
+
+
 @interface FCImage : NSObject {
-    NSInteger pixelsWide;
-    NSInteger pixelsHigh;
-    NSInteger samplesPerPixel;
+    NSUInteger pixelsWide;
+    NSUInteger pixelsHigh;
+    NSUInteger samplesPerPixel;
     NSData *storePixelData;
     unsigned char sampleSet[kSampleSize+12];
+
+    // for exporting
+    NSData * pixels;
+    unsigned short width;
+    unsigned short height;
 }
 
 @property (nonatomic, retain) NSString *sourceFile;
 @property (nonatomic, retain) NSString *destinationFile;
+@property (nonatomic, assign) BOOL compareUsingMD5;
 @property (nonatomic, retain) NSString *md5;
 @property (nonatomic, assign) NSInteger index;
 
@@ -37,3 +55,5 @@
 
 
 @end
+
+extern NSInteger RunTask(NSString *launchPath, NSArray *arguments, NSString *workingDirectoryPath, NSDictionary *environment, NSData *stdinData, NSData **stdoutDataPtr, NSData **stderrDataPtr);

@@ -8,5 +8,7 @@
     #import <Cocoa/Cocoa.h>
 
     #define kSampleSize 1024*1024
+    #define kSampleSeed kSampleSize
+    #define SHOULD_SAMPLE() (pixelsWide*pixelsHigh*samplesPerPixel > kSampleSize)
 
 #endif
