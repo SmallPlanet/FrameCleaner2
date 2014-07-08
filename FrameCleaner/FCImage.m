@@ -27,17 +27,57 @@
     printf("\n");
 }
 
++ (void) writeMaskImageFromData:(NSData *)data size:(CGSize)size toPath:(NSString *)path {
+
+    BOOL hasAlpha = YES;
+    int samples = 4;
+
+    unsigned char * ptr = (unsigned char*)[data bytes];
+    for (int i=0;i<size.height;i++) {
+        for (int j=0;j<size.width;j++) {
+            if (*ptr+*(ptr+1)+*(ptr+2) > 0 ) {
+                *ptr = 255;
+                *(ptr+1) = 0;
+                *(ptr+2) = 0;
+                *(ptr+3) = 128;
+            } else {
+                *ptr = 0;
+                *(ptr+1) = 0;
+                *(ptr+2) = 0;
+                *(ptr+3) = 0;
+            }
+            ptr+=samples;
+        }
+    }
+    
+    
+    unsigned char * bufferPtr = (unsigned char *)[data bytes];
+
+    NSBitmapImageRep * bitmap = [[NSBitmapImageRep alloc]
+                                  initWithBitmapDataPlanes:&bufferPtr
+                                                pixelsWide:size.width
+                                                pixelsHigh:size.height
+                                             bitsPerSample:8
+                                           samplesPerPixel:samples
+                                                  hasAlpha:hasAlpha
+                                                  isPlanar:NO
+                                            colorSpaceName:NSDeviceRGBColorSpace
+                                              bitmapFormat:NSAlphaNonpremultipliedBitmapFormat
+                                               bytesPerRow:size.width*samples
+                                              bitsPerPixel:8*samples];
+
+
+    NSData *pngData = [bitmap representationUsingType:NSPNGFileType properties:[NSDictionary dictionary]];
+    [pngData writeToFile:path atomically:NO];
+
+}
+
 - (id) initWithSource:(NSString *)sourcePath {
     self = [super init];
     if(self) {
         self.sourceFile = sourcePath;
-        
         NSData * stdoutData = NULL;
-        
-        RunTask(@"/sbin/md5",
-                [NSArray arrayWithObjects:@"-q", sourcePath, NULL],
-                NULL, NULL, NULL, &stdoutData, NULL);
-        
+        RunTask(@"/sbin/md5", @[@"-q", sourcePath], NULL, NULL, NULL, &stdoutData, NULL);
         self.md5 = [[NSString alloc] initWithData:stdoutData encoding:NSUTF8StringEncoding];
     }
     return self;
@@ -154,8 +194,6 @@
                           bitsPerPixel:8*samples];
 
             NSData * pngData = [bitmap representationUsingType:NSPNGFileType properties:[NSDictionary dictionary]];
-            
-//            [bitmap release];
             
             NSString * tempPath = [ePath stringByAppendingPathExtension:@"orig"];
             

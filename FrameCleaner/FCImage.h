@@ -39,6 +39,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, retain) NSString *md5;
 @property (nonatomic, assign) NSInteger index;
 
++ (void) writeMaskImageFromData:(NSData *)data size:(CGSize)size toPath:(NSString *)path;
 - (id) initWithSource:(NSString *)sourcePath;
 - (CGRect) trimmedFrame;
 - (NSData *) subtract:(FCImage*)other;
@@ -54,7 +55,7 @@ typedef enum : NSUInteger {
 - (void) exportPVRPhotoTo:(NSString *)exportPath withQueue:(NSOperationQueue *)queue;
 - (void) exportSP1To:(NSString *)exportPath withQueue:(NSOperationQueue *)queue
        withTableSize:(int)tableSize;
-
+- (NSData *) pixelData;
 
 @end
 

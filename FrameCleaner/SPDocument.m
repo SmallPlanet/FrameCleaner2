@@ -45,15 +45,20 @@
 }
 
 - (void) processFrames {
+    for (NSView *view in [self.imageView subviews]) {
+        [view removeFromSuperview];
+    }
     globalFrame = CGRectZero;
-
+    
     if (!self.allImages) {
         self.allImages = [NSMutableArray array];
         for (NSString *filename in self.allFiles) {
             NSString *filePath = [self.directoryPath stringByAppendingPathComponent:filename];
-            FCImage *image = [[FCImage alloc] initWithSource:filePath];
-            if (image) {
-                [self.allImages addObject:image];
+            if ([filePath hasSuffix:@".png"]) {
+                FCImage *image = [[FCImage alloc] initWithSource:filePath];
+                if (image) {
+                    [self.allImages addObject:image];
+                }
             }
         }
     }
@@ -65,11 +70,38 @@
                 globalFrame = trimmedFrame;
             } else {
                 globalFrame = CGRectUnion(globalFrame, trimmedFrame);
-                NSLog(@"globalFrame = %.0f,%.0f,%.0f,%.0f",globalFrame.origin.x,globalFrame.origin.y, globalFrame.size.width, globalFrame.size.height);
             }
         }
     }
     
+    if ([self subregionsCount] > 0) {
+        self.subregionData = nil;
+        FCImage *firstImage = nil;
+        for (FCImage *image in self.allImages) {
+            if (!firstImage) {
+                firstImage = image;
+                self.subregionData = [NSMutableData dataWithLength:[[firstImage pixelData] length]];
+            } else {
+                NSData *diff = [firstImage subtract:image];
+                unsigned char * ptr1 = (unsigned char*)[self.subregionData bytes];
+                unsigned char * ptr2 = (unsigned char*)[diff bytes];
+                
+                for(int i=0; i<[self.subregionData length]; i++) {
+                    if (*ptr2 > *ptr1) {
+                        *ptr1 = *ptr2;
+                    }
+                    ptr1++;
+                    ptr2++;
+                }
+            }
+        }
+        [FCImage dumpData:self.subregionData size:firstImage.size];
+        [FCImage writeMaskImageFromData:self.subregionData size:firstImage.size toPath:@"/tmp/mask.png"];
+    }
+}
+
+- (NSInteger) subregionsCount {
+    return [self.maxSubregions selectedItem].tag;
 }
 
 #pragma mark - Toolbar item callbacks

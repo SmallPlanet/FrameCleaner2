@@ -16,12 +16,12 @@
 @property (nonatomic, assign) BOOL shouldTrimImages;
 @property (nonatomic, assign) BOOL removeDuplicateFrames;
 @property (nonatomic, assign) BOOL compareWithMD5;
-
+@property (nonatomic, strong) NSMutableData *subregionData;
 
 @property (nonatomic, strong) NSMutableArray *allFiles;
 @property (nonatomic, strong) NSMutableArray *allImages;
 @property (nonatomic, strong) IBOutlet NSMatrix *exportMatrix;
-@property (assign) IBOutlet NSPopUpButton *maxSubregions;
-@property (nonatomic, striog)IBOutlet NSImageView *imageView;
+@property (nonatomic, strong) IBOutlet NSPopUpButton *maxSubregions;
+@property (nonatomic, strong)IBOutlet NSImageView *imageView;
 
 @end

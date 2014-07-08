@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="exportMatrix" destination="9Gk-y3-Qe9" id="mNk-Va-57u"/>
                 <outlet property="imageView" destination="stO-sm-Fj7" id="LOh-mS-6t1"/>
+                <outlet property="maxSubregions" destination="NSa-My-aJf" id="SE7-1p-CYM"/>
                 <outlet property="window" destination="PKU-kz-iPV" id="JaA-VB-d6Y"/>
             </connections>
         </customObject>
