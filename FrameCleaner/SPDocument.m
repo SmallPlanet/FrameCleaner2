@@ -18,6 +18,14 @@
 
 - (void) loadFrames {
     self.allFiles = [NSMutableArray arrayWithArray:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.directoryPath error:NULL]];
+    
+    
+    
+    // show first image
+    if (self.allFiles.count > 0) {
+        NSImage *image = [[NSImage alloc] initWithContentsOfFile:[self.directoryPath stringByAppendingPathComponent:self.allFiles[0]]];
+        self.imageView.image = image;
+    }
 }
 
 - (void) showLoadFramesSheet {
@@ -29,7 +37,7 @@
     __weak typeof(panel) bpanel = panel;
     [panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result) {
         if (result == 1 && bpanel.URLs.count > 0) {
-            self.directoryPath = [bpanel.URLs objectAtIndex:0];
+            self.directoryPath = [[bpanel.URLs objectAtIndex:0] path];
             [self loadFrames];
         }
     }];

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="14A261i" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="14A283o" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SPDocument">
             <connections>
+                <outlet property="imageView" destination="stO-sm-Fj7" id="LOh-mS-6t1"/>
                 <outlet property="window" destination="PKU-kz-iPV" id="JaA-VB-d6Y"/>
             </connections>
         </customObject>
@@ -14,11 +15,23 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="PKU-kz-iPV">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="283" y="305" width="573" height="487"/>
+            <rect key="contentRect" x="283" y="305" width="657" height="591"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="pk8-ON-W62">
-                <rect key="frame" x="0.0" y="0.0" width="573" height="487"/>
+                <rect key="frame" x="0.0" y="0.0" width="657" height="591"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <customView appearanceType="aqua" translatesAutoresizingMaskIntoConstraints="NO" id="stO-sm-Fj7" customClass="NSImageView">
+                        <rect key="frame" x="0.0" y="0.0" width="657" height="591"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </customView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="stO-sm-Fj7" firstAttribute="leading" secondItem="pk8-ON-W62" secondAttribute="leading" id="4pH-t1-xU2"/>
+                    <constraint firstAttribute="bottom" secondItem="stO-sm-Fj7" secondAttribute="bottom" id="B3F-fN-7yD"/>
+                    <constraint firstItem="stO-sm-Fj7" firstAttribute="top" secondItem="pk8-ON-W62" secondAttribute="top" id="K9s-Zm-UkA"/>
+                    <constraint firstAttribute="trailing" secondItem="stO-sm-Fj7" secondAttribute="trailing" id="dkj-7S-AOh"/>
+                </constraints>
             </view>
             <toolbar key="toolbar" implicitIdentifier="BFC2A2E6-AD8E-44BE-AF36-EA114F026D38" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="Vc2-bY-MZS">
                 <allowedToolbarItems>
@@ -86,11 +99,11 @@
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
-                            <buttonCell type="radio" title="PVR (better for photos)" imagePosition="left" alignment="left" inset="2" id="pgs-CB-3TI">
+                            <buttonCell type="radio" title="PVR (better for photos)" imagePosition="left" alignment="left" enabled="NO" inset="2" id="pgs-CB-3TI">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
-                            <buttonCell type="radio" title="PVR (better for gradients)" imagePosition="left" alignment="left" inset="2" id="Qyb-jB-kuO">
+                            <buttonCell type="radio" title="PVR (better for gradients)" imagePosition="left" alignment="left" enabled="NO" inset="2" id="Qyb-jB-kuO">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
@@ -139,12 +152,12 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="70" id="GtI-j2-d5j"/>
                     </constraints>
-                    <popUpButtonCell key="cell" type="push" title="None" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="g1Y-Ia-OzU">
+                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="g1Y-Ia-OzU">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" metaFont="menu"/>
                         <menu key="menu" title="OtherViews" id="eme-fs-KCM">
                             <items>
-                                <menuItem title="None" state="on" id="KmR-CS-C37"/>
+                                <menuItem title="None" id="KmR-CS-C37"/>
                                 <menuItem title="1" tag="1" id="Sc4-TF-XJU"/>
                                 <menuItem title="2" tag="2" id="vgq-gh-TSJ"/>
                                 <menuItem title="3" tag="3" id="Icg-Ak-L4e"/>

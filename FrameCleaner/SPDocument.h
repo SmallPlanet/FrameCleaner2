@@ -20,5 +20,6 @@
 
 @property (nonatomic, retain) NSMutableArray *allFiles;
 @property (assign) IBOutlet NSMatrix *exportMatrix;
+@property IBOutlet NSImageView *imageView;
 
 @end
