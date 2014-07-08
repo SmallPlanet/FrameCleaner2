@@ -17,8 +17,13 @@
 
 
 - (void) loadFrames {
-    self.allFiles = [NSMutableArray arrayWithArray:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.directoryPath error:NULL]];
-    
+    NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.directoryPath error:NULL];
+    self.allFiles = [NSMutableArray array];
+    for (NSString *file in contents) {
+        if ([file hasSuffix:@".png"]) {
+            [self.allFiles addObject:file];
+        }
+    }
     self.allImages = nil;
     
     // show first image
@@ -79,7 +84,7 @@
         FCImage *firstImage = nil;
         for (FCImage *image in self.allImages) {
             if (!firstImage) {
-                firstImage = image;
+                firstImage = [[FCImage alloc] initWithSource:[self.directoryPath stringByAppendingPathComponent:self.allFiles[0]]];
                 self.subregionData = [NSMutableData dataWithLength:[[firstImage pixelData] length]];
             } else {
                 NSData *diff = [firstImage subtract:image];
@@ -95,8 +100,9 @@
                 }
             }
         }
-        [FCImage dumpData:self.subregionData size:firstImage.size];
+//        [FCImage dumpData:self.subregionData size:firstImage.size];
         [FCImage writeMaskImageFromData:self.subregionData size:firstImage.size toPath:@"/tmp/mask.png"];
+        self.maskView.image = [[NSImage alloc] initWithContentsOfFile:@"/tmp/mask.png"];
     }
 }
 

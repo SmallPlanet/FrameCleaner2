@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="exportMatrix" destination="9Gk-y3-Qe9" id="mNk-Va-57u"/>
                 <outlet property="imageView" destination="stO-sm-Fj7" id="LOh-mS-6t1"/>
+                <outlet property="maskView" destination="tip-gp-fRU" id="gpR-Kn-BXX"/>
                 <outlet property="maxSubregions" destination="NSa-My-aJf" id="SE7-1p-CYM"/>
                 <outlet property="window" destination="PKU-kz-iPV" id="JaA-VB-d6Y"/>
             </connections>
@@ -17,22 +18,30 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="PKU-kz-iPV">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="283" y="305" width="657" height="591"/>
+            <rect key="contentRect" x="283" y="305" width="657" height="588"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="pk8-ON-W62">
-                <rect key="frame" x="0.0" y="0.0" width="657" height="591"/>
+                <rect key="frame" x="0.0" y="0.0" width="657" height="588"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView appearanceType="aqua" translatesAutoresizingMaskIntoConstraints="NO" id="stO-sm-Fj7" customClass="NSImageView">
-                        <rect key="frame" x="0.0" y="0.0" width="657" height="591"/>
+                        <rect key="frame" x="0.0" y="0.0" width="657" height="588"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </customView>
+                    <customView appearanceType="aqua" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tip-gp-fRU" customClass="NSImageView">
+                        <rect key="frame" x="0.0" y="-3" width="657" height="591"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="stO-sm-Fj7" firstAttribute="leading" secondItem="pk8-ON-W62" secondAttribute="leading" id="4pH-t1-xU2"/>
                     <constraint firstAttribute="bottom" secondItem="stO-sm-Fj7" secondAttribute="bottom" id="B3F-fN-7yD"/>
+                    <constraint firstItem="tip-gp-fRU" firstAttribute="leading" secondItem="pk8-ON-W62" secondAttribute="leading" id="E2o-iS-WSt"/>
                     <constraint firstItem="stO-sm-Fj7" firstAttribute="top" secondItem="pk8-ON-W62" secondAttribute="top" id="K9s-Zm-UkA"/>
                     <constraint firstAttribute="trailing" secondItem="stO-sm-Fj7" secondAttribute="trailing" id="dkj-7S-AOh"/>
+                    <constraint firstAttribute="trailing" secondItem="tip-gp-fRU" secondAttribute="trailing" id="k0s-7e-7re"/>
+                    <constraint firstItem="tip-gp-fRU" firstAttribute="top" secondItem="pk8-ON-W62" secondAttribute="top" id="nfw-x3-jYd"/>
+                    <constraint firstAttribute="bottom" secondItem="tip-gp-fRU" secondAttribute="bottom" id="z9r-e6-qFS"/>
                 </constraints>
             </view>
             <toolbar key="toolbar" implicitIdentifier="BFC2A2E6-AD8E-44BE-AF36-EA114F026D38" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="Vc2-bY-MZS">

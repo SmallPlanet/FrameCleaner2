@@ -23,5 +23,6 @@
 @property (nonatomic, strong) IBOutlet NSMatrix *exportMatrix;
 @property (nonatomic, strong) IBOutlet NSPopUpButton *maxSubregions;
 @property (nonatomic, strong)IBOutlet NSImageView *imageView;
+@property (nonatomic, strong)IBOutlet NSImageView *maskView;
 
 @end
