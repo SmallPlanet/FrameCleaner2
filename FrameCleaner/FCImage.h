@@ -39,6 +39,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, retain) NSString *md5;
 @property (nonatomic, assign) NSInteger index;
 
+- (id) initWithSource:(NSString *)sourcePath;
+- (CGRect) trimmedFrame;
 - (NSData *) subtract:(FCImage*)other;
 - (CGSize) size;
 + (void) dumpData:(NSData*)data size:(CGSize)size;

@@ -462,29 +462,26 @@
     return [NSData dataWithBytesNoCopy:newBasePtr length:(newWidth*newHeight*samplesPerPixel) freeWhenDone:YES];
 }
 
-- (void) trimmedValuesWithMin:(CGPoint*)min
-                       andMax:(CGPoint*)max
-{
+- (CGRect) trimmedFrame {
+    CGRect frame;
+    
     @autoreleasepool
     {
         NSData * pixelDataA = [self pixelData];
         const unsigned char * basePtr = (const unsigned char *)[pixelDataA bytes];
         const unsigned char * ptr;
-        min->x = 9999999999;
-        min->y = 9999999999;
-        max->x = 0;
-        max->y = 0;
+        CGPoint min, max;
+        min.x = 9999999999;
+        min.y = 9999999999;
+        max.x = 0;
+        max.y = 0;
         
         // Find the minimum y
-        for(int y = 0; y < pixelsHigh; y++)
-        {
-            for(int x = 0; x < pixelsWide; x++)
-            {
+        for(NSInteger y = 0; y < pixelsHigh; y++) {
+            for(NSInteger x = 0; x < pixelsWide; x++) {
                 ptr = basePtr + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
-                
-                if(ptr[3] != 0)
-                {
-                    min->y = y;
+                if(ptr[3] != 0) {
+                    min.y = y;
                     y = pixelsHigh;
                     break;
                 }
@@ -492,15 +489,11 @@
         }
         
         // Find the maximum y
-        for(int y = pixelsHigh-1; y >= 0; y--)
-        {
-            for(int x = 0; x < pixelsWide; x++)
-            {
+        for(NSInteger y = pixelsHigh-1; y >= 0; y--) {
+            for(NSInteger x = 0; x < pixelsWide; x++) {
                 ptr = basePtr + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
-                
-                if(ptr[3] != 0)
-                {
-                    max->y = y;
+                if(ptr[3] != 0) {
+                    max.y = y;
                     y = -1;
                     break;
                 }
@@ -508,15 +501,11 @@
         }
         
         // Find the minimum x
-        for(int x = 0; x < pixelsWide; x++)
-        {
-            for(int y = 0; y < pixelsHigh; y++)
-            {
+        for(NSInteger x = 0; x < pixelsWide; x++) {
+            for(NSInteger y = 0; y < pixelsHigh; y++) {
                 ptr = basePtr + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
-                
-                if(ptr[3] != 0)
-                {
-                    min->x = x;
+                if(ptr[3] != 0) {
+                    min.x = x;
                     x = pixelsWide;
                     break;
                 }
@@ -524,23 +513,24 @@
         }
         
         // Find the maximum x
-        for(int x = pixelsWide-1; x >= 0; x--)
-        {
-            for(int y = 0; y < pixelsHigh; y++)
-            {
+        for(NSInteger x = pixelsWide-1; x >= 0; x--) {
+            for(NSInteger y = 0; y < pixelsHigh; y++) {
                 ptr = basePtr + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
-                
-                if(ptr[3] != 0)
-                {
-                    max->x = x;
+                if(ptr[3] != 0) {
+                    max.x = x;
                     x = -1;
                     break;
                 }
             }
         }
         
-        [self dropMemory];
+        pixelDataA = nil;
+        if (min.x > 9999999) {
+            min.x = -1.f; min.y = -1.f;
+        }
+        frame = CGRectMake(min.x, min.y, max.x-min.x, max.y-min.y);
     }
+    return frame;
 }
 
 

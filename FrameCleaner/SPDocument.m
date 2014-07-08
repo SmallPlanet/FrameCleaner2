@@ -19,7 +19,7 @@
 - (void) loadFrames {
     self.allFiles = [NSMutableArray arrayWithArray:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.directoryPath error:NULL]];
     
-    
+    self.allImages = nil;
     
     // show first image
     if (self.allFiles.count > 0) {
@@ -44,6 +44,34 @@
 
 }
 
+- (void) processFrames {
+    globalFrame = CGRectZero;
+
+    if (!self.allImages) {
+        self.allImages = [NSMutableArray array];
+        for (NSString *filename in self.allFiles) {
+            NSString *filePath = [self.directoryPath stringByAppendingPathComponent:filename];
+            FCImage *image = [[FCImage alloc] initWithSource:filePath];
+            if (image) {
+                [self.allImages addObject:image];
+            }
+        }
+    }
+    
+    for (FCImage *image in self.allImages) {
+        CGRect trimmedFrame = [image trimmedFrame];
+        if (trimmedFrame.origin.x >= 0.f) {
+            if ([self.allImages indexOfObject:image] == 0) {
+                globalFrame = trimmedFrame;
+            } else {
+                globalFrame = CGRectUnion(globalFrame, trimmedFrame);
+                NSLog(@"globalFrame = %.0f,%.0f,%.0f,%.0f",globalFrame.origin.x,globalFrame.origin.y, globalFrame.size.width, globalFrame.size.height);
+            }
+        }
+    }
+    
+}
+
 #pragma mark - Toolbar item callbacks
 
 - (IBAction) loadCallback:(id)sender {
@@ -51,7 +79,7 @@
 }
 
 - (IBAction) processCallback:(id)sender {
-    
+    [self processFrames];
 }
 
 - (IBAction) editCallback:(id)sender {

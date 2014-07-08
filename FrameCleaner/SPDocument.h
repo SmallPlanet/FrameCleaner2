@@ -9,17 +9,19 @@
 #import <Cocoa/Cocoa.h>
 
 @interface SPDocument : NSDocument {
-    CGPoint globalMin, globalMax;
+    CGRect globalFrame;
 }
 
-@property (nonatomic, retain) NSString *directoryPath;
+@property (nonatomic, strong) NSString *directoryPath;
 @property (nonatomic, assign) BOOL shouldTrimImages;
 @property (nonatomic, assign) BOOL removeDuplicateFrames;
 @property (nonatomic, assign) BOOL compareWithMD5;
 
 
-@property (nonatomic, retain) NSMutableArray *allFiles;
-@property (assign) IBOutlet NSMatrix *exportMatrix;
-@property IBOutlet NSImageView *imageView;
+@property (nonatomic, strong) NSMutableArray *allFiles;
+@property (nonatomic, strong) NSMutableArray *allImages;
+@property (nonatomic, strong) IBOutlet NSMatrix *exportMatrix;
+@property (assign) IBOutlet NSPopUpButton *maxSubregions;
+@property (nonatomic, striog)IBOutlet NSImageView *imageView;
 
 @end
