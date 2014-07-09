@@ -18,6 +18,7 @@
 @property (nonatomic, assign) BOOL removeDuplicateFrames;
 @property (nonatomic, assign) BOOL compareWithMD5;
 @property (nonatomic, strong) NSMutableData *subregionData;
+@property (nonatomic, assign) CGSize imageSize;
 
 @property (nonatomic, strong) NSMutableArray *allFiles;
 @property (nonatomic, strong) NSMutableArray *allImages;
@@ -26,6 +27,7 @@
 @property (nonatomic, strong) IBOutlet NSImageView *imageView;
 @property (nonatomic, strong) IBOutlet NSImageView *maskView;
 @property (nonatomic, strong) IBOutlet SPRegionsView *regionsView;
+@property (nonatomic, strong) IBOutlet NSView *mainView;
 
 
 @end

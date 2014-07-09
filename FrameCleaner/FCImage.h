@@ -41,9 +41,12 @@ typedef enum : NSUInteger {
 
 + (void) writeMaskImageFromData:(NSData *)data size:(CGSize)size toPath:(NSString *)path;
 - (id) initWithSource:(NSString *)sourcePath;
+- (CGRect) trimmedFrameWithinRect:(CGRect)startingFrame;
 - (CGRect) trimmedFrame;
 - (NSData *) subtract:(FCImage*)other;
 - (CGSize) size;
+- (void) setSize:(CGSize)newSize;
+- (void) setSamplesPerPixel:(NSUInteger)samples;
 + (void) dumpData:(NSData*)data size:(CGSize)size;
 - (BOOL) compare:(FCImage*)other pixelsWithMin:(CGPoint)min andMax:(CGPoint)max;
 
@@ -55,6 +58,7 @@ typedef enum : NSUInteger {
 - (void) exportPVRPhotoTo:(NSString *)exportPath withQueue:(NSOperationQueue *)queue;
 - (void) exportSP1To:(NSString *)exportPath withQueue:(NSOperationQueue *)queue
        withTableSize:(int)tableSize;
+- (void) setStorePixelData:(NSData *)data;
 - (NSData *) pixelData;
 
 @end

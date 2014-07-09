@@ -8,6 +8,7 @@
 
 #import "SPDocument.h"
 #import "FCImage.h"
+#import "SPBorderedView.h"
 
 @implementation SPDocument
 
@@ -25,6 +26,8 @@
         }
     }
     self.allImages = nil;
+    self.maskView.image = nil;
+    self.imageSize = CGSizeZero;
     [self.regionsView reset];
     
     // show first image
@@ -34,8 +37,15 @@
         [tmpImage pixelData];
         NSImage *image = [[NSImage alloc] initWithContentsOfFile:filePath];
         image.size = tmpImage.size;
+        self.imageSize = tmpImage.size;
         self.imageView.image = image;
+        NSRect frame = self.imageView.frame;
+        NSRect mainFrame = self.mainView.frame;
+        NSLog(@"imageView.frame =%@", NSStringFromRect(frame));
+        self.imageView.frame = NSMakeRect(0,mainFrame.size.height-image.size.height,image.size.width,image.size.height);
+        self.maskView.frame = self.imageView.frame;
         self.regionsView.frame = self.imageView.bounds;
+//        self.regionsView.bounds = NSMakeRect(0,0,image.size.width,image.size.height);
     }
     [self windowForSheet].title = [NSString stringWithFormat:@"%@ - %ld frames", [self.directoryPath lastPathComponent], self.allFiles.count];    
 }
@@ -57,9 +67,6 @@
 }
 
 - (void) processFrames {
-    for (NSView *view in [self.imageView subviews]) {
-        [view removeFromSuperview];
-    }
     globalFrame = CGRectZero;
     
     if (!self.allImages) {
@@ -117,6 +124,26 @@
     return [self.maxSubregions selectedItem].tag;
 }
 
+- (CGRect) viewFrameFromRegion:(CGRect)region {
+    return CGRectMake(region.origin.x, self.imageSize.height - region.origin.y - region.size.height, region.size.width, region.size.height);
+}
+
+- (CGRect) regionFrameFromView:(CGRect)frame {
+    return CGRectMake(frame.origin.x, self.imageSize.height - frame.origin.y - frame.size.height, frame.size.width, frame.size.height);
+}
+
+- (void) optimizeRegions {
+    FCImage *diffImage = [[FCImage alloc] init];
+    [diffImage setStorePixelData:self.subregionData];
+    diffImage.size = self.imageSize;
+    [diffImage setSamplesPerPixel:4];
+    for (SPBorderedView *view in self.regionsView.regions) {
+        CGRect originalRegion = NSRectToCGRect(view.frame);
+        CGRect optimalRegion = [diffImage trimmedFrameWithinRect:[self regionFrameFromView:originalRegion]];
+        view.frame = NSRectFromCGRect([self viewFrameFromRegion:optimalRegion]);
+    }
+}
+
 #pragma mark - Toolbar item callbacks
 
 - (IBAction) loadCallback:(id)sender {
@@ -128,7 +155,7 @@
 }
 
 - (IBAction) editCallback:(id)sender {
-    
+    [self optimizeRegions];
 }
 
 - (IBAction) exportCallback:(id)sender {
@@ -143,8 +170,6 @@
 {
     self = [super init];
     if (self) {
-//        self.regionsView = [[SPRegionsView alloc] initWithFrame:self.imageView.bounds];
-//        [self.maskView addSubview:self.regionsView];
     }
     return self;
 }
