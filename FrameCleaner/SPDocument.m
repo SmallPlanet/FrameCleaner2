@@ -25,6 +25,7 @@
         }
     }
     self.allImages = nil;
+    [self.regionsView reset];
     
     // show first image
     if (self.allFiles.count > 0) {
@@ -34,8 +35,20 @@
         NSImage *image = [[NSImage alloc] initWithContentsOfFile:filePath];
         image.size = tmpImage.size;
         self.imageView.image = image;
+        self.regionsView.frame = self.imageView.bounds;
     }
     [self windowForSheet].title = [NSString stringWithFormat:@"%@ - %ld frames", [self.directoryPath lastPathComponent], self.allFiles.count];
+    
+    
+//    NSView *rect = [[NSView alloc] initWithFrame:NSMakeRect(100,100,50,120)];
+//    CALayer *layer = [CALayer layer];
+//    layer.frame = rect.bounds;
+//    rect.layer = layer;
+////    rect.layer.backgroundColor = [NSColor redColor].CGColor;
+//    rect.layer.borderColor = [NSColor blackColor].CGColor;
+//    rect.layer.borderWidth = 2.f;
+//    [rect setWantsLayer:YES];
+//    [self.maskView addSubview:rect];
 }
 
 - (void) showLoadFramesSheet {
@@ -141,7 +154,8 @@
 {
     self = [super init];
     if (self) {
-        // Add your subclass-specific initialization here.
+//        self.regionsView = [[SPRegionsView alloc] initWithFrame:self.imageView.bounds];
+//        [self.maskView addSubview:self.regionsView];
     }
     return self;
 }

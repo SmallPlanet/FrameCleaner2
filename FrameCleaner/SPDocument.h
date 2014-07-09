@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "SPRegionsView.h"
 
 @interface SPDocument : NSDocument {
     CGRect globalFrame;
@@ -22,7 +23,9 @@
 @property (nonatomic, strong) NSMutableArray *allImages;
 @property (nonatomic, strong) IBOutlet NSMatrix *exportMatrix;
 @property (nonatomic, strong) IBOutlet NSPopUpButton *maxSubregions;
-@property (nonatomic, strong)IBOutlet NSImageView *imageView;
-@property (nonatomic, strong)IBOutlet NSImageView *maskView;
+@property (nonatomic, strong) IBOutlet NSImageView *imageView;
+@property (nonatomic, strong) IBOutlet NSImageView *maskView;
+@property (nonatomic, strong) IBOutlet SPRegionsView *regionsView;
+
 
 @end

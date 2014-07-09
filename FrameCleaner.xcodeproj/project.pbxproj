@@ -41,6 +41,7 @@
 		A9D4FA14196B519B002BE703 /* pngwrite.c in Sources */ = {isa = PBXBuildFile; fileRef = A9D4F9F5196B519B002BE703 /* pngwrite.c */; };
 		A9D4FA15196B519B002BE703 /* pngwtran.c in Sources */ = {isa = PBXBuildFile; fileRef = A9D4F9F6196B519B002BE703 /* pngwtran.c */; };
 		A9D4FA16196B519B002BE703 /* pngwutil.c in Sources */ = {isa = PBXBuildFile; fileRef = A9D4F9F7196B519B002BE703 /* pngwutil.c */; };
+		C4880A16196D777700A0BAE8 /* SPRegionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4880A15196D777700A0BAE8 /* SPRegionsView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,8 @@
 		A9D4F9F5196B519B002BE703 /* pngwrite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngwrite.c; sourceTree = "<group>"; };
 		A9D4F9F6196B519B002BE703 /* pngwtran.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngwtran.c; sourceTree = "<group>"; };
 		A9D4F9F7196B519B002BE703 /* pngwutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngwutil.c; sourceTree = "<group>"; };
+		C4880A14196D777700A0BAE8 /* SPRegionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPRegionsView.h; sourceTree = "<group>"; };
+		C4880A15196D777700A0BAE8 /* SPRegionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPRegionsView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,19 +183,21 @@
 		A9C44EA9196B2696001065B9 /* FrameCleaner */ = {
 			isa = PBXGroup;
 			children = (
-				A950A158196C5F13002B6F6B /* FastLZ */,
-				A9D4F9DF196B519B002BE703 /* LZ4 */,
-				A9D4F9E4196B519B002BE703 /* png */,
+				A9D4F9DC196B4FE0002BE703 /* FCImage.h */,
+				A9D4F9DD196B4FE0002BE703 /* FCImage.m */,
+				A9C44EBE196B2697001065B9 /* Images.xcassets */,
+				A9C44EBB196B2696001065B9 /* MainMenu.xib */,
+				A950A155196C5A67002B6F6B /* NSDataAdditions.h */,
+				A950A156196C5A67002B6F6B /* NSDataAdditions.m */,
 				A9C44EB5196B2696001065B9 /* SPDocument.h */,
 				A9C44EB6196B2696001065B9 /* SPDocument.m */,
 				A9C44EB8196B2696001065B9 /* SPDocument.xib */,
-				A950A155196C5A67002B6F6B /* NSDataAdditions.h */,
-				A950A156196C5A67002B6F6B /* NSDataAdditions.m */,
-				A9C44EBB196B2696001065B9 /* MainMenu.xib */,
-				A9C44EBE196B2697001065B9 /* Images.xcassets */,
+				C4880A14196D777700A0BAE8 /* SPRegionsView.h */,
+				C4880A15196D777700A0BAE8 /* SPRegionsView.m */,
+				A950A158196C5F13002B6F6B /* FastLZ */,
+				A9D4F9DF196B519B002BE703 /* LZ4 */,
+				A9D4F9E4196B519B002BE703 /* png */,
 				A9C44EAA196B2696001065B9 /* Supporting Files */,
-				A9D4F9DC196B4FE0002BE703 /* FCImage.h */,
-				A9D4F9DD196B4FE0002BE703 /* FCImage.m */,
 			);
 			path = FrameCleaner;
 			sourceTree = "<group>";
@@ -372,6 +377,7 @@
 				A9D4FA0F196B519B002BE703 /* pngrutil.c in Sources */,
 				A9D4FA13196B519B002BE703 /* pngwio.c in Sources */,
 				A9D4FA05196B519B002BE703 /* lz4.c in Sources */,
+				C4880A16196D777700A0BAE8 /* SPRegionsView.m in Sources */,
 				A9D4FA12196B519B002BE703 /* pngvcrd.c in Sources */,
 				A9D4FA15196B519B002BE703 /* pngwtran.c in Sources */,
 				A9D4FA0C196B519B002BE703 /* pngread.c in Sources */,
