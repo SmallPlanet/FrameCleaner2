@@ -7,18 +7,31 @@
 //
 
 #import "SPRegionsView.h"
+#import "SPBorderedView.h"
 
 @implementation SPRegionsView
 
 - (void) mouseDown:(NSEvent *)theEvent {
     NSLog(@"Boom");
+    originalOrigin = [self convertPoint:theEvent.locationInWindow toView:self];
+    SPBorderedView *subview = [[SPBorderedView alloc] initWithFrame:NSMakeRect(originalOrigin.x, originalOrigin.y, 1, 1)];
+    activeView = subview;
+    [self addSubview:subview];
+}
+
+- (void) mouseDragged:(NSEvent *)theEvent {
+    if (activeView) {
+        NSPoint liv = [self convertPoint:theEvent.locationInWindow toView:self];
+        CGRect r1 = CGRectMake(originalOrigin.x, originalOrigin.y, 1, 1);
+        CGRect r2 = CGRectMake(liv.x, liv.y, 1, 1);
+        CGRect frameRect = CGRectUnion(r1, r2);
+        activeView.frame = NSRectFromCGRect(frameRect);
+    }
 }
 
 - (void)reset {
     [self.regions removeAllObjects];
-    for (NSView *view in self.subviews) {
-        [view removeFromSuperview];
-    }
+    [self.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
 }
 
 - (instancetype)initWithFrame:(NSRect)frame {

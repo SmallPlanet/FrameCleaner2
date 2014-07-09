@@ -10,6 +10,7 @@
 		A950A157196C5A67002B6F6B /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A950A156196C5A67002B6F6B /* NSDataAdditions.m */; };
 		A950A15B196C5F13002B6F6B /* fastlz.c in Sources */ = {isa = PBXBuildFile; fileRef = A950A159196C5F13002B6F6B /* fastlz.c */; };
 		A950A15E196C667C002B6F6B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A950A15D196C667C002B6F6B /* libz.dylib */; };
+		A9765B71196D852E00F8A27A /* SPBorderedView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9765B70196D852E00F8A27A /* SPBorderedView.m */; };
 		A9C44EA4196B2696001065B9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C44EA3196B2696001065B9 /* Cocoa.framework */; };
 		A9C44EAE196B2696001065B9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A9C44EAC196B2696001065B9 /* InfoPlist.strings */; };
 		A9C44EB0196B2696001065B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C44EAF196B2696001065B9 /* main.m */; };
@@ -60,6 +61,8 @@
 		A950A159196C5F13002B6F6B /* fastlz.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fastlz.c; sourceTree = "<group>"; };
 		A950A15A196C5F13002B6F6B /* fastlz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fastlz.h; sourceTree = "<group>"; };
 		A950A15D196C667C002B6F6B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		A9765B6F196D852E00F8A27A /* SPBorderedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPBorderedView.h; sourceTree = "<group>"; };
+		A9765B70196D852E00F8A27A /* SPBorderedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPBorderedView.m; sourceTree = "<group>"; };
 		A9C44EA0196B2696001065B9 /* FrameCleaner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FrameCleaner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9C44EA3196B2696001065B9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		A9C44EA6196B2696001065B9 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -189,6 +192,8 @@
 				A9C44EBB196B2696001065B9 /* MainMenu.xib */,
 				A950A155196C5A67002B6F6B /* NSDataAdditions.h */,
 				A950A156196C5A67002B6F6B /* NSDataAdditions.m */,
+				A9765B6F196D852E00F8A27A /* SPBorderedView.h */,
+				A9765B70196D852E00F8A27A /* SPBorderedView.m */,
 				A9C44EB5196B2696001065B9 /* SPDocument.h */,
 				A9C44EB6196B2696001065B9 /* SPDocument.m */,
 				A9C44EB8196B2696001065B9 /* SPDocument.xib */,
@@ -387,6 +392,7 @@
 				A9C44EB7196B2696001065B9 /* SPDocument.m in Sources */,
 				A9D4FA0D196B519B002BE703 /* pngrio.c in Sources */,
 				A9D4FA09196B519B002BE703 /* pngget.c in Sources */,
+				A9765B71196D852E00F8A27A /* SPBorderedView.m in Sources */,
 				A9D4FA0E196B519B002BE703 /* pngrtran.c in Sources */,
 				A9D4FA0B196B519B002BE703 /* pngpread.c in Sources */,
 				A9D4FA14196B519B002BE703 /* pngwrite.c in Sources */,

@@ -8,7 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface SPRegionsView : NSView
+@interface SPRegionsView : NSView {
+    NSView *activeView;
+    NSPoint originalOrigin;
+}
 
 @property (nonatomic, strong) NSMutableArray *regions;
 

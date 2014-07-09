@@ -37,18 +37,7 @@
         self.imageView.image = image;
         self.regionsView.frame = self.imageView.bounds;
     }
-    [self windowForSheet].title = [NSString stringWithFormat:@"%@ - %ld frames", [self.directoryPath lastPathComponent], self.allFiles.count];
-    
-    
-//    NSView *rect = [[NSView alloc] initWithFrame:NSMakeRect(100,100,50,120)];
-//    CALayer *layer = [CALayer layer];
-//    layer.frame = rect.bounds;
-//    rect.layer = layer;
-////    rect.layer.backgroundColor = [NSColor redColor].CGColor;
-//    rect.layer.borderColor = [NSColor blackColor].CGColor;
-//    rect.layer.borderWidth = 2.f;
-//    [rect setWantsLayer:YES];
-//    [self.maskView addSubview:rect];
+    [self windowForSheet].title = [NSString stringWithFormat:@"%@ - %ld frames", [self.directoryPath lastPathComponent], self.allFiles.count];    
 }
 
 - (void) showLoadFramesSheet {
@@ -97,7 +86,7 @@
         }
     }
     
-    if ([self subregionsCount] > 0) {
+    if (YES || [self subregionsCount] > 0) {
         self.subregionData = nil;
         FCImage *firstImage = nil;
         for (FCImage *image in self.allImages) {
