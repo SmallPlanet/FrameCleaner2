@@ -39,13 +39,10 @@
         image.size = tmpImage.size;
         self.imageSize = tmpImage.size;
         self.imageView.image = image;
-        NSRect frame = self.imageView.frame;
         NSRect mainFrame = self.mainView.frame;
-        NSLog(@"imageView.frame =%@", NSStringFromRect(frame));
-        self.imageView.frame = NSMakeRect(0,mainFrame.size.height-image.size.height,image.size.width,image.size.height);
+        self.imageView.frame = NSMakeRect(self.imageView.frame.origin.x,mainFrame.size.height-image.size.height,image.size.width,image.size.height);
         self.maskView.frame = self.imageView.frame;
-        self.regionsView.frame = self.imageView.bounds;
-//        self.regionsView.bounds = NSMakeRect(0,0,image.size.width,image.size.height);
+        self.regionsView.frame = self.imageView.frame;
     }
     [self windowForSheet].title = [NSString stringWithFormat:@"%@ - %ld frames", [self.directoryPath lastPathComponent], self.allFiles.count];    
 }
@@ -156,6 +153,10 @@
 
 - (IBAction) editCallback:(id)sender {
     [self optimizeRegions];
+}
+
+- (IBAction) resetCallback:(id)sender {
+    
 }
 
 - (IBAction) exportCallback:(id)sender {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6154.21" systemVersion="14A283o" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="101000" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6154.21"/>
     </dependencies>
     <objects>
@@ -20,24 +21,33 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="PKU-kz-iPV">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="283" y="305" width="657" height="588"/>
+            <rect key="contentRect" x="283" y="305" width="852" height="745"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
-            <view key="contentView" id="pk8-ON-W62">
-                <rect key="frame" x="0.0" y="0.0" width="657" height="588"/>
+            <view key="contentView" autoresizesSubviews="NO" id="pk8-ON-W62">
+                <rect key="frame" x="0.0" y="0.0" width="852" height="745"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView appearanceType="aqua" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="stO-sm-Fj7" customClass="NSImageView">
-                        <rect key="frame" x="0.0" y="0.0" width="657" height="588"/>
-                    </customView>
-                    <customView appearanceType="aqua" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tip-gp-fRU" customClass="NSImageView">
-                        <rect key="frame" x="0.0" y="-3" width="657" height="591"/>
+                    <view autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hpr-XN-jR7">
+                        <rect key="frame" x="0.0" y="0.0" width="852" height="745"/>
                         <subviews>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zia-HJ-fh2" customClass="SPRegionsView">
-                                <rect key="frame" x="0.0" y="1" width="657" height="588"/>
+                            <customView appearanceType="aqua" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="stO-sm-Fj7" customClass="NSImageView">
+                                <rect key="frame" x="102" y="92" width="1" height="1"/>
+                            </customView>
+                            <customView appearanceType="aqua" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tip-gp-fRU" customClass="NSImageView">
+                                <rect key="frame" x="102" y="91" width="1" height="1"/>
+                            </customView>
+                            <customView autoresizesSubviews="NO" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zia-HJ-fh2" customClass="SPRegionsView">
+                                <rect key="frame" x="102" y="92" width="1" height="1"/>
                             </customView>
                         </subviews>
-                    </customView>
+                    </view>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="hpr-XN-jR7" secondAttribute="bottom" id="Z3v-Vp-BOL"/>
+                    <constraint firstAttribute="trailing" secondItem="hpr-XN-jR7" secondAttribute="trailing" id="ews-lS-aer"/>
+                    <constraint firstItem="hpr-XN-jR7" firstAttribute="leading" secondItem="pk8-ON-W62" secondAttribute="leading" id="nXs-6B-n8Z"/>
+                    <constraint firstItem="hpr-XN-jR7" firstAttribute="top" secondItem="pk8-ON-W62" secondAttribute="top" id="s5Y-dN-C9i"/>
+                </constraints>
             </view>
             <toolbar key="toolbar" implicitIdentifier="BFC2A2E6-AD8E-44BE-AF36-EA114F026D38" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="Vc2-bY-MZS">
                 <allowedToolbarItems>
@@ -80,6 +90,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="iJp-Yg-3nN"/>
             </connections>
+            <point key="canvasLocation" x="919" y="419.5"/>
         </window>
         <customView id="qf8-3d-E77" userLabel="Drawer Content View">
             <rect key="frame" x="0.0" y="0.0" width="210" height="400"/>
