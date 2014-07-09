@@ -28,9 +28,14 @@
     
     // show first image
     if (self.allFiles.count > 0) {
-        NSImage *image = [[NSImage alloc] initWithContentsOfFile:[self.directoryPath stringByAppendingPathComponent:self.allFiles[0]]];
+        NSString *filePath = [self.directoryPath stringByAppendingPathComponent:self.allFiles[0]];
+        FCImage *tmpImage = [[FCImage alloc] initWithSource:filePath];
+        [tmpImage pixelData];
+        NSImage *image = [[NSImage alloc] initWithContentsOfFile:filePath];
+        image.size = tmpImage.size;
         self.imageView.image = image;
     }
+    [self windowForSheet].title = [NSString stringWithFormat:@"%@ - %ld frames", [self.directoryPath lastPathComponent], self.allFiles.count];
 }
 
 - (void) showLoadFramesSheet {
@@ -43,7 +48,7 @@
     [panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result) {
         if (result == 1 && bpanel.URLs.count > 0) {
             self.directoryPath = [[bpanel.URLs objectAtIndex:0] path];
-            [self loadFrames];
+            [self performSelector:@selector(loadFrames) withObject:nil afterDelay:0];
         }
     }];
 
