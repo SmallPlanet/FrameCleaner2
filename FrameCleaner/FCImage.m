@@ -161,19 +161,18 @@
     [queue addOperationWithBlock:^{
         
         @autoreleasepool {
-            NSString * ePath = [exportPath stringByAppendingPathExtension:@"lz4"];
             NSMutableData * data = [NSMutableData data];
             
             [data appendBytes:&width length:2];
             [data appendBytes:&height length:2];
             [data appendData:pixels];
             
-            [[data lz4Deflate] writeToFile:ePath atomically:NO];
+            [[data lz4Deflate] writeToFile:exportPath atomically:NO];
         }
     }];
 }
 
-- (void) exportPNGTo:(NSString *)ePath withQueue:(NSOperationQueue *)queue {
+- (void) exportPNGTo:(NSString *)exportPath withQueue:(NSOperationQueue *)queue {
     [queue addOperationWithBlock:^{
         @autoreleasepool {
         
@@ -195,16 +194,13 @@
 
             NSData * pngData = [bitmap representationUsingType:NSPNGFileType properties:[NSDictionary dictionary]];
             
-            NSString * tempPath = [ePath stringByAppendingPathExtension:@"orig"];
+            NSString * tempPath = [exportPath stringByAppendingPathExtension:@"orig"];
             
             [pngData writeToFile:tempPath atomically:NO];
             
             // Run through PNG crush...
             NSString * launchPath = [NSString stringWithFormat:@"%@/pngcrush", [[NSBundle mainBundle] resourcePath]];
-            NSArray * arguments = [NSArray arrayWithObjects:
-                                   @"-q", @"-iphone", @"-f", @"0",
-                                   tempPath, ePath,
-                                   NULL];
+            NSArray * arguments = @[@"-q", @"-iphone", @"-f", @"0", tempPath, exportPath];
             
             RunTask(launchPath, arguments, NULL, NULL, NULL, NULL, NULL);
             
@@ -218,8 +214,6 @@
             withTableSize:(int)tableSize
 {
     [queue addOperationWithBlock:^{
-        NSString * ePath = [exportPath stringByAppendingPathExtension:@"png"];
-        
         @autoreleasepool {
             
             unsigned char * bufferPtr = (unsigned char *)[pixels bytes];
@@ -242,21 +236,19 @@
             
 //            [bitmap release];
             
-            [pngData writeToFile:ePath atomically:NO];
+            [pngData writeToFile:exportPath atomically:NO];
             
             // Run through PNG crush...
             NSString * launchPath = [NSString stringWithFormat:@"%@/pngnq", [[NSBundle mainBundle] resourcePath]];
-            NSArray * arguments = [NSArray arrayWithObjects:
-                                   @"-s", @"1", @"-n", [NSString stringWithFormat:@"%d", tableSize],
-                                   ePath, NULL];
+            NSArray * arguments = @[@"-s", @"1", @"-n", [NSString stringWithFormat:@"%d", tableSize],exportPath];
             
             RunTask(launchPath, arguments, NULL, NULL, NULL, NULL, NULL);
             
             
-            [[NSFileManager defaultManager] removeItemAtPath:ePath error:NULL];
+            [[NSFileManager defaultManager] removeItemAtPath:exportPath error:NULL];
             
-            NSString * exportedPath = [NSString stringWithFormat:@"%@-nq8.png", [ePath stringByDeletingPathExtension]];
-            [[NSFileManager defaultManager] moveItemAtPath:exportedPath toPath:ePath error:NULL];
+            NSString * exportedPath = [NSString stringWithFormat:@"%@-nq8.png", [exportPath stringByDeletingPathExtension]];
+            [[NSFileManager defaultManager] moveItemAtPath:exportedPath toPath:exportPath error:NULL];
             
         }
     }];
@@ -265,8 +257,6 @@
 - (void) exportPVRGradientTo:(NSString *)exportPath withQueue:(NSOperationQueue *)queue
 {
 //    [queue addOperationWithBlock:^{
-//        NSString * ePath = [exportPath stringByAppendingPathExtension:@"pvr"];
-//        
 //        @autoreleasepool {
 //            int altSize;
 //            NSData * pvrData = [PVRUtility CompressDataLossy:pixels
@@ -275,7 +265,7 @@
 //                                               WithWeighting:@"--channel-weighting-linear"
 //                                                 WithSamples:samplesPerPixel];
 //            
-//            [pvrData writeToFile:ePath atomically:NO];
+//            [pvrData writeToFile:exportPath atomically:NO];
 //        }
 //    }];
 }
@@ -283,8 +273,6 @@
 - (void) exportPVRPhotoTo:(NSString *)exportPath withQueue:(NSOperationQueue *)queue
 {
 //    [queue addOperationWithBlock:^{
-//        NSString * ePath = [exportPath stringByAppendingPathExtension:@"pvr"];
-//        
 //        @autoreleasepool {
 //            int altSize;
 //            NSData * pvrData = [PVRUtility CompressDataLossy:pixels
@@ -293,7 +281,7 @@
 //                                               WithWeighting:@"--channel-weighting-perceptual"
 //                                                 WithSamples:samplesPerPixel];
 //            
-//            [pvrData writeToFile:ePath atomically:NO];
+//            [pvrData writeToFile:exportPath atomically:NO];
 //        }
 //    }];
 }
@@ -311,10 +299,7 @@
     // the color palette and 1 byte image array from that, and output the image.sp1 and
     // image.fsh
     [queue addOperationWithBlock:^{
-        NSString * ePath = [exportPath stringByAppendingPathExtension:@"png"];
-        
         @autoreleasepool {
-            
             unsigned char * bufferPtr = (unsigned char *)[pixels bytes];
             BOOL hasAlpha = ((width * height * 4) == [pixels length]);
             int samples = hasAlpha ? 4 : 3;
@@ -335,15 +320,13 @@
             
 //            [bitmap release];
             
-            NSString * tempPath = [ePath stringByAppendingPathExtension:@"orig"];
+            NSString * tempPath = [exportPath stringByAppendingPathExtension:@"orig"];
             
             [pngData writeToFile:tempPath atomically:NO];
             
             // Run through PNG crush...
             NSString * launchPath = [NSString stringWithFormat:@"%@/pngnq", [[NSBundle mainBundle] resourcePath]];
-            NSArray * arguments = [NSArray arrayWithObjects:
-                                   @"-s", @"1", @"-n", [NSString stringWithFormat:@"%d", tableSize],
-                                   tempPath, ePath, NULL];
+            NSArray * arguments = @[@"-s", @"1", @"-n", [NSString stringWithFormat:@"%d", tableSize], tempPath, exportPath];
             
             RunTask(launchPath, arguments, NULL, NULL, NULL, NULL, NULL);
             
