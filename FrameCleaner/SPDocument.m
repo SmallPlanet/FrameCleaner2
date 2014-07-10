@@ -39,8 +39,12 @@
         image.size = tmpImage.size;
         self.imageSize = tmpImage.size;
         self.imageView.image = image;
-        [self.imageView sizeToFit];
-//        self.regionsView.frame = NSMakeRect(0, 0, image.size.width, image.size.height);
+//        [self.imageView sizeToFit];
+        self.imageView.frame = NSMakeRect(0, 0, image.size.width, image.size.height);
+        NSLog(@"iV b4: %@  (%.0f, %0.f)", NSStringFromRect(self.regionsView.frame), image.size.width, image.size.height);
+        NSLog(@"rV b4: %@", NSStringFromRect(self.regionsView.frame));
+        self.regionsView.frame = self.imageView.frame;
+        NSLog(@"rV ar: %@", NSStringFromRect(self.regionsView.frame));
     }
     [self windowForSheet].title = [NSString stringWithFormat:@"%@ - %ld frames", [self.directoryPath lastPathComponent], self.allFiles.count];    
 }
@@ -150,6 +154,9 @@
 }
 
 - (IBAction) editCallback:(id)sender {
+    NSLog(@"iV.f: %@  (%.0f, %0.f)", NSStringFromRect(self.regionsView.frame), self.imageSize.width, self.imageSize.height);
+    NSLog(@"rV.f: %@", NSStringFromRect(self.regionsView.frame));
+
     [self optimizeRegions];
 }
 
@@ -183,7 +190,11 @@
 - (void)windowControllerDidLoadNib:(NSWindowController *)aController
 {
     [super windowControllerDidLoadNib:aController];
-    // Add any code here that needs to be executed once the windowController has loaded the document's window.
+
+//    NSLayoutConstraint *cw = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_regionsView attribute:NSLayoutAttributeWidth multiplier:1.f constant:0.f];
+//    NSLayoutConstraint *ch = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_regionsView attribute:NSLayoutAttributeHeight multiplier:1.f constant:0.f];
+//    [_regionsView.superview addConstraint:cw];
+//    [_regionsView.superview addConstraint:ch];
 }
 
 + (BOOL)autosavesInPlace

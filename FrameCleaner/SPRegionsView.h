@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface SPRegionsView : NSView {
+@interface SPRegionsView : NSImageView {
     NSView *activeView;
     NSPoint originalOrigin;
 }

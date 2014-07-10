@@ -37,15 +37,19 @@
                             <customView appearanceType="aqua" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tip-gp-fRU" userLabel="maskView" customClass="NSImageView">
                                 <rect key="frame" x="0.0" y="0.0" width="1" height="1"/>
                             </customView>
-                            <customView autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zia-HJ-fh2" customClass="SPRegionsView">
-                                <rect key="frame" x="0.0" y="0.0" width="500" height="500"/>
+                            <customView autoresizesSubviews="NO" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zia-HJ-fh2" customClass="SPRegionsView">
+                                <rect key="frame" x="176" y="122" width="500" height="500"/>
                             </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="doV-O9-ab8" firstAttribute="centerX" secondItem="hpr-XN-jR7" secondAttribute="centerX" id="78v-aq-vLz"/>
                             <constraint firstItem="tip-gp-fRU" firstAttribute="centerX" secondItem="doV-O9-ab8" secondAttribute="centerX" id="EmW-jp-E2u"/>
-                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="centerX" secondItem="doV-O9-ab8" secondAttribute="centerX" id="KVk-vH-QVw"/>
-                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="centerY" secondItem="doV-O9-ab8" secondAttribute="centerY" id="rvN-1Y-9xO"/>
+                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="leading" secondItem="doV-O9-ab8" secondAttribute="leading" id="Npy-Lv-y1f"/>
+                            <constraint firstAttribute="centerX" secondItem="Zia-HJ-fh2" secondAttribute="centerX" id="Vsv-3H-LU3"/>
+                            <constraint firstAttribute="centerY" secondItem="Zia-HJ-fh2" secondAttribute="centerY" id="cFx-dJ-Tao"/>
+                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="bottom" secondItem="doV-O9-ab8" secondAttribute="bottom" id="g25-gG-vlt"/>
+                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="trailing" secondItem="doV-O9-ab8" secondAttribute="trailing" id="r6V-dL-fyk"/>
+                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="top" secondItem="doV-O9-ab8" secondAttribute="top" id="uHI-no-4gY"/>
                             <constraint firstItem="tip-gp-fRU" firstAttribute="centerY" secondItem="doV-O9-ab8" secondAttribute="centerY" id="vqg-Cs-2Jl"/>
                             <constraint firstItem="doV-O9-ab8" firstAttribute="centerY" secondItem="hpr-XN-jR7" secondAttribute="centerY" id="z0V-Mi-IL6"/>
                         </constraints>
@@ -55,7 +59,6 @@
                     <constraint firstAttribute="bottom" secondItem="hpr-XN-jR7" secondAttribute="bottom" id="Z3v-Vp-BOL"/>
                     <constraint firstItem="hpr-XN-jR7" firstAttribute="leading" secondItem="pk8-ON-W62" secondAttribute="leading" id="bP4-pa-5Ja"/>
                     <constraint firstAttribute="trailing" secondItem="hpr-XN-jR7" secondAttribute="trailing" id="ews-lS-aer"/>
-                    <constraint firstItem="hpr-XN-jR7" firstAttribute="leading" secondItem="pk8-ON-W62" secondAttribute="leading" id="nXs-6B-n8Z"/>
                     <constraint firstItem="hpr-XN-jR7" firstAttribute="top" secondItem="pk8-ON-W62" secondAttribute="top" id="s5Y-dN-C9i"/>
                 </constraints>
             </view>
