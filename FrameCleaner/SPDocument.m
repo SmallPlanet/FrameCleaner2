@@ -39,10 +39,8 @@
         image.size = tmpImage.size;
         self.imageSize = tmpImage.size;
         self.imageView.image = image;
-        NSRect mainFrame = self.mainView.frame;
-        self.imageView.frame = NSMakeRect(self.imageView.frame.origin.x,mainFrame.size.height-image.size.height,image.size.width,image.size.height);
-        self.maskView.frame = self.imageView.frame;
-        self.regionsView.frame = self.imageView.frame;
+        [self.imageView sizeToFit];
+//        self.regionsView.frame = NSMakeRect(0, 0, image.size.width, image.size.height);
     }
     [self windowForSheet].title = [NSString stringWithFormat:@"%@ - %ld frames", [self.directoryPath lastPathComponent], self.allFiles.count];    
 }
