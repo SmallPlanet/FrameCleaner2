@@ -420,7 +420,8 @@
             ptr2 = basePtr2 + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
             for (int i = 0; i < samplesPerPixel; i++)
             {
-                if(abs(ptr[i] - ptr2[i]) > 20) return NO;
+                if(abs(ptr[i] - ptr2[i]) > 20)
+                    return NO;
             }
         }
     }

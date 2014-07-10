@@ -181,6 +181,204 @@
         fileName = [fileName stringByAppendingPathExtension:[baseImage extensionForExportFormat:self.exportMatrix.selectedRow]];
         regionsSnippet = [regionsSnippet stringByAppendingFormat:@"<Image bounds=\"0,0,%d,%d\" urlPath=\"bundle://%@\">\n", (int)(self.imageSize.width), (int)(self.imageSize.height), fileName];
     }
+    
+    NSMutableArray *processedImages = [NSMutableArray array];
+    NSMutableArray *uniqueImages = [NSMutableArray array];
+    NSInteger imageIndex = 0;
+    int currentRegion = 0;
+    CGPoint min, max;
+    BOOL subregions = NO;
+    do {
+        imageIndex = 0;
+        
+        SPBorderedView *region = nil;
+        NSString *suffix = @"";
+        NSRect cropFrame;
+        if ([self subregionsCount] > 0) {
+            subregions = YES;
+            region = [self.subregions objectAtIndex:currentRegion];
+            cropFrame = region.frame;
+            CGSize imgSize = [self imageSize];
+            min.x = cropFrame.origin.x;
+            min.y = imgSize.height - cropFrame.origin.y - cropFrame.size.height;
+            max.x = cropFrame.origin.x + cropFrame.size.width;
+            max.y = min.y + cropFrame.size.height;
+            suffix = [NSString stringWithFormat:@"region%02d_",currentRegion];
+            NSString *fileName = [baseFileName stringByAppendingFormat:@"%@0000",suffix];
+            fileName = [fileName stringByAppendingPathExtension:[self.firstImage extensionForExportFormat:[self.exportMatrix selectedRow]]];
+            regionsSnippet = [regionsSnippet stringByAppendingFormat:@"\t<Image bounds=\"%d,%d,%d,%d\" urlPath=\"%@\">\n", (int)(cropFrame.origin.x), (int)(cropFrame.origin.y), (int)(cropFrame.size.width), (int)(cropFrame.size.height), [NSString stringWithFormat:@"bundle://%@",fileName]];
+        }
+        
+        [processedImages removeAllObjects];
+        [uniqueImages removeAllObjects];
+
+        for(FCImage *newImage in self.allImages) {
+            @autoreleasepool {
+                if (subregions) {
+//                    [transWindow continueProgressBarMessage:[NSString stringWithFormat:@"Region %d/%d %@", currentRegion, [subregions count], [newImage.sourceFile lastPathComponent]]
+//                                                  withValue:((float)imageIndex/(float)[allFiles count])];
+                }
+                else
+                {
+//                    [transWindow continueProgressBarMessage:[NSString stringWithFormat:@"Processing %@", [newImage.sourceFile lastPathComponent]]
+//                                                  withValue:((float)imageIndex/(float)[allFiles count])];
+                }
+
+                FCImage *duplicateOfImage = NULL;
+                
+                newImage.index = imageIndex++;
+                
+                if([self shouldRemoveDuplicateFrames]) {
+                    // Check to see if another frame is like this frame.
+                    for(FCImage * existingImage in uniqueImages) {
+                        @autoreleasepool {
+                            if (subregions) {
+                                if ([newImage compare:existingImage pixelsWithMin:min andMax:max]) {
+                                    NSLog(@"DUPLICATE: %@ and %@", [newImage.sourceFile lastPathComponent], [existingImage.sourceFile lastPathComponent]);
+                                    duplicateOfImage = existingImage;
+                                    [newImage dropMemory];
+                                    [existingImage dropMemory];
+                                    break;
+                                }
+                            }
+                            else if([newImage compare:existingImage]) {
+                                NSLog(@"DUPLICATE: %@ and %@", [newImage.sourceFile lastPathComponent], [existingImage.sourceFile lastPathComponent]);
+                                duplicateOfImage = existingImage;
+                                [newImage dropMemory];
+                                [existingImage dropMemory];
+                                break;
+                            }
+                            
+                            [newImage dropMemory];
+                            [existingImage dropMemory];
+                        }
+                    }
+                }
+
+                if(duplicateOfImage) {
+                    newImage.index = duplicateOfImage.index;
+                }
+                else {
+                    [uniqueImages addObject:newImage];
+                }
+                
+                [processedImages addObject:newImage];
+            }
+        }
+//
+//        // Translate the indices in processedImages to their uniqueImages equivalents
+//        for(FCImage * image in processedImages)
+//        {
+//            FCImage * otherImage = [processedImages objectAtIndex:image.index];
+//            image.index = [uniqueImages indexOfObject:otherImage];
+//            [image dropMemory];
+//        }
+//        
+//        NSMutableString * frameSequence = [NSMutableString string];
+//        for(int i = 0; i < [processedImages count]; i++)
+//        {
+//            FCImage * image = [processedImages objectAtIndex:i];
+//            BOOL didConversion = NO;
+//            
+//            // Detect runs of the same number...
+//            for(int j = i+1; j < [processedImages count]; j++)
+//            {
+//                FCImage * nextImage = [processedImages objectAtIndex:j];
+//                
+//                if(nextImage.index != image.index || j+1 >= [processedImages count])
+//                {
+//                    if(j-i > 1)
+//                    {
+//                        [frameSequence appendFormat:@"%d*%d,", (int)image.index, j-i];
+//                        i = j-1;
+//                        didConversion = YES;
+//                    }
+//                    break;
+//                }
+//            }
+//            if(didConversion) continue;
+//            
+//            // Detect runs of incremental number...
+//            for(int j = i+1; j < [processedImages count]; j++)
+//            {
+//                FCImage * nextImage = [processedImages objectAtIndex:j];
+//                FCImage * prevImage = [processedImages objectAtIndex:j-1];
+//                
+//                if(nextImage.index != prevImage.index+1 || j+1 >= [processedImages count])
+//                {
+//                    if(prevImage.index-image.index > 1)
+//                    {
+//                        [frameSequence appendFormat:@"%d-%d,", (int)image.index, (int)prevImage.index];
+//                        i = j-1;
+//                        didConversion = YES;
+//                    }
+//                    break;
+//                }
+//            }
+//            if(didConversion) continue;
+//            
+//            
+//            
+//            [frameSequence appendFormat:@"%d,", (int)image.index];
+//        }
+//        
+//        // Export all of the images
+//        
+//        for(FCImage * image in uniqueImages)
+//        {
+//            NSString * fileName = [[[image sourceFile] lastPathComponent] stringByDeletingPathExtension];
+//            
+//            if (findSubregionsMax > 0)
+//            {
+//                fileName = [fileName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"]];
+//                fileName = [baseFileName stringByAppendingString:suffix];
+//                fileName = [exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%04d", fileName, (int)image.index]];
+//            }
+//            else if(gShouldRemoveDuplicates)
+//            {
+//                fileName = [fileName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"]];
+//                fileName = [exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%04d", fileName, (int)image.index]];
+//            }
+//            else
+//            {
+//                fileName = [exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", fileName]];
+//            }
+//            
+//            [self exportImage:image toFileName:fileName queue:queue withExportMatrix:[exportMatrix selectedRow]];
+//        }
+//        
+//        while([queue operationCount])
+//        {
+//            usleep(50000);
+//            
+//            [transWindow continueProgressBarMessage:[NSString stringWithFormat:@"Exporting Images..."]
+//                                          withValue:1.0f - ((float)[queue operationCount]/(float)[uniqueImages count])];
+//        }
+//        
+//        
+//        if(findSubregionsMax > 0)
+//        {
+//            NSString *pathFormat = [NSString stringWithFormat:@"%@%@#", baseFileName, suffix];
+//            pathFormat = [pathFormat stringByAppendingPathExtension:[self extensionForExportMatrix:[exportMatrix selectedRow]]];
+//            regionsSnippet = [regionsSnippet stringByAppendingFormat:@"\t\t<FrameAnimation framerate=\"12\" sequence=\"%@\" pathFormat=\"bundle://%@\" digits=\"4\" />\n\t</Image>\n", frameSequence, pathFormat];
+//        }
+//        else if (gShouldRemoveDuplicates)
+//        {
+//            NSString *bounds = [NSString stringWithFormat:@"%d,%d,%d,%d", (int)(globalMin.x), (int)(globalMin.y), (int)(globalMax.x-globalMin.x), (int)(globalMax.y-globalMin.y)];
+//            
+//            [bounds writeToFile:[exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"bounds.txt"]]
+//                     atomically:NO
+//                       encoding:NSUTF8StringEncoding
+//                          error:NULL];
+//            
+//            [frameSequence writeToFile:[exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"sequence.txt"]]
+//                            atomically:NO
+//                              encoding:NSUTF8StringEncoding
+//                                 error:NULL];
+//        }
+        currentRegion++;
+    } while (currentRegion < [self subregionsCount]);
+    
 }
 
 #pragma mark - Toolbar item callbacks
@@ -208,7 +406,9 @@
     [self exportFrames];
 }
 
-
+- (BOOL) shouldRemoveDuplicateFrames {
+    return self.removeDuplicateFrames.state;
+}
 
 #pragma mark - Document lifetime
 

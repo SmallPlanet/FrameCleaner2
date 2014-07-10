@@ -12,6 +12,7 @@
                 <outlet property="maskView" destination="tip-gp-fRU" id="gpR-Kn-BXX"/>
                 <outlet property="maxSubregions" destination="NSa-My-aJf" id="SE7-1p-CYM"/>
                 <outlet property="regionsView" destination="Zia-HJ-fh2" id="K0T-eH-Lvj"/>
+                <outlet property="removeDuplicateFrames" destination="wCf-3s-Rc9" id="Hi9-fS-Qde"/>
                 <outlet property="window" destination="PKU-kz-iPV" id="JaA-VB-d6Y"/>
             </connections>
         </customObject>

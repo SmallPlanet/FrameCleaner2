@@ -48,6 +48,7 @@ typedef enum : NSUInteger {
 - (void) setSize:(CGSize)newSize;
 - (void) setSamplesPerPixel:(NSUInteger)samples;
 + (void) dumpData:(NSData*)data size:(CGSize)size;
+- (BOOL) compare:(FCImage*)other;
 - (BOOL) compare:(FCImage*)other pixelsWithMin:(CGPoint)min andMax:(CGPoint)max;
 - (void) makeTransparentRect:(CGRect)rect;
 
@@ -63,6 +64,7 @@ typedef enum : NSUInteger {
        withTableSize:(int)tableSize;
 - (void) setStorePixelData:(NSData *)data;
 - (NSData *) pixelData;
+- (void) dropMemory;
 
 @end
 

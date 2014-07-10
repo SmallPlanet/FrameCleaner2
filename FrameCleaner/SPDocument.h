@@ -16,7 +16,6 @@
 
 @property (nonatomic, strong) NSString *directoryPath;
 @property (nonatomic, assign) BOOL shouldTrimImages;
-@property (nonatomic, assign) BOOL removeDuplicateFrames;
 @property (nonatomic, assign) BOOL compareWithMD5;
 @property (nonatomic, strong) NSMutableData *subregionData;
 @property (nonatomic, assign) CGSize imageSize;
@@ -30,6 +29,7 @@
 @property (nonatomic, strong) IBOutlet NSImageView *maskView;
 @property (nonatomic, strong) IBOutlet SPRegionsView *regionsView;
 @property (nonatomic, strong) IBOutlet NSView *mainView;
+@property (nonatomic, strong) IBOutlet NSButton *removeDuplicateFrames;
 @property (nonatomic, strong) NSOperationQueue *queue;
 
 
