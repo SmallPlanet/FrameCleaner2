@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6185.7" systemVersion="14A283o" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6154.21" systemVersion="14A283o" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="101000" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6185.7"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6154.21"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SPDocument">
@@ -22,7 +22,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="283" y="305" width="852" height="745"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1366" height="745"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" autoresizesSubviews="NO" id="pk8-ON-W62">
                 <rect key="frame" x="0.0" y="0.0" width="852" height="745"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -69,7 +69,7 @@
                             <action selector="loadCallback:" target="-2" id="rd1-Bl-hfR"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="E159810C-843F-4FDF-9E03-69A1890F5770" label="Process" paletteLabel="Process" tag="-1" image="NSCaution" id="m2I-gm-WU7">
+                    <toolbarItem implicitItemIdentifier="E159810C-843F-4FDF-9E03-69A1890F5770" label="Process" paletteLabel="Process" tag="-1" image="NSBonjour" id="m2I-gm-WU7">
                         <connections>
                             <action selector="processCallback:" target="-2" id="s92-lK-ZhC"/>
                         </connections>
@@ -77,6 +77,11 @@
                     <toolbarItem implicitItemIdentifier="C0831C0C-2F9B-4019-B3D7-06A9C5ACC851" label="Edit" paletteLabel="Edit" tag="-1" image="NSAdvanced" id="95v-dZ-Nd3">
                         <connections>
                             <action selector="editCallback:" target="-2" id="LZ6-uX-90E"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="D497F8E9-8A86-4C29-B630-7B12DF2A948B" label="Reset" paletteLabel="Reset" tag="-1" image="NSCaution" id="BF8-aI-vmA">
+                        <connections>
+                            <action selector="resetCallback:" target="-2" id="6Q9-xE-nyB"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="91440E1B-E559-4C7A-8CB2-2F9C2B97A760" label="Export" paletteLabel="Export" tag="-1" image="NSMultipleDocuments" id="31D-zd-Qla">
@@ -95,6 +100,7 @@
                     <toolbarItem reference="De7-vN-RnO"/>
                     <toolbarItem reference="m2I-gm-WU7"/>
                     <toolbarItem reference="95v-dZ-Nd3"/>
+                    <toolbarItem reference="BF8-aI-vmA"/>
                     <toolbarItem reference="31D-zd-Qla"/>
                     <toolbarItem reference="tio-Lg-0oc"/>
                     <toolbarItem reference="FNb-Yl-fWp"/>
@@ -224,6 +230,7 @@
     </objects>
     <resources>
         <image name="NSAdvanced" width="32" height="32"/>
+        <image name="NSBonjour" width="32" height="32"/>
         <image name="NSCaution" width="32" height="32"/>
         <image name="NSFolder" width="32" height="32"/>
         <image name="NSInfo" width="32" height="32"/>

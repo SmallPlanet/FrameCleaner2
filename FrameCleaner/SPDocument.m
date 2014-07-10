@@ -16,6 +16,9 @@
 
 #pragma mark -
 
+- (void) resetRegions {
+    [self.regionsView reset];
+}
 
 - (void) loadFrames {
     NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.directoryPath error:NULL];
@@ -39,12 +42,8 @@
         image.size = tmpImage.size;
         self.imageSize = tmpImage.size;
         self.imageView.image = image;
-//        [self.imageView sizeToFit];
         self.imageView.frame = NSMakeRect(0, 0, image.size.width, image.size.height);
-        NSLog(@"iV b4: %@  (%.0f, %0.f)", NSStringFromRect(self.regionsView.frame), image.size.width, image.size.height);
-        NSLog(@"rV b4: %@", NSStringFromRect(self.regionsView.frame));
         self.regionsView.frame = self.imageView.frame;
-        NSLog(@"rV ar: %@", NSStringFromRect(self.regionsView.frame));
     }
     [self windowForSheet].title = [NSString stringWithFormat:@"%@ - %ld frames", [self.directoryPath lastPathComponent], self.allFiles.count];    
 }
@@ -161,7 +160,7 @@
 }
 
 - (IBAction) resetCallback:(id)sender {
-    
+    [self resetRegions];
 }
 
 - (IBAction) exportCallback:(id)sender {
