@@ -11,6 +11,10 @@
 		A950A15B196C5F13002B6F6B /* fastlz.c in Sources */ = {isa = PBXBuildFile; fileRef = A950A159196C5F13002B6F6B /* fastlz.c */; };
 		A950A15E196C667C002B6F6B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A950A15D196C667C002B6F6B /* libz.dylib */; };
 		A9765B71196D852E00F8A27A /* SPBorderedView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9765B70196D852E00F8A27A /* SPBorderedView.m */; };
+		A984C1E8196EE85100038A64 /* pngcrush in Resources */ = {isa = PBXBuildFile; fileRef = A984C1E4196EE85100038A64 /* pngcrush */; };
+		A984C1E9196EE85100038A64 /* pngnq in Resources */ = {isa = PBXBuildFile; fileRef = A984C1E5196EE85100038A64 /* pngnq */; };
+		A984C1EA196EE85100038A64 /* pngquant in Resources */ = {isa = PBXBuildFile; fileRef = A984C1E6196EE85100038A64 /* pngquant */; };
+		A984C1EB196EE85100038A64 /* texturetool in Resources */ = {isa = PBXBuildFile; fileRef = A984C1E7196EE85100038A64 /* texturetool */; };
 		A9C44EA4196B2696001065B9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C44EA3196B2696001065B9 /* Cocoa.framework */; };
 		A9C44EAE196B2696001065B9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A9C44EAC196B2696001065B9 /* InfoPlist.strings */; };
 		A9C44EB0196B2696001065B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C44EAF196B2696001065B9 /* main.m */; };
@@ -63,6 +67,10 @@
 		A950A15D196C667C002B6F6B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		A9765B6F196D852E00F8A27A /* SPBorderedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPBorderedView.h; sourceTree = "<group>"; };
 		A9765B70196D852E00F8A27A /* SPBorderedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPBorderedView.m; sourceTree = "<group>"; };
+		A984C1E4196EE85100038A64 /* pngcrush */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = pngcrush; path = tools/pngcrush; sourceTree = "<group>"; };
+		A984C1E5196EE85100038A64 /* pngnq */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = pngnq; path = tools/pngnq; sourceTree = "<group>"; };
+		A984C1E6196EE85100038A64 /* pngquant */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = pngquant; path = tools/pngquant; sourceTree = "<group>"; };
+		A984C1E7196EE85100038A64 /* texturetool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = texturetool; path = tools/texturetool; sourceTree = "<group>"; };
 		A9C44EA0196B2696001065B9 /* FrameCleaner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FrameCleaner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9C44EA3196B2696001065B9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		A9C44EA6196B2696001065B9 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -210,6 +218,10 @@
 		A9C44EAA196B2696001065B9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A984C1E4196EE85100038A64 /* pngcrush */,
+				A984C1E5196EE85100038A64 /* pngnq */,
+				A984C1E6196EE85100038A64 /* pngquant */,
+				A984C1E7196EE85100038A64 /* texturetool */,
 				A9C44EAB196B2696001065B9 /* FrameCleaner-Info.plist */,
 				A9C44EAC196B2696001065B9 /* InfoPlist.strings */,
 				A9C44EAF196B2696001065B9 /* main.m */,
@@ -351,10 +363,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A984C1E8196EE85100038A64 /* pngcrush in Resources */,
 				A9C44EAE196B2696001065B9 /* InfoPlist.strings in Resources */,
 				A9C44EBF196B2697001065B9 /* Images.xcassets in Resources */,
 				A9C44EB4196B2696001065B9 /* Credits.rtf in Resources */,
+				A984C1E9196EE85100038A64 /* pngnq in Resources */,
 				A9C44EBA196B2696001065B9 /* SPDocument.xib in Resources */,
+				A984C1EB196EE85100038A64 /* texturetool in Resources */,
+				A984C1EA196EE85100038A64 /* pngquant in Resources */,
 				A9C44EBD196B2696001065B9 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

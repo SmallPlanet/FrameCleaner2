@@ -36,11 +36,11 @@
     // show first image
     if (self.allFiles.count > 0) {
         NSString *filePath = [self.directoryPath stringByAppendingPathComponent:self.allFiles[0]];
-        FCImage *tmpImage = [[FCImage alloc] initWithSource:filePath];
-        [tmpImage pixelData];
+        self.firstImage = [[FCImage alloc] initWithSource:filePath];
+        [self.firstImage pixelData];
         NSImage *image = [[NSImage alloc] initWithContentsOfFile:filePath];
-        image.size = tmpImage.size;
-        self.imageSize = tmpImage.size;
+        image.size = self.firstImage.size;
+        self.imageSize = self.firstImage.size;
         self.imageView.image = image;
         self.imageView.frame = NSMakeRect(0, 0, image.size.width, image.size.height);
         self.regionsView.frame = self.imageView.frame;
@@ -119,7 +119,8 @@
 }
 
 - (NSInteger) subregionsCount {
-    return [self.maxSubregions selectedItem].tag;
+    return self.regionsView.regions.count;
+//    return [self.maxSubregions selectedItem].tag;
 }
 
 - (CGRect) viewFrameFromRegion:(CGRect)region {
@@ -128,6 +129,10 @@
 
 - (CGRect) regionFrameFromView:(CGRect)frame {
     return CGRectMake(frame.origin.x, self.imageSize.height - frame.origin.y - frame.size.height, frame.size.width, frame.size.height);
+}
+
+- (NSArray *) subregions {
+    return self.regionsView.regions;
 }
 
 - (void) optimizeRegions {
@@ -139,6 +144,42 @@
         CGRect originalRegion = NSRectToCGRect(view.frame);
         CGRect optimalRegion = [diffImage trimmedFrameWithinRect:[self regionFrameFromView:originalRegion]];
         view.frame = NSRectFromCGRect([self viewFrameFromRegion:optimalRegion]);
+    }
+}
+
+- (void) exportFrames {
+    NSString *baseFileName = [[self.firstImage.sourceFile lastPathComponent] stringByDeletingPathExtension];
+    baseFileName = [baseFileName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"]];
+    
+    // Create the export directory
+    NSString *exportDirectory = [self.directoryPath stringByAppendingPathComponent:@"export"];
+    
+    [[NSFileManager defaultManager] removeItemAtPath:exportDirectory error:NULL];
+    
+    [[NSFileManager defaultManager] createDirectoryAtPath:exportDirectory
+                              withIntermediateDirectories:NO
+                                               attributes:NULL
+                                                    error:NULL];
+
+    
+    NSString *regionsSnippet = @"";
+
+    // base image if subregions
+    if ([self subregionsCount] > 0) {
+        CGPoint min = CGPointZero;
+        CGPoint max = CGPointMake(self.firstImage.size.width, self.firstImage.size.height);
+        FCImage *baseImage = [[FCImage alloc] initWithSource:self.firstImage.sourceFile];
+        for (NSView *region in [self subregions])
+        {
+            [baseImage makeTransparentRect:[self regionFrameFromView:region.frame]];
+//            [region expandBoundsBy:1.f toMaxSize:firstImage.size];
+        }
+        NSString *fileName = [baseFileName stringByAppendingString:@"base"];
+        NSString *fullFileName = [exportDirectory stringByAppendingPathComponent:fileName];
+        [baseImage exportImageWithFormat:self.exportMatrix.selectedRow toFileName:fullFileName queue:self.queue cropped:YES toMin:min max:max];
+        
+        fileName = [fileName stringByAppendingPathExtension:[baseImage extensionForExportFormat:self.exportMatrix.selectedRow]];
+        regionsSnippet = [regionsSnippet stringByAppendingFormat:@"<Image bounds=\"0,0,%d,%d\" urlPath=\"bundle://%@\">\n", (int)(self.imageSize.width), (int)(self.imageSize.height), fileName];
     }
 }
 
@@ -164,7 +205,7 @@
 }
 
 - (IBAction) exportCallback:(id)sender {
-    
+    [self exportFrames];
 }
 
 
@@ -175,6 +216,8 @@
 {
     self = [super init];
     if (self) {
+        self.queue = [[NSOperationQueue alloc] init];
+        self.queue.maxConcurrentOperationCount = 1;
     }
     return self;
 }

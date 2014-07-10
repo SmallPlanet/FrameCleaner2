@@ -49,7 +49,10 @@ typedef enum : NSUInteger {
 - (void) setSamplesPerPixel:(NSUInteger)samples;
 + (void) dumpData:(NSData*)data size:(CGSize)size;
 - (BOOL) compare:(FCImage*)other pixelsWithMin:(CGPoint)min andMax:(CGPoint)max;
+- (void) makeTransparentRect:(CGRect)rect;
 
+- (void) exportImageWithFormat:(FCImageExportFormat)format toFileName:(NSString*)fileName queue:(NSOperationQueue*)_queue cropped:(BOOL)cropped toMin:(CGPoint)min max:(CGPoint)max;
+- (NSString *) extensionForExportFormat:(FCImageExportFormat)format;
 - (void) exportLZ4To:(NSString *)exportPath withQueue:(NSOperationQueue *)queue;
 - (void) exportPNGTo:(NSString *)exportPath withQueue:(NSOperationQueue *)queue;
 - (void) exportPNGQuantTo:(NSString *)exportPath withQueue:(NSOperationQueue *)queue

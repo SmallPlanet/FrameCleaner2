@@ -105,31 +105,33 @@
         width = pixelsWide;
         height = pixelsHigh;
     }
+    
+    NSString *fullFileName = [fileName stringByAppendingPathExtension:[self extensionForExportFormat:format]];
 
     switch(format) {
         case PNG:
-            [self exportPNGTo:fileName withQueue:_queue];
+            [self exportPNGTo:fullFileName withQueue:_queue];
             break;
         case LZ4:
-            [self exportLZ4To:fileName withQueue:_queue];
+            [self exportLZ4To:fullFileName withQueue:_queue];
             break;
         case PVR_Photo:
-            [self exportPVRPhotoTo:fileName withQueue:_queue];
+            [self exportPVRPhotoTo:fullFileName withQueue:_queue];
             break;
         case PVR_Gradient:
-            [self exportPVRGradientTo:fileName withQueue:_queue];
+            [self exportPVRGradientTo:fullFileName withQueue:_queue];
             break;
         case PNG_Quant_256:
-            [self exportPNGQuantTo:fileName withQueue:_queue withTableSize:256];
+            [self exportPNGQuantTo:fullFileName withQueue:_queue withTableSize:256];
             break;
         case PNG_Quant_128:
-            [self exportPNGQuantTo:fileName withQueue:_queue withTableSize:128];
+            [self exportPNGQuantTo:fullFileName withQueue:_queue withTableSize:128];
             break;
         case PNG_Quant_64:
-            [self exportPNGQuantTo:fileName withQueue:_queue withTableSize:64];
+            [self exportPNGQuantTo:fullFileName withQueue:_queue withTableSize:64];
             break;
         case SP1:
-            [self exportSP1To:fileName withQueue:_queue withTableSize:64];
+            [self exportSP1To:fullFileName withQueue:_queue withTableSize:64];
             break;
     }
 }
@@ -171,12 +173,10 @@
     }];
 }
 
-- (void) exportPNGTo:(NSString *)exportPath withQueue:(NSOperationQueue *)queue {
+- (void) exportPNGTo:(NSString *)ePath withQueue:(NSOperationQueue *)queue {
     [queue addOperationWithBlock:^{
-        NSString * ePath = [exportPath stringByAppendingPathExtension:@"png"];
-        
         @autoreleasepool {
-            
+        
             unsigned char * bufferPtr = (unsigned char *)[pixels bytes];
             BOOL hasAlpha = ((width * height * 4) == [pixels length]);
             int samples = hasAlpha ? 4 : 3;
@@ -209,7 +209,6 @@
             RunTask(launchPath, arguments, NULL, NULL, NULL, NULL, NULL);
             
             [[NSFileManager defaultManager] removeItemAtPath:tempPath error:NULL];
-            
         }
     }];
 }
