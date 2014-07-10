@@ -171,7 +171,7 @@
         FCImage *baseImage = [[FCImage alloc] initWithSource:self.firstImage.sourceFile];
         for (NSView *region in [self subregions])
         {
-            [baseImage makeTransparentRect:[self regionFrameFromView:region.frame]];
+            [baseImage makeTransparentRect:NSRectToCGRect(region.frame)];
 //            [region expandBoundsBy:1.f toMaxSize:firstImage.size];
         }
         NSString *fileName = [baseFileName stringByAppendingString:@"base"];
