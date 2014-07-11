@@ -46,6 +46,8 @@
 		A9D4FA14196B519B002BE703 /* pngwrite.c in Sources */ = {isa = PBXBuildFile; fileRef = A9D4F9F5196B519B002BE703 /* pngwrite.c */; };
 		A9D4FA15196B519B002BE703 /* pngwtran.c in Sources */ = {isa = PBXBuildFile; fileRef = A9D4F9F6196B519B002BE703 /* pngwtran.c */; };
 		A9D4FA16196B519B002BE703 /* pngwutil.c in Sources */ = {isa = PBXBuildFile; fileRef = A9D4F9F7196B519B002BE703 /* pngwutil.c */; };
+		C43318A9197011800000547D /* ProgressWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = C43318A8197011800000547D /* ProgressWindow.mm */; };
+		C43318AC1970132B0000547D /* rects.mm in Sources */ = {isa = PBXBuildFile; fileRef = C43318AB1970132B0000547D /* rects.mm */; };
 		C4880A16196D777700A0BAE8 /* SPRegionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4880A15196D777700A0BAE8 /* SPRegionsView.m */; };
 /* End PBXBuildFile section */
 
@@ -116,6 +118,10 @@
 		A9D4F9F5196B519B002BE703 /* pngwrite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngwrite.c; sourceTree = "<group>"; };
 		A9D4F9F6196B519B002BE703 /* pngwtran.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngwtran.c; sourceTree = "<group>"; };
 		A9D4F9F7196B519B002BE703 /* pngwutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngwutil.c; sourceTree = "<group>"; };
+		C43318A7197011800000547D /* ProgressWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindow.h; sourceTree = "<group>"; };
+		C43318A8197011800000547D /* ProgressWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ProgressWindow.mm; sourceTree = "<group>"; };
+		C43318AA1970132B0000547D /* rects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rects.h; sourceTree = "<group>"; };
+		C43318AB1970132B0000547D /* rects.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = rects.mm; sourceTree = "<group>"; };
 		C4880A14196D777700A0BAE8 /* SPRegionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPRegionsView.h; sourceTree = "<group>"; };
 		C4880A15196D777700A0BAE8 /* SPRegionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPRegionsView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -200,6 +206,10 @@
 				A9C44EBB196B2696001065B9 /* MainMenu.xib */,
 				A950A155196C5A67002B6F6B /* NSDataAdditions.h */,
 				A950A156196C5A67002B6F6B /* NSDataAdditions.m */,
+				C43318A7197011800000547D /* ProgressWindow.h */,
+				C43318A8197011800000547D /* ProgressWindow.mm */,
+				C43318AA1970132B0000547D /* rects.h */,
+				C43318AB1970132B0000547D /* rects.mm */,
 				A9765B6F196D852E00F8A27A /* SPBorderedView.h */,
 				A9765B70196D852E00F8A27A /* SPBorderedView.m */,
 				A9C44EB5196B2696001065B9 /* SPDocument.h */,
@@ -404,7 +414,9 @@
 				A9D4FA0C196B519B002BE703 /* pngread.c in Sources */,
 				A9D4FA16196B519B002BE703 /* pngwutil.c in Sources */,
 				A9C44EB0196B2696001065B9 /* main.m in Sources */,
+				C43318A9197011800000547D /* ProgressWindow.mm in Sources */,
 				A9D4FA11196B519B002BE703 /* pngtrans.c in Sources */,
+				C43318AC1970132B0000547D /* rects.mm in Sources */,
 				A9C44EB7196B2696001065B9 /* SPDocument.m in Sources */,
 				A9D4FA0D196B519B002BE703 /* pngrio.c in Sources */,
 				A9D4FA09196B519B002BE703 /* pngget.c in Sources */,

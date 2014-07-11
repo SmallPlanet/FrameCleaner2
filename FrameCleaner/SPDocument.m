@@ -9,10 +9,9 @@
 #import "SPDocument.h"
 #import "FCImage.h"
 #import "SPBorderedView.h"
+#import "ProgressWindow.h"
 
 @implementation SPDocument
-
-
 
 #pragma mark -
 
@@ -148,6 +147,21 @@
 }
 
 - (void) exportFrames {
+    NSRect screenRect = [[NSScreen mainScreen] frame];
+    NSRect transRect = NSMakeRect(screenRect.origin.x+screenRect.size.width-(260+10),
+                                  screenRect.origin.y+screenRect.size.height-(72+30),
+                                  260, 72);
+    NSWindow * transWindow = [[NSWindow alloc] initWithContentRect:transRect
+                                                         styleMask:NSBorderlessWindowMask
+                                                           backing:NSBackingStoreRetained
+                                                             defer:NO];
+    
+    [transWindow setBackgroundColor: [NSColor clearColor]];
+    [transWindow setOpaque:NO];
+    [transWindow setLevel:NSPopUpMenuWindowLevel];
+    [transWindow makeKeyAndOrderFront:NULL];
+    [transWindow startProgressBarWithMessage:@"Initializing Process"];
+    
     NSString *baseFileName = [[self.firstImage.sourceFile lastPathComponent] stringByDeletingPathExtension];
     baseFileName = [baseFileName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"]];
     
@@ -216,11 +230,9 @@
         for(FCImage *newImage in self.allImages) {
             @autoreleasepool {
                 if (subregions) {
-//                    [transWindow continueProgressBarMessage:[NSString stringWithFormat:@"Region %d/%d %@", currentRegion, [subregions count], [newImage.sourceFile lastPathComponent]]
-//                                                  withValue:((float)imageIndex/(float)[allFiles count])];
+                    [transWindow continueProgressBarMessage:[NSString stringWithFormat:@"Region %d/%ld %@", currentRegion, [self subregionsCount], [newImage.sourceFile lastPathComponent]] withValue:((float)imageIndex/(float)[self.allFiles count])];
                 } else {
-//                    [transWindow continueProgressBarMessage:[NSString stringWithFormat:@"Processing %@", [newImage.sourceFile lastPathComponent]]
-//                                                  withValue:((float)imageIndex/(float)[allFiles count])];
+                    [transWindow continueProgressBarMessage:[NSString stringWithFormat:@"Processing %@", [newImage.sourceFile lastPathComponent]] withValue:((float)imageIndex/(float)[self.allFiles count])];
                 }
 
                 FCImage *duplicateOfImage = NULL;
@@ -329,15 +341,14 @@
             [image exportImageWithFormat:self.exportMatrix.selectedRow toFileName:fileName queue:self.queue cropped:YES toMin:min max:max];
         }
 
-//        while([queue operationCount])
-//        {
-//            usleep(50000);
-//            
-//            [transWindow continueProgressBarMessage:[NSString stringWithFormat:@"Exporting Images..."]
-//                                          withValue:1.0f - ((float)[queue operationCount]/(float)[uniqueImages count])];
-//        }
-//        
-//        
+        while([self.queue operationCount])
+        {
+            usleep(50000);
+            [transWindow continueProgressBarMessage:[NSString stringWithFormat:@"Exporting Images..."]
+                                          withValue:1.0f - ((float)[self.queue operationCount]/(float)[uniqueImages count])];
+        }
+        
+        
         if(subregions) {
             NSString *pathFormat = [NSString stringWithFormat:@"%@%@#", baseFileName, suffix];
             pathFormat = [pathFormat stringByAppendingPathExtension:[self.firstImage extensionForExportFormat:self.exportMatrix.selectedRow]];
@@ -366,7 +377,8 @@
                               error:NULL];
     }
     
-//    [transWindow stopProgressBarWithMessage:@"Process Complete"];
+    [transWindow stopProgressBarWithMessage:@"Process Complete"];
+    transWindow = nil;
 }
 
 #pragma mark - Toolbar item callbacks
