@@ -9,7 +9,6 @@
 #import "SPDocument.h"
 #import "FCImage.h"
 #import "SPBorderedView.h"
-#import "ProgressWindow.h"
 
 @implementation SPDocument
 
@@ -146,41 +145,59 @@
     }
 }
 
+- (void) setProgressTopMessage:(NSString *)message {
+    self.progressTopLabel.stringValue = message;
+    [self.progressTopLabel displayIfNeeded];
+    [self.progressPanel makeKeyAndOrderFront:self];
+}
+
+- (void) setProgressTop:(double)value {
+    [self.progressTopIndicator setDoubleValue:value];
+    [self.progressTopIndicator displayIfNeeded];
+    [self.progressPanel makeKeyAndOrderFront:self];
+}
+
+- (void) setProgressTopHidden:(BOOL)hidden {
+    self.progressTopLabel.hidden = hidden;
+    [self.progressTopLabel displayIfNeeded];
+    self.progressTopIndicator.hidden = hidden;
+    [self.progressTopIndicator displayIfNeeded];
+    [self.progressTopIndicator.superview displayIfNeeded];
+}
+
+- (void) setProgressMessage:(NSString *)message {
+    self.progressLabel.stringValue = message;
+    [self.progressLabel displayIfNeeded];
+    [self.progressPanel makeKeyAndOrderFront:self];
+}
+
+- (void) setProgress:(double)value {
+    [self.progressIndicator setDoubleValue:value];
+    [self.progressIndicator displayIfNeeded];
+    [self.progressPanel makeKeyAndOrderFront:self];
+}
+
 - (void) exportFrames {
-//    NSRect screenRect = [[NSScreen mainScreen] frame];
-//    NSRect transRect = NSMakeRect(screenRect.origin.x+screenRect.size.width-(260+10),
-//                                  screenRect.origin.y+screenRect.size.height-(72+30),
-//                                  260, 72);
-//    NSWindow * transWindow = [[NSWindow alloc] initWithContentRect:transRect
-//                                                         styleMask:NSBorderlessWindowMask
-//                                                           backing:NSBackingStoreRetained
-//                                                             defer:NO];
-//    
-//    [transWindow setBackgroundColor: [NSColor clearColor]];
-//    [transWindow setOpaque:NO];
-//    [transWindow setLevel:NSPopUpMenuWindowLevel];
-//    [transWindow makeKeyAndOrderFront:NULL];
-//    [transWindow startProgressBarWithMessage:@"Initializing Process"];
-    NSWindow *transWindow = nil;
-    
+    [self setProgress:50.0];
+    [self setProgressMessage:@"Reticulating splines"];
+    [self.progressPanel setIsVisible:YES];
+    BOOL subregions = ([self subregionsCount] > 0);
+    [self setProgressTopHidden:!subregions];
+
     NSString *baseFileName = [[self.firstImage.sourceFile lastPathComponent] stringByDeletingPathExtension];
     baseFileName = [baseFileName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"]];
     
     // Create the export directory
     NSString *exportDirectory = [self.directoryPath stringByAppendingPathComponent:@"export"];
-    
     [[NSFileManager defaultManager] removeItemAtPath:exportDirectory error:NULL];
-    
     [[NSFileManager defaultManager] createDirectoryAtPath:exportDirectory
                               withIntermediateDirectories:NO
                                                attributes:NULL
                                                     error:NULL];
-
-    
     NSString *regionsSnippet = @"";
 
     // base image if subregions
-    if ([self subregionsCount] > 0) {
+    if (subregions) {
         CGPoint min = CGPointZero;
         CGPoint max = CGPointMake(self.firstImage.size.width, self.firstImage.size.height);
         FCImage *baseImage = [[FCImage alloc] initWithSource:self.firstImage.sourceFile];
@@ -203,14 +220,16 @@
     int currentRegion = 0;
     CGPoint min = globalFrame.origin;
     CGPoint max = CGPointMake(globalFrame.size.width + min.x, globalFrame.size.height + min.y);
-    BOOL subregions = NO;
     do {
         imageIndex = 0;
         
         SPBorderedView *region = nil;
         NSString *suffix = @"";
         NSRect cropFrame;
-        if ([self subregionsCount] > 0) {
+        if (subregions) {
+            double doneness = (1.0+currentRegion)/(1.0*[self subregionsCount]);
+            [self setProgressTop:doneness];
+            [self setProgressTopMessage:[NSString stringWithFormat:@"Processing region %d/%d", currentRegion, [self subregionsCount]]];
             subregions = YES;
             region = [self.subregions objectAtIndex:currentRegion];
             cropFrame = region.frame;
@@ -227,13 +246,14 @@
         
         [processedImages removeAllObjects];
         [uniqueImages removeAllObjects];
-
+        [self setProgressMessage:@"ollie"];
         for(FCImage *newImage in self.allImages) {
             @autoreleasepool {
+                [self setProgress:((double)imageIndex/(double)[self.allFiles count])];
                 if (subregions) {
-                    [transWindow continueProgressBarMessage:[NSString stringWithFormat:@"Region %d/%ld %@", currentRegion, [self subregionsCount], [newImage.sourceFile lastPathComponent]] withValue:((float)imageIndex/(float)[self.allFiles count])];
+                    [self setProgressMessage:[NSString stringWithFormat:@"Region %d/%ld %@", currentRegion, [self subregionsCount], [newImage.sourceFile lastPathComponent]]];
                 } else {
-                    [transWindow continueProgressBarMessage:[NSString stringWithFormat:@"Processing %@", [newImage.sourceFile lastPathComponent]] withValue:((float)imageIndex/(float)[self.allFiles count])];
+                    [self setProgressMessage:[NSString stringWithFormat:@"Processing %@", [newImage.sourceFile lastPathComponent]]];
                 }
 
                 FCImage *duplicateOfImage = NULL;
@@ -345,8 +365,8 @@
         while([self.queue operationCount])
         {
             usleep(50000);
-            [transWindow continueProgressBarMessage:[NSString stringWithFormat:@"Exporting Images..."]
-                                          withValue:1.0f - ((float)[self.queue operationCount]/(float)[uniqueImages count])];
+            NSLog(@"progress = %f",((double)[self.queue operationCount]/(double)[uniqueImages count]));
+            [self setProgress:1.0f - ((double)[self.queue operationCount]/(double)[uniqueImages count])];
         }
         
         
@@ -378,8 +398,7 @@
                               error:NULL];
     }
     
-    [transWindow stopProgressBarWithMessage:@"Process Complete"];
-    transWindow = nil;
+    [self.progressPanel setIsVisible:NO];
 }
 
 #pragma mark - Toolbar item callbacks
@@ -434,10 +453,22 @@
 {
     [super windowControllerDidLoadNib:aController];
 
-//#if (NSAppKitVersionNumber > NSAppKitVersionNumber10_9)
-//    self.backgroundView.material = NSVisualEffectMaterialLight;
-//    self.backgroundView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
-//#endif
+    if (NSAppKitVersionNumber > NSAppKitVersionNumber10_9) {
+        NSWindow *window = [self windowForSheet];
+        NSView *mainView = [[window.contentView subviews] objectAtIndex:0];
+        NSVisualEffectView *blur = [[NSVisualEffectView alloc] initWithFrame:mainView.frame];
+        
+        blur.material = NSVisualEffectMaterialLight;
+        blur.blendingMode = NSVisualEffectBlendingModeBehindWindow;
+
+        NSLayoutConstraint *cL = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:mainView attribute:NSLayoutAttributeLeft multiplier:1.f constant:0.f];
+        NSLayoutConstraint *cR = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:mainView attribute:NSLayoutAttributeRight multiplier:1.f constant:0.f];
+        NSLayoutConstraint *cT = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:mainView attribute:NSLayoutAttributeTop multiplier:1.f constant:0.f];
+        NSLayoutConstraint *cB = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:mainView attribute:NSLayoutAttributeBottom multiplier:1.f constant:0.f];
+        [window.contentView addSubview:blur positioned:NSWindowBelow relativeTo:mainView];
+        [window.contentView addConstraints:@[cL, cR, cT, cB]];
+        [window description];
+    }
     
 //    NSLayoutConstraint *cw = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_regionsView attribute:NSLayoutAttributeWidth multiplier:1.f constant:0.f];
 //    NSLayoutConstraint *ch = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_regionsView attribute:NSLayoutAttributeHeight multiplier:1.f constant:0.f];

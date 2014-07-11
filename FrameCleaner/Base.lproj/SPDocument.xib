@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6154.21" systemVersion="14A283o" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6154.21"/>
     </dependencies>
     <objects>
@@ -11,6 +12,11 @@
                 <outlet property="mainView" destination="pk8-ON-W62" id="XPO-Q9-DXL"/>
                 <outlet property="maskView" destination="tip-gp-fRU" id="gpR-Kn-BXX"/>
                 <outlet property="maxSubregions" destination="NSa-My-aJf" id="SE7-1p-CYM"/>
+                <outlet property="progressIndicator" destination="Wvg-RY-ZmM" id="ITY-iP-Tmq"/>
+                <outlet property="progressLabel" destination="w8F-yH-q8w" id="Kei-pn-O1l"/>
+                <outlet property="progressPanel" destination="zAD-vD-MGI" id="YQA-8e-3AT"/>
+                <outlet property="progressTopIndicator" destination="Bah-jc-Y0I" id="1c8-cZ-AQH"/>
+                <outlet property="progressTopLabel" destination="YlV-gB-07f" id="ZDR-oz-UL8"/>
                 <outlet property="regionsView" destination="Zia-HJ-fh2" id="K0T-eH-Lvj"/>
                 <outlet property="removeDuplicateFrames" destination="wCf-3s-Rc9" id="Hi9-fS-Qde"/>
                 <outlet property="window" destination="PKU-kz-iPV" id="JaA-VB-d6Y"/>
@@ -109,7 +115,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="iJp-Yg-3nN"/>
             </connections>
-            <point key="canvasLocation" x="919" y="419.5"/>
+            <point key="canvasLocation" x="391" y="339.5"/>
         </window>
         <customView id="qf8-3d-E77" userLabel="Drawer Content View">
             <rect key="frame" x="0.0" y="0.0" width="210" height="400"/>
@@ -227,6 +233,49 @@
                 <outlet property="parentWindow" destination="PKU-kz-iPV" id="DAH-0o-eLR"/>
             </connections>
         </drawer>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="zAD-vD-MGI" customClass="NSPanel">
+            <windowStyleMask key="styleMask" utility="YES" HUD="YES"/>
+            <windowPositionMask key="initialPositionMask" rightStrut="YES" topStrut="YES"/>
+            <rect key="contentRect" x="2061" y="1154" width="452" height="220"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <view key="contentView" id="SfN-hy-3wD">
+                <rect key="frame" x="0.0" y="0.0" width="452" height="220"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YlV-gB-07f">
+                        <rect key="frame" x="18" y="92" width="416" height="25"/>
+                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="left" title="Multiline Label" placeholderString="Exporting" id="Brr-n9-2iN">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <progressIndicator fixedFrame="YES" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="Bah-jc-Y0I">
+                        <rect key="frame" x="20" y="114" width="412" height="20"/>
+                    </progressIndicator>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Pk-Xi-DS3">
+                        <rect key="frame" x="164" y="173" width="125" height="27"/>
+                        <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Exporting" id="ldE-e3-UGv">
+                            <font key="font" metaFont="systemBold"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w8F-yH-q8w">
+                        <rect key="frame" x="18" y="20" width="416" height="25"/>
+                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="left" title="Multiline Label" placeholderString="Exporting" id="Ezq-au-AMj">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <progressIndicator fixedFrame="YES" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="Wvg-RY-ZmM">
+                        <rect key="frame" x="20" y="42" width="412" height="20"/>
+                    </progressIndicator>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="1092" y="35"/>
+        </window>
     </objects>
     <resources>
         <image name="NSAdvanced" width="32" height="32"/>
