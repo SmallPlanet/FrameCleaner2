@@ -231,11 +231,11 @@
     return NO;
 }
 
-- (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self
-													name:NSViewFrameDidChangeNotification
-												  object:[[self parentWindow] contentView]];
-}
+//- (void) dealloc {
+//	[[NSNotificationCenter defaultCenter] removeObserver:self
+//													name:NSViewFrameDidChangeNotification
+//												  object:[[self parentWindow] contentView]];
+//}
 
 - (void) close {
 	NSDate * date = [NSDate date];

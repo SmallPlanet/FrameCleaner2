@@ -485,7 +485,6 @@
 
 - (CGRect) trimmedFrameWithinRect:(CGRect)startingFrame {
     CGRect frame;
-    NSLog(@"start %@", NSStringFromRect(NSRectFromCGRect(startingFrame)));
     @autoreleasepool
     {
         NSData * pixelDataA = [self pixelData];
@@ -499,61 +498,61 @@
         BOOL found = NO;
         
         // Find the minimum y
-//        NSLog(@"min.y search y=%.0f", min.y);
-        for(NSInteger y = min.y; y < max.y; y++) {
-            for(NSInteger x = min.x; x < max.x; x++) {
-                ptr = basePtr + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
-                if(ptr[3] != 0) {
-                    min.y = y;
-                    y = max.y;
-                    found = YES;
-//                    NSLog(@"min.y found %.0f", min.y);
-                    break;
+        if (min.y < max.y) {
+            for(NSInteger y = min.y; y < max.y; y++) {
+                for(NSInteger x = min.x; x < max.x; x++) {
+                    ptr = basePtr + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
+                    if(ptr[3] != 0) {
+                        min.y = y;
+                        y = max.y;
+                        found = YES;
+                        break;
+                    }
                 }
             }
         }
         
         // Find the maximum y
-//        NSLog(@"max.y search y=%.0f", max.y-1);
-        for(NSInteger y = max.y-1; y >= min.y; y--) {
-            for(NSInteger x = min.x; x < max.x; x++) {
-                ptr = basePtr + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
-                if(ptr[3] != 0) {
-                    max.y = y;
-                    y = min.y-1;
-                    found = YES;
-//                    NSLog(@"max.y found %.0f", max.y);
-                    break;
+        if (min.y < max.y) {
+            for(NSInteger y = max.y-1; y >= min.y; y--) {
+                for(NSInteger x = min.x; x < max.x; x++) {
+                    ptr = basePtr + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
+                    if(ptr[3] != 0) {
+                        max.y = y;
+                        y = min.y-1;
+                        found = YES;
+                        break;
+                    }
                 }
             }
         }
         
         // Find the minimum x
-//        NSLog(@"min.x search x=%.0f", min.x);
-        for(NSInteger x = min.x; x < max.x; x++) {
-            for(NSInteger y = min.y; y < max.y; y++) {
-                ptr = basePtr + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
-                if(ptr[3] != 0) {
-                    min.x = x;
-                    x = max.x;
-                    found = YES;
-//                    NSLog(@"min.x found %.0f", min.x);
-                    break;
+        if (min.x < max.x) {
+            for(NSInteger x = min.x; x < max.x; x++) {
+                for(NSInteger y = min.y; y < max.y; y++) {
+                    ptr = basePtr + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
+                    if(ptr[3] != 0) {
+                        min.x = x;
+                        x = max.x;
+                        found = YES;
+                        break;
+                    }
                 }
             }
         }
         
         // Find the maximum x
-//        NSLog(@"max.x search x=%.0f", max.x);
-        for(NSInteger x = max.x-1; x >= min.x; x--) {
-            for(NSInteger y = min.y; y < max.y; y++) {
-                ptr = basePtr + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
-                if(ptr[3] != 0) {
-                    max.x = x;
-                    x = min.x-1;
-                    found = YES;
-//                    NSLog(@"max.x found %.0f", max.x);
-                    break;
+        if (min.x < max.x) {
+            for(NSInteger x = max.x-1; x >= min.x; x--) {
+                for(NSInteger y = min.y; y < max.y; y++) {
+                    ptr = basePtr + (y * pixelsWide * samplesPerPixel) + (x * samplesPerPixel);
+                    if(ptr[3] != 0) {
+                        max.x = x;
+                        x = min.x-1;
+                        found = YES;
+                        break;
+                    }
                 }
             }
         }
@@ -567,7 +566,6 @@
             frame = CGRectUnion(r1, r2);
         }
     }
-    NSLog(@"trimmed %@", NSStringFromRect(NSRectFromCGRect(frame)));
     return frame;
 }
 

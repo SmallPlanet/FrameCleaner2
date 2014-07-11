@@ -30,6 +30,7 @@
 @property (nonatomic, strong) IBOutlet SPRegionsView *regionsView;
 @property (nonatomic, strong) IBOutlet NSView *mainView;
 @property (nonatomic, strong) IBOutlet NSButton *removeDuplicateFrames;
+@property (nonatomic, strong) IBOutlet NSView *backgroundView;
 @property (nonatomic, strong) NSOperationQueue *queue;
 
 

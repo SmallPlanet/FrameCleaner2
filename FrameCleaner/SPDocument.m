@@ -147,20 +147,21 @@
 }
 
 - (void) exportFrames {
-    NSRect screenRect = [[NSScreen mainScreen] frame];
-    NSRect transRect = NSMakeRect(screenRect.origin.x+screenRect.size.width-(260+10),
-                                  screenRect.origin.y+screenRect.size.height-(72+30),
-                                  260, 72);
-    NSWindow * transWindow = [[NSWindow alloc] initWithContentRect:transRect
-                                                         styleMask:NSBorderlessWindowMask
-                                                           backing:NSBackingStoreRetained
-                                                             defer:NO];
-    
-    [transWindow setBackgroundColor: [NSColor clearColor]];
-    [transWindow setOpaque:NO];
-    [transWindow setLevel:NSPopUpMenuWindowLevel];
-    [transWindow makeKeyAndOrderFront:NULL];
-    [transWindow startProgressBarWithMessage:@"Initializing Process"];
+//    NSRect screenRect = [[NSScreen mainScreen] frame];
+//    NSRect transRect = NSMakeRect(screenRect.origin.x+screenRect.size.width-(260+10),
+//                                  screenRect.origin.y+screenRect.size.height-(72+30),
+//                                  260, 72);
+//    NSWindow * transWindow = [[NSWindow alloc] initWithContentRect:transRect
+//                                                         styleMask:NSBorderlessWindowMask
+//                                                           backing:NSBackingStoreRetained
+//                                                             defer:NO];
+//    
+//    [transWindow setBackgroundColor: [NSColor clearColor]];
+//    [transWindow setOpaque:NO];
+//    [transWindow setLevel:NSPopUpMenuWindowLevel];
+//    [transWindow makeKeyAndOrderFront:NULL];
+//    [transWindow startProgressBarWithMessage:@"Initializing Process"];
+    NSWindow *transWindow = nil;
     
     NSString *baseFileName = [[self.firstImage.sourceFile lastPathComponent] stringByDeletingPathExtension];
     baseFileName = [baseFileName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"]];
@@ -433,6 +434,11 @@
 {
     [super windowControllerDidLoadNib:aController];
 
+//#if (NSAppKitVersionNumber > NSAppKitVersionNumber10_9)
+//    self.backgroundView.material = NSVisualEffectMaterialLight;
+//    self.backgroundView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
+//#endif
+    
 //    NSLayoutConstraint *cw = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_regionsView attribute:NSLayoutAttributeWidth multiplier:1.f constant:0.f];
 //    NSLayoutConstraint *ch = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_regionsView attribute:NSLayoutAttributeHeight multiplier:1.f constant:0.f];
 //    [_regionsView.superview addConstraint:cw];

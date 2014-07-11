@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A938C7BA19702F3500CDA8F3 /* SPBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = A938C7B919702F3500CDA8F3 /* SPBackgroundView.m */; };
 		A950A157196C5A67002B6F6B /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A950A156196C5A67002B6F6B /* NSDataAdditions.m */; };
 		A950A15B196C5F13002B6F6B /* fastlz.c in Sources */ = {isa = PBXBuildFile; fileRef = A950A159196C5F13002B6F6B /* fastlz.c */; };
 		A950A15E196C667C002B6F6B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A950A15D196C667C002B6F6B /* libz.dylib */; };
@@ -62,6 +63,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A938C7B819702F3500CDA8F3 /* SPBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPBackgroundView.h; sourceTree = "<group>"; };
+		A938C7B919702F3500CDA8F3 /* SPBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPBackgroundView.m; sourceTree = "<group>"; };
 		A950A155196C5A67002B6F6B /* NSDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAdditions.h; sourceTree = "<group>"; };
 		A950A156196C5A67002B6F6B /* NSDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAdditions.m; sourceTree = "<group>"; };
 		A950A159196C5F13002B6F6B /* fastlz.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fastlz.c; sourceTree = "<group>"; };
@@ -221,6 +224,8 @@
 				A9D4F9DF196B519B002BE703 /* LZ4 */,
 				A9D4F9E4196B519B002BE703 /* png */,
 				A9C44EAA196B2696001065B9 /* Supporting Files */,
+				A938C7B819702F3500CDA8F3 /* SPBackgroundView.h */,
+				A938C7B919702F3500CDA8F3 /* SPBackgroundView.m */,
 			);
 			path = FrameCleaner;
 			sourceTree = "<group>";
@@ -427,6 +432,7 @@
 				A950A15B196C5F13002B6F6B /* fastlz.c in Sources */,
 				A9D4F9DE196B4FE0002BE703 /* FCImage.m in Sources */,
 				A9D4FA10196B519B002BE703 /* pngset.c in Sources */,
+				A938C7BA19702F3500CDA8F3 /* SPBackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
