@@ -229,7 +229,7 @@
         if (subregions) {
             double doneness = (1.0+currentRegion)/(1.0*[self subregionsCount]);
             [self setProgressTop:doneness];
-            [self setProgressTopMessage:[NSString stringWithFormat:@"Processing region %d/%d", currentRegion, [self subregionsCount]]];
+            [self setProgressTopMessage:[NSString stringWithFormat:@"Processing region %ld/%ld", (long)currentRegion, (long)[self subregionsCount]]];
             subregions = YES;
             region = [self.subregions objectAtIndex:currentRegion];
             cropFrame = region.frame;
@@ -456,24 +456,22 @@
     if (NSAppKitVersionNumber > NSAppKitVersionNumber10_9) {
         NSWindow *window = [self windowForSheet];
         NSView *mainView = [[window.contentView subviews] objectAtIndex:0];
+        NSView *firstView = [[mainView subviews] objectAtIndex:0];
         NSVisualEffectView *blur = [[NSVisualEffectView alloc] initWithFrame:mainView.frame];
         
         blur.material = NSVisualEffectMaterialLight;
         blur.blendingMode = NSVisualEffectBlendingModeBehindWindow;
+        [mainView addSubview:blur positioned:NSWindowBelow relativeTo:firstView];
 
-        NSLayoutConstraint *cL = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:mainView attribute:NSLayoutAttributeLeft multiplier:1.f constant:0.f];
-        NSLayoutConstraint *cR = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:mainView attribute:NSLayoutAttributeRight multiplier:1.f constant:0.f];
-        NSLayoutConstraint *cT = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:mainView attribute:NSLayoutAttributeTop multiplier:1.f constant:0.f];
-        NSLayoutConstraint *cB = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:mainView attribute:NSLayoutAttributeBottom multiplier:1.f constant:0.f];
-        [window.contentView addSubview:blur positioned:NSWindowBelow relativeTo:mainView];
-        [window.contentView addConstraints:@[cL, cR, cT, cB]];
+//        [mainView addConstraint:[NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:mainView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.f]];
+//        
+//        NSLayoutConstraint *cL = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:firstView attribute:NSLayoutAttributeLeft multiplier:1.f constant:0.f];
+//        NSLayoutConstraint *cR = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:firstView attribute:NSLayoutAttributeRight multiplier:1.f constant:0.f];
+//        NSLayoutConstraint *cT = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:firstView attribute:NSLayoutAttributeTop multiplier:1.f constant:0.f];
+//        NSLayoutConstraint *cB = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:firstView attribute:NSLayoutAttributeBottom multiplier:1.f constant:0.f];
+//        [firstView addConstraints:@[cL, cR, cT, cB]];
         [window description];
     }
-    
-//    NSLayoutConstraint *cw = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_regionsView attribute:NSLayoutAttributeWidth multiplier:1.f constant:0.f];
-//    NSLayoutConstraint *ch = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_regionsView attribute:NSLayoutAttributeHeight multiplier:1.f constant:0.f];
-//    [_regionsView.superview addConstraint:cw];
-//    [_regionsView.superview addConstraint:ch];
 }
 
 + (BOOL)autosavesInPlace

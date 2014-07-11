@@ -1,0 +1,4 @@
+zero regions should remove themselves after optimization
+remove region overlap
+save documents
+load documents
