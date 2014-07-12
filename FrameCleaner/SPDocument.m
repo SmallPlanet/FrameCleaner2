@@ -185,7 +185,7 @@
 }
 
 - (void) exportFrames {
-    [self setProgress:50.0];
+    [self setProgress:0.0];
     [self setProgressMessage:@"Reticulating splines"];
     [self.progressPanel setIsVisible:YES];
     BOOL subregions = ([self subregionsCount] > 0);
