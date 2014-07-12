@@ -1,4 +1,2 @@
 zero regions should remove themselves after optimization
 remove region overlap
-load documents - build allImages array on load if mask data present
-  - or refactor allImages array creation into loadFrames, just don't load pixel data for each until needed

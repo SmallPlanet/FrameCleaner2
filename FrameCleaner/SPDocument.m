@@ -26,7 +26,7 @@
             [self.allFiles addObject:file];
         }
     }
-    self.allImages = nil;
+    [self loadImages];
     self.maskView.image = nil;
     self.imageSize = CGSizeZero;
     [self.regionsView reset];
@@ -71,20 +71,27 @@
     self.maskView.image = [[NSImage alloc] initWithContentsOfFile:self.maskImageTmpFilename];
 }
 
+- (void) loadImages {
+    if (!self.allImages) {
+        self.allImages = [NSMutableArray array];
+    }
+    [self.allImages removeAllObjects];
+    for (NSString *filename in self.allFiles) {
+        NSString *filePath = [self.directoryPath stringByAppendingPathComponent:filename];
+        if ([filePath hasSuffix:@".png"]) {
+            FCImage *image = [[FCImage alloc] initWithSource:filePath];
+            if (image) {
+                [self.allImages addObject:image];
+            }
+        }
+    }
+}
+
 - (void) processFrames {
     globalFrame = CGRectZero;
     
     if (!self.allImages) {
-        self.allImages = [NSMutableArray array];
-        for (NSString *filename in self.allFiles) {
-            NSString *filePath = [self.directoryPath stringByAppendingPathComponent:filename];
-            if ([filePath hasSuffix:@".png"]) {
-                FCImage *image = [[FCImage alloc] initWithSource:filePath];
-                if (image) {
-                    [self.allImages addObject:image];
-                }
-            }
-        }
+        [self loadImages];
     }
     
     for (FCImage *image in self.allImages) {
