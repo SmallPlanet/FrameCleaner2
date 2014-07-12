@@ -11,6 +11,40 @@
 
 @implementation SPRegionsView
 
+- (void) optimize {
+    NSMutableArray *trashBin = [NSMutableArray array];
+    NSMutableArray *sortedRegions = [[self.regions sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSRect r1 = [obj1 frame];
+        NSRect r2 = [obj2 frame];
+        CGFloat a1 = r1.size.width * r1.size.height;
+        CGFloat a2 = r2.size.width * r2.size.height;
+        CGFloat diff = a1 - a2;
+        return (diff < 0 ? NSOrderedAscending : (diff > 0 ? NSOrderedDescending : NSOrderedSame));
+    }] mutableCopy];
+    
+    // remove regions completely contained in other regions
+    for (SPBorderedView *region1 in sortedRegions) {
+        CGRect r1 = NSRectToCGRect(region1.frame);
+        for (SPBorderedView *region2 in sortedRegions) {
+            if (region1 != region2 && ![trashBin containsObject:region1] && ![trashBin containsObject:region2]) {
+                CGRect r2 = NSRectToCGRect(region2.frame);
+                if (CGRectContainsRect(r2, r1)) {
+                    [trashBin addObject:region1];
+                    break;
+                }
+            }
+        }
+    }
+    for (SPRegionsView *region in trashBin) {
+        [region removeFromSuperview];
+        [self.regions removeObject:region];
+    }
+    [trashBin removeAllObjects];
+}
+
+
+#pragma mark -
+
 - (NSArray *) regionsArrayForPlist {
     NSMutableArray *array = [NSMutableArray array];
     for (SPBorderedView *region in self.regions) {

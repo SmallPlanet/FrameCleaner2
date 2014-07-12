@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSMutableArray *regions;
 
 - (void)reset;
+- (void) optimize;
 - (NSArray *) regionsArrayForPlist;
 - (void) setRegionsArrayFromPlist:(NSArray *)array;
 

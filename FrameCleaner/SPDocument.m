@@ -430,6 +430,7 @@
     NSLog(@"rV.f: %@", NSStringFromRect(self.regionsView.frame));
 
     [self optimizeRegions];
+    [self.regionsView optimize];
 }
 
 - (IBAction) resetCallback:(id)sender {
@@ -508,7 +509,6 @@
         [self.regionsView.superview setNeedsLayout:YES];
         [self performSelector:@selector(setDocumentSettings:) withObject:self.settings afterDelay:0];
     }
-    
 }
 
 + (BOOL)autosavesInPlace
