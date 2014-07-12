@@ -11,6 +11,27 @@
 
 @implementation SPRegionsView
 
+- (NSArray *) regionsArrayForPlist {
+    NSMutableArray *array = [NSMutableArray array];
+    for (SPBorderedView *region in self.regions) {
+        [array addObject:NSStringFromRect(region.frame)];
+    }
+    return array;
+}
+
+- (void) setRegionsArrayFromPlist:(NSArray *)array {
+    [self reset];
+    for (NSString *regionString in array) {
+        SPBorderedView *regionView = [[SPBorderedView alloc] initWithFrame:NSRectFromString(regionString)];
+        if (regionView) {
+            [self addSubview:regionView];
+            [self.regions addObject:regionView];
+        }
+    }
+}
+
+#pragma mark -
+
 - (void) mouseDown:(NSEvent *)theEvent {
     NSLog(@"Boom");
     originalOrigin = [self convertPoint:theEvent.locationInWindow fromView:nil];

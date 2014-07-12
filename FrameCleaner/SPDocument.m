@@ -463,8 +463,13 @@
         blur.blendingMode = NSVisualEffectBlendingModeBehindWindow;
         [mainView addSubview:blur positioned:NSWindowBelow relativeTo:firstView];
 
-//        [mainView addConstraint:[NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:mainView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.f]];
-//        
+//        NSLayoutConstraint *c1 = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:blur.superview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.f];
+//        [c1 setPriority:500];
+//        [mainView addConstraint:c1];
+//        NSLayoutConstraint *c2 = [NSLayoutConstraint constraintWithItem:mainView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:mainView.superview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.f];
+//        [c2 setPriority:1000];
+//        [mainView.superview addConstraint:c2];
+//
 //        NSLayoutConstraint *cL = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:firstView attribute:NSLayoutAttributeLeft multiplier:1.f constant:0.f];
 //        NSLayoutConstraint *cR = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:firstView attribute:NSLayoutAttributeRight multiplier:1.f constant:0.f];
 //        NSLayoutConstraint *cT = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:firstView attribute:NSLayoutAttributeTop multiplier:1.f constant:0.f];
@@ -479,14 +484,20 @@
     return YES;
 }
 
-- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
-{
-    // Insert code here to write your document to data of the specified type. If outError != NULL, ensure that you create and set an appropriate error when returning nil.
-    // You can also choose to override -fileWrapperOfType:error:, -writeToURL:ofType:error:, or -writeToURL:ofType:forSaveOperation:originalContentsURL:error: instead.
-    NSException *exception = [NSException exceptionWithName:@"UnimplementedMethod" reason:[NSString stringWithFormat:@"%@ is unimplemented", NSStringFromSelector(_cmd)] userInfo:nil];
-    @throw exception;
-    return nil;
+- (BOOL)writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError {
+    NSArray *regionsArray = [self.regionsView regionsArrayForPlist];
+    [regionsArray writeToURL:[url URLByAppendingPathComponent:@"regions.plist"] atomically:YES];
+    return YES;
 }
+
+//- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
+//{
+//    // Insert code here to write your document to data of the specified type. If outError != NULL, ensure that you create and set an appropriate error when returning nil.
+//    // You can also choose to override -fileWrapperOfType:error:, -writeToURL:ofType:error:, or -writeToURL:ofType:forSaveOperation:originalContentsURL:error: instead.
+//    NSException *exception = [NSException exceptionWithName:@"UnimplementedMethod" reason:[NSString stringWithFormat:@"%@ is unimplemented", NSStringFromSelector(_cmd)] userInfo:nil];
+//    @throw exception;
+//    return nil;
+//}
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
 {
