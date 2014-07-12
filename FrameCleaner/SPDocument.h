@@ -19,8 +19,8 @@
 @property (nonatomic, assign) BOOL compareWithMD5;
 @property (nonatomic, strong) NSMutableData *subregionData;
 @property (nonatomic, assign) CGSize imageSize;
-
 @property (nonatomic, strong) NSDictionary *settings;
+
 @property (nonatomic, strong) NSMutableArray *allFiles;
 @property (nonatomic, strong) NSMutableArray *allImages;
 @property (nonatomic, strong) FCImage *firstImage;

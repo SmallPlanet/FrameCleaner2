@@ -477,9 +477,11 @@
 //        [firstView addConstraints:@[cL, cR, cT, cB]];
     }*/
     
-    if (self.directoryPath) {
-        [self loadFrames];
+    if (self.settings) {
+        [self.regionsView.superview setNeedsLayout:YES];
+        [self performSelector:@selector(setDocumentSettings:) withObject:self.settings afterDelay:0];
     }
+    
 }
 
 + (BOOL)autosavesInPlace
@@ -492,7 +494,8 @@
              @"shouldTrimImages": @(self.shouldTrimImages),
              @"removeDuplicateFrames": @(self.removeDuplicateFrames.state == NSOnState),
              @"compareWithMD5": @(self.compareWithMD5),
-             @"exportFormatIndex": @(self.exportMatrix.selectedRow)};
+             @"exportFormatIndex": @(self.exportMatrix.selectedRow),
+             @"regions": [self.regionsView regionsArrayForPlist]};
 }
 
 - (void)setDocumentSettings:(NSDictionary *)settings {
@@ -501,29 +504,21 @@
     self.removeDuplicateFrames.state = ([settings[@"removeDuplicateFrames"] boolValue] ? NSOnState : NSOffState);
     self.compareWithMD5 = [settings[@"shouldTrimImages"] boolValue];
     [self.exportMatrix selectCellAtRow:[settings[@"exportFormatIndex"] integerValue] column:0];
+    [self loadFrames];
+    [self.regionsView setRegionsArrayFromPlist:settings[@"regions"]];
 }
 
 - (NSFileWrapper *)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError {
-    NSData *regionData = [NSKeyedArchiver archivedDataWithRootObject:[self.regionsView regionsArrayForPlist]];
-    NSFileWrapper *regionWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:regionData];
-    
     NSData *settingsData = [NSKeyedArchiver archivedDataWithRootObject:[self documentSettings]];
     NSFileWrapper *settingsWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:settingsData];
     
-    NSFileWrapper *mainWrapper = [[NSFileWrapper alloc] initDirectoryWithFileWrappers:@{@"regions": regionWrapper, @"settings": settingsWrapper}];
+    NSFileWrapper *mainWrapper = [[NSFileWrapper alloc] initDirectoryWithFileWrappers:@{@"settings": settingsWrapper}];
     return mainWrapper;
 }
 
 - (BOOL)readFromFileWrapper:(NSFileWrapper *)fileWrapper ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError {
     NSFileWrapper *settingsWrapper = [[fileWrapper fileWrappers] objectForKey:@"settings"];
-    NSDictionary *settings = [NSKeyedUnarchiver unarchiveObjectWithData:[settingsWrapper regularFileContents]];
-    [self setDocumentSettings:settings];
-    [self loadFrames];
-    
-    NSFileWrapper *regionWrapper = [[fileWrapper fileWrappers] objectForKey:@"regions"];
-    NSData *regionData = [regionWrapper regularFileContents];
-    NSArray *regionArray = [NSKeyedUnarchiver unarchiveObjectWithData:regionData];
-    [self.regionsView setRegionsArrayFromPlist:regionArray];
+    self.settings = [NSKeyedUnarchiver unarchiveObjectWithData:[settingsWrapper regularFileContents]];
     return YES;
 }
 
