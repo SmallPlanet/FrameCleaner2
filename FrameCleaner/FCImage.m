@@ -28,7 +28,8 @@
 }
 
 + (void) writeMaskImageFromData:(NSData *)data size:(CGSize)size toPath:(NSString *)path {
-
+    if (!data) return;
+    
     BOOL hasAlpha = YES;
     int samples = 4;
 

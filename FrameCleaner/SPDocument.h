@@ -38,6 +38,7 @@
 @property (nonatomic, strong) IBOutlet NSProgressIndicator *progressIndicator;
 @property (nonatomic, strong) IBOutlet NSTextField *progressLabel;
 @property (nonatomic, strong) NSOperationQueue *queue;
+@property (nonatomic, strong) NSString *maskImageTmpFilename;
 
 
 @end

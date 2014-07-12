@@ -62,6 +62,15 @@
 
 }
 
+- (void) drawMask {
+    //        [FCImage dumpData:self.subregionData size:firstImage.size];
+    if (!self.maskImageTmpFilename) {
+        self.maskImageTmpFilename = [self temporaryFilename];
+    }
+    [FCImage writeMaskImageFromData:self.subregionData size:self.imageSize toPath:self.maskImageTmpFilename];
+    self.maskView.image = [[NSImage alloc] initWithContentsOfFile:self.maskImageTmpFilename];
+}
+
 - (void) processFrames {
     globalFrame = CGRectZero;
     
@@ -110,9 +119,7 @@
                 }
             }
         }
-//        [FCImage dumpData:self.subregionData size:firstImage.size];
-        [FCImage writeMaskImageFromData:self.subregionData size:firstImage.size toPath:@"/tmp/mask.png"];
-        self.maskView.image = [[NSImage alloc] initWithContentsOfFile:@"/tmp/mask.png"];
+        [self drawMask];
     }
 }
 
@@ -430,6 +437,19 @@
     return self.removeDuplicateFrames.state;
 }
 
+- (NSString *) temporaryFilename {
+    NSString *pathComponent = [NSString stringWithFormat:@"framecleaner_%@", [self.directoryPath lastPathComponent]];
+    NSString *tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:pathComponent];
+    const char *tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
+    char *tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
+    strcpy(tempFileNameCString, tempFileTemplateCString);
+    int fileDescriptor = mkstemp(tempFileNameCString);
+    if (fileDescriptor == -1) {
+        // handle file creation failure
+    }
+    return [[NSFileManager defaultManager] stringWithFileSystemRepresentation:tempFileNameCString length:strlen(tempFileNameCString)];
+}
+
 #pragma mark - Document lifetime
 
 - (id)init
@@ -506,19 +526,22 @@
     [self.exportMatrix selectCellAtRow:[settings[@"exportFormatIndex"] integerValue] column:0];
     [self loadFrames];
     [self.regionsView setRegionsArrayFromPlist:settings[@"regions"]];
+    [self drawMask];
 }
 
 - (NSFileWrapper *)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError {
     NSData *settingsData = [NSKeyedArchiver archivedDataWithRootObject:[self documentSettings]];
     NSFileWrapper *settingsWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:settingsData];
-    
-    NSFileWrapper *mainWrapper = [[NSFileWrapper alloc] initDirectoryWithFileWrappers:@{@"settings": settingsWrapper}];
+    NSFileWrapper *maskWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:self.subregionData];
+
+    NSFileWrapper *mainWrapper = [[NSFileWrapper alloc] initDirectoryWithFileWrappers:@{@"settings": settingsWrapper, @"subregionData": maskWrapper}];
     return mainWrapper;
 }
 
 - (BOOL)readFromFileWrapper:(NSFileWrapper *)fileWrapper ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError {
     NSFileWrapper *settingsWrapper = [[fileWrapper fileWrappers] objectForKey:@"settings"];
     self.settings = [NSKeyedUnarchiver unarchiveObjectWithData:[settingsWrapper regularFileContents]];
+    self.subregionData = [[[[fileWrapper fileWrappers] objectForKey:@"subregionData"] regularFileContents] mutableCopy];
     return YES;
 }
 
