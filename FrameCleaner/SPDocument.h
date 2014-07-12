@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSMutableData *subregionData;
 @property (nonatomic, assign) CGSize imageSize;
 
+@property (nonatomic, strong) NSDictionary *settings;
 @property (nonatomic, strong) NSMutableArray *allFiles;
 @property (nonatomic, strong) NSMutableArray *allImages;
 @property (nonatomic, strong) FCImage *firstImage;
@@ -30,6 +31,7 @@
 @property (nonatomic, strong) IBOutlet SPRegionsView *regionsView;
 @property (nonatomic, strong) IBOutlet NSView *mainView;
 @property (nonatomic, strong) IBOutlet NSButton *removeDuplicateFrames;
+
 @property (nonatomic, strong) IBOutlet NSPanel *progressPanel;
 @property (nonatomic, strong) IBOutlet NSProgressIndicator *progressTopIndicator;
 @property (nonatomic, strong) IBOutlet NSTextField *progressTopLabel;

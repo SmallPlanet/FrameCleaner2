@@ -453,7 +453,7 @@
 {
     [super windowControllerDidLoadNib:aController];
 
-    if (NSAppKitVersionNumber > NSAppKitVersionNumber10_9) {
+/*    if (NSAppKitVersionNumber > NSAppKitVersionNumber10_9) {
         NSWindow *window = [self windowForSheet];
         NSView *mainView = [[window.contentView subviews] objectAtIndex:0];
         NSView *firstView = [[mainView subviews] objectAtIndex:0];
@@ -475,7 +475,10 @@
 //        NSLayoutConstraint *cT = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:firstView attribute:NSLayoutAttributeTop multiplier:1.f constant:0.f];
 //        NSLayoutConstraint *cB = [NSLayoutConstraint constraintWithItem:blur attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:firstView attribute:NSLayoutAttributeBottom multiplier:1.f constant:0.f];
 //        [firstView addConstraints:@[cL, cR, cT, cB]];
-        [window description];
+    }*/
+    
+    if (self.directoryPath) {
+        [self loadFrames];
     }
 }
 
@@ -484,11 +487,51 @@
     return YES;
 }
 
-- (BOOL)writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError {
-    NSArray *regionsArray = [self.regionsView regionsArrayForPlist];
-    [regionsArray writeToURL:[url URLByAppendingPathComponent:@"regions.plist"] atomically:YES];
+- (NSDictionary *)documentSettings {
+    return @{@"directoryPath": self.directoryPath,
+             @"shouldTrimImages": @(self.shouldTrimImages),
+             @"removeDuplicateFrames": @(self.removeDuplicateFrames.state == NSOnState),
+             @"compareWithMD5": @(self.compareWithMD5),
+             @"exportFormatIndex": @(self.exportMatrix.selectedRow)};
+}
+
+- (void)setDocumentSettings:(NSDictionary *)settings {
+    self.directoryPath = settings[@"directoryPath"];
+    self.shouldTrimImages = [settings[@"shouldTrimImages"] boolValue];
+    self.removeDuplicateFrames.state = ([settings[@"removeDuplicateFrames"] boolValue] ? NSOnState : NSOffState);
+    self.compareWithMD5 = [settings[@"shouldTrimImages"] boolValue];
+    [self.exportMatrix selectCellAtRow:[settings[@"exportFormatIndex"] integerValue] column:0];
+}
+
+- (NSFileWrapper *)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError {
+    NSData *regionData = [NSKeyedArchiver archivedDataWithRootObject:[self.regionsView regionsArrayForPlist]];
+    NSFileWrapper *regionWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:regionData];
+    
+    NSData *settingsData = [NSKeyedArchiver archivedDataWithRootObject:[self documentSettings]];
+    NSFileWrapper *settingsWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:settingsData];
+    
+    NSFileWrapper *mainWrapper = [[NSFileWrapper alloc] initDirectoryWithFileWrappers:@{@"regions": regionWrapper, @"settings": settingsWrapper}];
+    return mainWrapper;
+}
+
+- (BOOL)readFromFileWrapper:(NSFileWrapper *)fileWrapper ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError {
+    NSFileWrapper *settingsWrapper = [[fileWrapper fileWrappers] objectForKey:@"settings"];
+    NSDictionary *settings = [NSKeyedUnarchiver unarchiveObjectWithData:[settingsWrapper regularFileContents]];
+    [self setDocumentSettings:settings];
+    [self loadFrames];
+    
+    NSFileWrapper *regionWrapper = [[fileWrapper fileWrappers] objectForKey:@"regions"];
+    NSData *regionData = [regionWrapper regularFileContents];
+    NSArray *regionArray = [NSKeyedUnarchiver unarchiveObjectWithData:regionData];
+    [self.regionsView setRegionsArrayFromPlist:regionArray];
     return YES;
 }
+
+//- (BOOL)writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError {
+//    NSArray *regionsArray = [self.regionsView regionsArrayForPlist];
+//    [regionsArray writeToURL:[url URLByAppendingPathComponent:@"regions.plist"] atomically:YES];
+//    return YES;
+//}
 
 //- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
 //{
