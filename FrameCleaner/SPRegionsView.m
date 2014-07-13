@@ -45,11 +45,23 @@
     // reduce regions with two points in another region
     for (SPBorderedView *region1 in sortedRegions) {
         for (SPBorderedView *region2 in sortedRegions) {
-            if (region1 != region2) {
+            if (region1 != region2 && [region1 overlapCount:region2] == 2) {
                 [region1 reduceIfOverlaps:region2];
             }
         }
     }
+    
+    // should the regions pass through a difference-point reduction again?
+    
+    // optimize for 1 corner intersections
+    for (SPBorderedView *region1 in sortedRegions) {
+        for (SPBorderedView *region2 in sortedRegions) {
+            if (region1 != region2 && [region1 overlapCount:region2] == 1) {
+                
+            }
+        }
+    }
+    
 }
 
 
