@@ -67,7 +67,6 @@
 #pragma mark -
 
 - (void) mouseDown:(NSEvent *)theEvent {
-    NSLog(@"Boom");
     originalOrigin = [self convertPoint:theEvent.locationInWindow fromView:nil];
     SPBorderedView *subview = [[SPBorderedView alloc] initWithFrame:NSMakeRect(originalOrigin.x, originalOrigin.y, 1, 1)];
     activeView = subview;
@@ -80,6 +79,20 @@
         CGRect r1 = CGRectMake(originalOrigin.x, originalOrigin.y, 1, 1);
         CGRect r2 = CGRectMake(liv.x, liv.y, 1, 1);
         CGRect frameRect = CGRectUnion(r1, r2);
+        if (frameRect.origin.x < 0) {
+            frameRect.size.width += frameRect.origin.x;
+            frameRect.origin.x = 0;
+        }
+        if (frameRect.origin.x + frameRect.size.width > self.frame.size.width) {
+            frameRect.size.width = self.frame.size.width - frameRect.origin.x;
+        }
+        if (frameRect.origin.y < 0) {
+            frameRect.size.height += frameRect.origin.y;
+            frameRect.origin.y = 0;
+        }
+        if (frameRect.origin.y + frameRect.size.height > self.frame.size.height) {
+            frameRect.size.height = self.frame.size.height - frameRect.origin.y;
+        }
         activeView.frame = NSRectFromCGRect(frameRect);
     }
 }
@@ -99,6 +112,13 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.regions = [NSMutableArray array];
+
+        CALayer *layer = [CALayer layer];
+        layer.frame = self.frame;
+        layer.borderColor = [NSColor colorWithCalibratedWhite:0.4 alpha:0.5].CGColor;
+        layer.borderWidth = 1.f;
+        self.layer = layer;
+        [self setWantsLayer:YES];
     }
     return self;
 }

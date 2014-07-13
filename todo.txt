@@ -1,4 +1,2 @@
 zero regions should remove themselves after optimization
 remove region overlap
-clip bounds of regions to edges of frame imageSize
-show border of image (thin rule)
