@@ -40,6 +40,9 @@
         [self.regions removeObject:region];
     }
     [trashBin removeAllObjects];
+    
+    // reduce regions with two points in another region
+    
 }
 
 
