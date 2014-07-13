@@ -84,10 +84,10 @@
     CGPoint p4 = CGPointMake(self.frame.origin.x + self.frame.size.width, self.frame.origin.y);
     
     NSInteger count = 0;
-    if (CGRectContainsPoint([region cgrect], p1) && CGRectContainsPoint([region cgrect], p2)) count++;
-    if (CGRectContainsPoint([region cgrect], p2) && CGRectContainsPoint([region cgrect], p3)) count++;
-    if (CGRectContainsPoint([region cgrect], p3) && CGRectContainsPoint([region cgrect], p4)) count++;
-    if (CGRectContainsPoint([region cgrect], p4) && CGRectContainsPoint([region cgrect], p1)) count++;
+    if (CGRectContainsPoint([region cgrect], p1)) count++;
+    if (CGRectContainsPoint([region cgrect], p2)) count++;
+    if (CGRectContainsPoint([region cgrect], p3)) count++;
+    if (CGRectContainsPoint([region cgrect], p4)) count++;
     return YES;
 }
 
@@ -102,24 +102,20 @@
     CGPoint p3 = CGPointMake(self.frame.origin.x + self.frame.size.width, self.frame.origin.y + self.frame.size.height);
     CGPoint p4 = CGPointMake(self.frame.origin.x + self.frame.size.width, self.frame.origin.y);
     
-    if (CGRectContainsPoint([region cgrect], p1) && CGRectContainsPoint([region cgrect], p2))
-    {
+    if (CGRectContainsPoint([region cgrect], p1) && CGRectContainsPoint([region cgrect], p2)) {
         CGFloat diff = CGRectGetMaxX([region cgrect]) - CGRectGetMinX(self.cgrect);
         frame.origin.x += diff;
         frame.size.width -= diff;
     }
-    if (CGRectContainsPoint([region cgrect], p2) && CGRectContainsPoint([region cgrect], p3))
-    {
+    if (CGRectContainsPoint([region cgrect], p2) && CGRectContainsPoint([region cgrect], p3)) {
         CGFloat diff = CGRectGetMaxY(frame) - CGRectGetMinY([region cgrect]);
         frame.size.height -= diff;
     }
-    if (CGRectContainsPoint([region cgrect], p3) && CGRectContainsPoint([region cgrect], p4))
-    {
+    if (CGRectContainsPoint([region cgrect], p3) && CGRectContainsPoint([region cgrect], p4)) {
         CGFloat diff = CGRectGetMaxX(frame) - CGRectGetMinX([region cgrect]);
         frame.size.width -= diff;
     }
-    if (CGRectContainsPoint([region cgrect], p4) && CGRectContainsPoint([region cgrect], p1))
-    {
+    if (CGRectContainsPoint([region cgrect], p4) && CGRectContainsPoint([region cgrect], p1)) {
         CGFloat diff = CGRectGetMaxY([region cgrect]) - CGRectGetMinY(self.cgrect);
         frame.origin.y += diff;
         frame.size.height -= diff;

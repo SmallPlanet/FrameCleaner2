@@ -38,11 +38,18 @@
     for (SPRegionsView *region in trashBin) {
         [region removeFromSuperview];
         [self.regions removeObject:region];
+        [sortedRegions removeObject:region];
     }
     [trashBin removeAllObjects];
     
     // reduce regions with two points in another region
-    
+    for (SPBorderedView *region1 in sortedRegions) {
+        for (SPBorderedView *region2 in sortedRegions) {
+            if (region1 != region2) {
+                [region1 reduceIfOverlaps:region2];
+            }
+        }
+    }
 }
 
 
