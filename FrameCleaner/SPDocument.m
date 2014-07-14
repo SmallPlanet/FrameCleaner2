@@ -380,7 +380,7 @@
         {
             usleep(50000);
             NSLog(@"progress = %f",((double)[self.queue operationCount]/(double)[uniqueImages count]));
-            [self setProgress:1.0f - ((double)[self.queue operationCount]/(double)[uniqueImages count])];
+            [self setProgress:1.0f - ((double)([self.queue operationCount]+1)/(double)[uniqueImages count])];
         }
         
         

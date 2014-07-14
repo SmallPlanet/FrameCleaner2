@@ -125,38 +125,37 @@
 
 - (NSRect) splitByRemovingRect:(NSRect)remove {
     // returns NSRect of new region to add as a result of split
-    NSRect newRect;
-//    CGRect rect2 = NSRectToCGRect(remove);
-//
-//    NSRect frame = self.frame;
-//    CGPoint p1 = CGPointMake(self.frame.origin.x, self.frame.origin.y);
-//    CGPoint p2 = CGPointMake(self.frame.origin.x, self.frame.origin.y + self.frame.size.height);
-//    CGPoint p3 = CGPointMake(self.frame.origin.x + self.frame.size.width, self.frame.origin.y + self.frame.size.height);
-//    CGPoint p4 = CGPointMake(self.frame.origin.x + self.frame.size.width, self.frame.origin.y);
-//    
-//    if (CGRectContainsPoint(rect2, p1)) {
-//        CGFloat diff = CGRectGetMaxX(rect2) - CGRectGetMinX(self.cgrect);
-//        frame.origin.x += diff;
-//        frame.size.width -= diff;
-//    }
-//    if (CGRectContainsPoint(rect2, p2)) {
-//        CGFloat diff = CGRectGetMaxY(frame) - CGRectGetMinY(rect2);
-//        frame.size.height -= diff;
-//    }
-//    if (CGRectContainsPoint(rect2, p3)) {
-//        CGFloat diff = CGRectGetMaxX(frame) - CGRectGetMinX(rect2);
-//        frame.size.width -= diff;
-//    }
-//    if (CGRectContainsPoint(rect2, p4)) {
-//        CGFloat diff = CGRectGetMaxY(rect2) - CGRectGetMinY(self.cgrect);
-//        frame.origin.y += diff;
-//        frame.size.height -= diff;
-//    }
-//    self.frame = frame;
-//
-//    
-//    
-    return newRect;
+    NSRect newFrame = NSMakeRect(-1,-1,0,0);
+    CGRect rect2 = NSRectToCGRect(remove);
+    CGRect frame = NSRectToCGRect(self.frame);
+
+    CGPoint p1 = CGPointMake(rect2.origin.x, rect2.origin.y);
+    CGPoint p2 = CGPointMake(rect2.origin.x, CGRectGetMaxY(rect2));
+    CGPoint p3 = CGPointMake(CGRectGetMaxX(rect2), CGRectGetMaxY(rect2));
+    CGPoint p4 = CGPointMake(CGRectGetMaxX(rect2), rect2.origin.y);
+    
+    if (CGRectContainsPoint(frame, p1)) {
+        newFrame = NSMakeRect(frame.origin.x, rect2.origin.y, rect2.origin.x - frame.origin.x, CGRectGetMaxY(frame) - rect2.origin.y);
+        frame.size.height -= newFrame.size.height;
+    }
+    if (CGRectContainsPoint(frame, p2)) {
+        newFrame = NSMakeRect(frame.origin.x,frame.origin.y, rect2.origin.x-frame.origin.x, CGRectGetMaxY(rect2)-frame.origin.y);
+        frame.size.height = CGRectGetMaxY(frame) - CGRectGetMaxY(rect2);
+        frame.origin.y = CGRectGetMaxY(rect2);
+    }
+    if (CGRectContainsPoint(frame, p3)) {
+        newFrame = NSMakeRect(CGRectGetMaxX(rect2),frame.origin.y, CGRectGetMaxX(frame)-CGRectGetMaxX(rect2), CGRectGetMaxY(rect2)-frame.origin.y);
+        frame.size.height = CGRectGetMaxY(frame) - CGRectGetMaxY(rect2);
+        frame.origin.y = CGRectGetMaxY(rect2);
+    }
+    if (CGRectContainsPoint(frame, p4)) {
+        newFrame = NSMakeRect(CGRectGetMaxX(rect2), rect2.origin.y, CGRectGetMaxX(frame)-CGRectGetMaxX(rect2), CGRectGetMaxY(frame) - rect2.origin.y);
+        frame.size.height -= newFrame.size.height;
+        self.frame = frame;
+    }
+    self.frame = frame;
+    
+    return newFrame;
 }
 
 #pragma mark -

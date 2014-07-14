@@ -19,5 +19,6 @@
 - (void) reduceIfOverlaps:(SPBorderedView *)region;
 - (NSInteger) overlapCount:(SPBorderedView *)region;
 - (BOOL) overlaps:(SPBorderedView *)region;
+- (NSRect) splitByRemovingRect:(NSRect)remove;
 
 @end

@@ -56,8 +56,14 @@
     // optimize for 1 corner intersections
     for (SPBorderedView *region1 in sortedRegions) {
         for (SPBorderedView *region2 in sortedRegions) {
-            if (region1 != region2 && [region1 overlapCount:region2] == 1) {
-                
+            if (region1 != region2 && [region2 overlapCount:region1] == 1) {
+                NSRect newFrame = [region2 splitByRemovingRect:region1.frame];
+                if (newFrame.origin.x > -1) {
+                    [self addRegionWithFrame:newFrame];
+//                    SPBorderedView *newRegion = [self addRegionWithFrame:newFrame];
+//                    newRegion.layer.borderColor = [NSColor greenColor].CGColor;
+//                    region1.layer.borderColor = [NSColor purpleColor].CGColor;
+                }
             }
         }
     }
@@ -86,13 +92,18 @@
     }
 }
 
+- (SPBorderedView *) addRegionWithFrame:(NSRect)frame {
+    SPBorderedView *newRegion = [[SPBorderedView alloc] initWithFrame:frame];
+    [self addSubview:newRegion];
+    return newRegion;
+}
+
 #pragma mark -
 
 - (void) mouseDown:(NSEvent *)theEvent {
     originalOrigin = [self convertPoint:theEvent.locationInWindow fromView:nil];
-    SPBorderedView *subview = [[SPBorderedView alloc] initWithFrame:NSMakeRect(originalOrigin.x, originalOrigin.y, 1, 1)];
+    SPBorderedView *subview = [self addRegionWithFrame:NSMakeRect(originalOrigin.x, originalOrigin.y, 1, 1)];
     activeView = subview;
-    [self addSubview:subview];
 }
 
 - (void) mouseDragged:(NSEvent *)theEvent {
