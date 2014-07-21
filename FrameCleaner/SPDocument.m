@@ -217,8 +217,18 @@
         FCImage *baseImage = [[FCImage alloc] initWithSource:self.firstImage.sourceFile];
         for (NSView *region in [self subregions])
         {
-            [baseImage makeTransparentRect:NSRectToCGRect(region.frame)];
-//            [region expandBoundsBy:1.f toMaxSize:firstImage.size];
+            CGRect holeRect = NSRectToCGRect(region.frame);
+            if (holeRect.size.width > 2.f) {
+                holeRect.size.width -= 2.f;
+                holeRect.origin.x += 1;
+            }
+            if (holeRect.size.height > 2.f) {
+                holeRect.size.height -= 2.f;
+                holeRect.origin.y += 1;
+            }
+            if (holeRect.size.height > 1.f && holeRect.size.width > 1.f) {
+                [baseImage makeTransparentRect:holeRect];
+            }
         }
         NSString *fileName = [baseFileName stringByAppendingString:@"base"];
         NSString *fullFileName = [exportDirectory stringByAppendingPathComponent:fileName];
@@ -243,7 +253,7 @@
         if (subregions) {
             double doneness = (1.0+currentRegion)/(1.0*[self subregionsCount]);
             [self setProgressTop:doneness];
-            [self setProgressTopMessage:[NSString stringWithFormat:@"Processing region %ld/%ld", (long)currentRegion, (long)[self subregionsCount]]];
+            [self setProgressTopMessage:[NSString stringWithFormat:@"Processing region %ld/%ld", (long)currentRegion+1, (long)[self subregionsCount]]];
             subregions = YES;
             region = [self.subregions objectAtIndex:currentRegion];
             cropFrame = region.frame;
@@ -260,7 +270,6 @@
         
         [processedImages removeAllObjects];
         [uniqueImages removeAllObjects];
-        [self setProgressMessage:@"ollie"];
         for(FCImage *newImage in self.allImages) {
             @autoreleasepool {
                 [self setProgress:((double)imageIndex/(double)[self.allFiles count])];

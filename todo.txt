@@ -1,2 +1,4 @@
 zero regions should remove themselves after optimization
 remove region overlap
+opt: bundle path formatters (ie ar_ub-bundle://ar_ub/anim1/ as prefix)
+
