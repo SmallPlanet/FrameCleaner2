@@ -18,6 +18,10 @@
     [self.regionsView reset];
 }
 
+- (NSString *)filepathAtIndex:(NSUInteger)index {
+    return [self.directoryPath stringByAppendingPathComponent:self.allFiles[index]];
+}
+
 - (void) loadFrames {
     NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.directoryPath error:NULL];
     self.allFiles = [NSMutableArray array];
@@ -33,7 +37,7 @@
     
     // show first image
     if (self.allFiles.count > 0) {
-        NSString *filePath = [self.directoryPath stringByAppendingPathComponent:self.allFiles[0]];
+        NSString *filePath = [self filepathAtIndex:13];
         self.firstImage = [[FCImage alloc] initWithSource:filePath];
         [self.firstImage pixelData];
         NSImage *image = [[NSImage alloc] initWithContentsOfFile:filePath];
@@ -84,6 +88,30 @@
                 [self.allImages addObject:image];
             }
         }
+    }
+}
+
+- (void) play {
+    playbackIndex = 0;
+    if (!playbackCache) {
+        playbackCache = [NSMutableArray array];
+    }
+    [playbackCache removeAllObjects];
+    for (int i=0; i<self.allFiles.count; i++) {
+        NSImage *img = [[NSImage alloc] initWithContentsOfFile:[self filepathAtIndex:i]];
+        img.size = self.firstImage.size;
+        [playbackCache addObject:img];
+    }
+    self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.f/[self frameRate] target:self selector:@selector(playUpdate:) userInfo:nil repeats:YES];
+}
+
+- (void) playUpdate:(NSTimer *)timer {
+    if (playbackIndex < playbackCache.count) {
+        self.imageView.image = [playbackCache objectAtIndex:playbackIndex++];
+    } else {
+        [self.playbackTimer invalidate];
+        [playbackCache removeAllObjects];
+        playbackIndex = -1;
     }
 }
 
@@ -436,6 +464,10 @@
 
 - (IBAction) loadCallback:(id)sender {
     [self showLoadFramesSheet];
+}
+
+- (IBAction) playCallback:(id)sender {
+    [self play];
 }
 
 - (IBAction) processCallback:(id)sender {

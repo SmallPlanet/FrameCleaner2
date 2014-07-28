@@ -14,6 +14,8 @@
 
 @interface SPDocument : NSDocument {
     CGRect globalFrame;
+    NSInteger playbackIndex;
+    NSMutableArray *playbackCache;
 }
 
 @property (nonatomic, strong) NSString *directoryPath;
@@ -43,6 +45,6 @@
 
 @property (nonatomic, strong) NSOperationQueue *queue;
 @property (nonatomic, strong) NSString *maskImageTmpFilename;
-
+@property (nonatomic, strong) NSTimer *playbackTimer;
 
 @end

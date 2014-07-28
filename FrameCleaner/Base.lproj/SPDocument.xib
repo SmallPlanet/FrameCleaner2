@@ -76,6 +76,11 @@
                             <action selector="loadCallback:" target="-2" id="rd1-Bl-hfR"/>
                         </connections>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="96B66F73-CCA5-4730-828E-3B877D35B1E4" label="Play" paletteLabel="Play" tag="-1" image="play-icon" id="zOo-IN-Y4w">
+                        <connections>
+                            <action selector="playCallback:" target="-2" id="xhQ-JX-LaF"/>
+                        </connections>
+                    </toolbarItem>
                     <toolbarItem implicitItemIdentifier="E159810C-843F-4FDF-9E03-69A1890F5770" label="Process" paletteLabel="Process" tag="-1" image="NSBonjour" id="m2I-gm-WU7">
                         <connections>
                             <action selector="processCallback:" target="-2" id="s92-lK-ZhC"/>
@@ -105,6 +110,7 @@
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="De7-vN-RnO"/>
+                    <toolbarItem reference="zOo-IN-Y4w"/>
                     <toolbarItem reference="m2I-gm-WU7"/>
                     <toolbarItem reference="95v-dZ-Nd3"/>
                     <toolbarItem reference="BF8-aI-vmA"/>
@@ -303,5 +309,6 @@
         <image name="NSFolder" width="32" height="32"/>
         <image name="NSInfo" width="32" height="32"/>
         <image name="NSMultipleDocuments" width="32" height="32"/>
+        <image name="play-icon" width="100.08000183105469" height="100.08000183105469"/>
     </resources>
 </document>
