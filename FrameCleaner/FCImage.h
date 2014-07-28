@@ -38,6 +38,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign) BOOL compareUsingMD5;
 @property (nonatomic, retain) NSString *md5;
 @property (nonatomic, assign) NSInteger index;
+@property (nonatomic, assign) NSInteger diffCount;
 
 + (void) writeMaskImageFromData:(NSData *)data size:(CGSize)size toPath:(NSString *)path;
 - (id) initWithSource:(NSString *)sourcePath;

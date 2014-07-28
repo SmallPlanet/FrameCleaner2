@@ -140,18 +140,24 @@
             if (!firstImage) {
                 firstImage = [[FCImage alloc] initWithSource:[self.directoryPath stringByAppendingPathComponent:self.allFiles[0]]];
                 self.subregionData = [NSMutableData dataWithLength:[[firstImage pixelData] length]];
+                image.diffCount = 0;
             } else {
+                NSInteger diffCount = 0;
                 NSData *diff = [firstImage subtract:image];
                 unsigned char * ptr1 = (unsigned char*)[self.subregionData bytes];
                 unsigned char * ptr2 = (unsigned char*)[diff bytes];
                 
                 for(int i=0; i<[self.subregionData length]; i++) {
+                    if (*ptr2 > 0) {
+                        diffCount++;
+                    }
                     if (*ptr2 > *ptr1) {
                         *ptr1 = *ptr2;
                     }
                     ptr1++;
                     ptr2++;
                 }
+                image.diffCount = diffCount;
             }
         }
         [self drawMask];
@@ -558,6 +564,9 @@
         [self.regionsView.superview setNeedsLayout:YES];
         [self performSelector:@selector(setDocumentSettings:) withObject:self.settings afterDelay:0];
     }
+    self.imageView.layer.zPosition = 0;
+    self.maskView.layer.zPosition = 10;
+    self.regionsView.layer.zPosition = 20;
 }
 
 + (BOOL)autosavesInPlace

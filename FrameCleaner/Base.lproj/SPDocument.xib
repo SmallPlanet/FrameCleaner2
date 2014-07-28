@@ -28,21 +28,21 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="PKU-kz-iPV">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="283" y="305" width="852" height="745"/>
+            <rect key="contentRect" x="283" y="305" width="873" height="756"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" autoresizesSubviews="NO" id="pk8-ON-W62" userLabel="topView">
-                <rect key="frame" x="0.0" y="0.0" width="852" height="745"/>
+                <rect key="frame" x="0.0" y="0.0" width="873" height="756"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <splitView misplaced="YES" dividerStyle="paneSplitter" translatesAutoresizingMaskIntoConstraints="NO" id="w2o-41-ilr">
-                        <rect key="frame" x="-15" y="0.0" width="867" height="745"/>
+                    <splitView wantsLayer="YES" misplaced="YES" dividerStyle="paneSplitter" translatesAutoresizingMaskIntoConstraints="NO" id="w2o-41-ilr">
+                        <rect key="frame" x="-15" y="0.0" width="867" height="756"/>
                         <subviews>
                             <customView misplaced="YES" id="TnM-uf-mdA">
-                                <rect key="frame" x="0.0" y="0.0" width="867" height="621"/>
+                                <rect key="frame" x="0.0" y="0.0" width="867" height="630"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <view autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hpr-XN-jR7">
-                                        <rect key="frame" x="7" y="-62" width="852" height="745"/>
+                                        <rect key="frame" x="7" y="-53" width="852" height="745"/>
                                         <subviews>
                                             <imageView autoresizesSubviews="NO" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="doV-O9-ab8">
                                                 <rect key="frame" x="402" y="348" width="48" height="48"/>
@@ -74,19 +74,25 @@
                                     <constraint firstItem="hpr-XN-jR7" firstAttribute="centerX" secondItem="TnM-uf-mdA" secondAttribute="centerX" id="mlQ-KP-M7u"/>
                                 </constraints>
                             </customView>
-                            <customView misplaced="YES" id="MGA-GC-KVO">
-                                <rect key="frame" x="0.0" y="631" width="867" height="114"/>
+                            <customView wantsLayer="YES" misplaced="YES" id="MGA-GC-KVO">
+                                <rect key="frame" x="0.0" y="640" width="867" height="116"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
-                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ypM-u9-ZZ8">
-                                        <rect key="frame" x="20" y="0.0" width="839" height="114"/>
+                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ypM-u9-ZZ8" customClass="SPTimelineView">
+                                        <rect key="frame" x="0.0" y="2" width="868" height="116"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                <color key="value" red="0.77450284090909094" green="0.77450284090909094" blue="0.77450284090909094" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </customView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="ypM-u9-ZZ8" firstAttribute="top" secondItem="MGA-GC-KVO" secondAttribute="top" id="2Z3-Ti-5Z4"/>
-                                    <constraint firstItem="ypM-u9-ZZ8" firstAttribute="leading" secondItem="MGA-GC-KVO" secondAttribute="leading" id="EBt-Uv-V9J"/>
-                                    <constraint firstAttribute="trailing" secondItem="ypM-u9-ZZ8" secondAttribute="trailing" id="Rrd-Mn-IYq"/>
-                                    <constraint firstAttribute="bottom" secondItem="ypM-u9-ZZ8" secondAttribute="bottom" id="zJh-el-YQA"/>
+                                    <constraint firstItem="ypM-u9-ZZ8" firstAttribute="leading" secondItem="MGA-GC-KVO" secondAttribute="leading" id="NgY-Jf-sye"/>
+                                    <constraint firstAttribute="trailing" secondItem="ypM-u9-ZZ8" secondAttribute="trailing" id="Q4G-rU-OV1"/>
+                                    <constraint firstItem="ypM-u9-ZZ8" firstAttribute="top" secondItem="MGA-GC-KVO" secondAttribute="top" priority="600" id="Zto-71-4le"/>
+                                    <constraint firstAttribute="bottom" secondItem="ypM-u9-ZZ8" secondAttribute="bottom" priority="600" id="hbZ-jd-dxu"/>
+                                    <constraint firstAttribute="height" constant="116" id="y5H-Db-ee6"/>
                                 </constraints>
                             </customView>
                         </subviews>
@@ -156,7 +162,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="iJp-Yg-3nN"/>
             </connections>
-            <point key="canvasLocation" x="8" y="-590.5"/>
+            <point key="canvasLocation" x="17.5" y="-585"/>
         </window>
         <customView id="qf8-3d-E77" userLabel="Drawer Content View">
             <rect key="frame" x="0.0" y="0.0" width="210" height="562"/>

@@ -12,6 +12,7 @@
 		A950A157196C5A67002B6F6B /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A950A156196C5A67002B6F6B /* NSDataAdditions.m */; };
 		A950A15B196C5F13002B6F6B /* fastlz.c in Sources */ = {isa = PBXBuildFile; fileRef = A950A159196C5F13002B6F6B /* fastlz.c */; };
 		A950A15E196C667C002B6F6B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A950A15D196C667C002B6F6B /* libz.dylib */; };
+		A95FFB521986CC7000CDBE54 /* SPTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = A95FFB511986CC7000CDBE54 /* SPTimelineView.m */; };
 		A9804BD7197F0B9200E91AB3 /* FrameCleaner.icns in Resources */ = {isa = PBXBuildFile; fileRef = A9804BD6197F0B9200E91AB3 /* FrameCleaner.icns */; };
 		A984C1E8196EE85100038A64 /* pngcrush in Resources */ = {isa = PBXBuildFile; fileRef = A984C1E4196EE85100038A64 /* pngcrush */; };
 		A984C1E9196EE85100038A64 /* pngnq in Resources */ = {isa = PBXBuildFile; fileRef = A984C1E5196EE85100038A64 /* pngnq */; };
@@ -71,6 +72,8 @@
 		A950A159196C5F13002B6F6B /* fastlz.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fastlz.c; sourceTree = "<group>"; };
 		A950A15A196C5F13002B6F6B /* fastlz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fastlz.h; sourceTree = "<group>"; };
 		A950A15D196C667C002B6F6B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		A95FFB501986CC7000CDBE54 /* SPTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPTimelineView.h; sourceTree = "<group>"; };
+		A95FFB511986CC7000CDBE54 /* SPTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPTimelineView.m; sourceTree = "<group>"; };
 		A9804BD6197F0B9200E91AB3 /* FrameCleaner.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = FrameCleaner.icns; sourceTree = "<group>"; };
 		A984C1E4196EE85100038A64 /* pngcrush */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = pngcrush; path = tools/pngcrush; sourceTree = "<group>"; };
 		A984C1E5196EE85100038A64 /* pngnq */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = pngnq; path = tools/pngnq; sourceTree = "<group>"; };
@@ -218,6 +221,8 @@
 				A9C44EAA196B2696001065B9 /* Supporting Files */,
 				A938C7B819702F3500CDA8F3 /* SPBackgroundView.h */,
 				A938C7B919702F3500CDA8F3 /* SPBackgroundView.m */,
+				A95FFB501986CC7000CDBE54 /* SPTimelineView.h */,
+				A95FFB511986CC7000CDBE54 /* SPTimelineView.m */,
 			);
 			path = FrameCleaner;
 			sourceTree = "<group>";
@@ -413,6 +418,7 @@
 				A9D4FA0C196B519B002BE703 /* pngread.c in Sources */,
 				A9D4FA16196B519B002BE703 /* pngwutil.c in Sources */,
 				A9C44EB0196B2696001065B9 /* main.m in Sources */,
+				A95FFB521986CC7000CDBE54 /* SPTimelineView.m in Sources */,
 				A9D4FA11196B519B002BE703 /* pngtrans.c in Sources */,
 				A9C44EB7196B2696001065B9 /* SPDocument.m in Sources */,
 				A9D4FA0D196B519B002BE703 /* pngrio.c in Sources */,
