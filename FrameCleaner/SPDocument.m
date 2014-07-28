@@ -191,6 +191,14 @@
     [self.progressPanel makeKeyAndOrderFront:self];
 }
 
+- (NSInteger) frameRate {
+    NSInteger frameRate = [self.framerateField intValue];
+    if (frameRate <= 0) {
+        frameRate = DEFAULT_FRAMERATE;
+    }
+    return frameRate;
+}
+
 - (void) exportFrames {
     [self setProgress:0.0];
     [self setProgressMessage:@"Reticulating splines"];
@@ -396,7 +404,7 @@
         if(subregions) {
             NSString *pathFormat = [NSString stringWithFormat:@"%@%@#", baseFileName, suffix];
             pathFormat = [pathFormat stringByAppendingPathExtension:[self.firstImage extensionForExportFormat:self.exportMatrix.selectedRow]];
-            regionsSnippet = [regionsSnippet stringByAppendingFormat:@"\t\t<FrameAnimation framerate=\"12\" sequence=\"%@\" pathFormat=\"bundle://%@\" digits=\"4\" />\n\t</Image>\n", frameSequence, pathFormat];
+            regionsSnippet = [regionsSnippet stringByAppendingFormat:@"\t\t<FrameAnimation framerate=\"%ld\" sequence=\"%@\" pathFormat=\"bundle://%@\" digits=\"4\" />\n\t</Image>\n", [self frameRate], frameSequence, pathFormat];
         } else if ([self shouldRemoveDuplicateFrames]) {
             NSString *bounds = [NSString stringWithFormat:@"%d,%d,%d,%d", (int)(min.x), (int)(min.y), (int)(max.x-min.x), (int)(max.y-min.y)];
             
@@ -531,6 +539,7 @@
              @"removeDuplicateFrames": @(self.removeDuplicateFrames.state == NSOnState),
              @"compareWithMD5": @(self.compareWithMD5),
              @"exportFormatIndex": @(self.exportMatrix.selectedRow),
+             @"frameRate": self.framerateField.stringValue,
              @"regions": [self.regionsView regionsArrayForPlist]};
 }
 
@@ -539,6 +548,9 @@
     self.shouldTrimImages = [settings[@"shouldTrimImages"] boolValue];
     self.removeDuplicateFrames.state = ([settings[@"removeDuplicateFrames"] boolValue] ? NSOnState : NSOffState);
     self.compareWithMD5 = [settings[@"shouldTrimImages"] boolValue];
+    if (settings[@"frameRate"]) {
+        self.framerateField.stringValue = settings[@"frameRate"];
+    }
     [self.exportMatrix selectCellAtRow:[settings[@"exportFormatIndex"] integerValue] column:0];
     [self loadFrames];
     [self.regionsView setRegionsArrayFromPlist:settings[@"regions"]];

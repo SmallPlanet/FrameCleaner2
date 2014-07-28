@@ -10,6 +10,8 @@
 #import "SPRegionsView.h"
 #import "FCImage.h"
 
+#define DEFAULT_FRAMERATE 12
+
 @interface SPDocument : NSDocument {
     CGRect globalFrame;
 }
@@ -37,6 +39,8 @@
 @property (nonatomic, strong) IBOutlet NSTextField *progressTopLabel;
 @property (nonatomic, strong) IBOutlet NSProgressIndicator *progressIndicator;
 @property (nonatomic, strong) IBOutlet NSTextField *progressLabel;
+@property (nonatomic, strong) IBOutlet NSTextField *framerateField;
+
 @property (nonatomic, strong) NSOperationQueue *queue;
 @property (nonatomic, strong) NSString *maskImageTmpFilename;
 
