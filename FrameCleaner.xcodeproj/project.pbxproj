@@ -12,6 +12,7 @@
 		A950A157196C5A67002B6F6B /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A950A156196C5A67002B6F6B /* NSDataAdditions.m */; };
 		A950A15B196C5F13002B6F6B /* fastlz.c in Sources */ = {isa = PBXBuildFile; fileRef = A950A159196C5F13002B6F6B /* fastlz.c */; };
 		A950A15E196C667C002B6F6B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A950A15D196C667C002B6F6B /* libz.dylib */; };
+		A9804BD7197F0B9200E91AB3 /* FrameCleaner.icns in Resources */ = {isa = PBXBuildFile; fileRef = A9804BD6197F0B9200E91AB3 /* FrameCleaner.icns */; };
 		A984C1E8196EE85100038A64 /* pngcrush in Resources */ = {isa = PBXBuildFile; fileRef = A984C1E4196EE85100038A64 /* pngcrush */; };
 		A984C1E9196EE85100038A64 /* pngnq in Resources */ = {isa = PBXBuildFile; fileRef = A984C1E5196EE85100038A64 /* pngnq */; };
 		A984C1EA196EE85100038A64 /* pngquant in Resources */ = {isa = PBXBuildFile; fileRef = A984C1E6196EE85100038A64 /* pngquant */; };
@@ -70,6 +71,7 @@
 		A950A159196C5F13002B6F6B /* fastlz.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fastlz.c; sourceTree = "<group>"; };
 		A950A15A196C5F13002B6F6B /* fastlz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fastlz.h; sourceTree = "<group>"; };
 		A950A15D196C667C002B6F6B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		A9804BD6197F0B9200E91AB3 /* FrameCleaner.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = FrameCleaner.icns; sourceTree = "<group>"; };
 		A984C1E4196EE85100038A64 /* pngcrush */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = pngcrush; path = tools/pngcrush; sourceTree = "<group>"; };
 		A984C1E5196EE85100038A64 /* pngnq */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = pngnq; path = tools/pngnq; sourceTree = "<group>"; };
 		A984C1E6196EE85100038A64 /* pngquant */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = pngquant; path = tools/pngquant; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 		A9C44EAA196B2696001065B9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A9804BD6197F0B9200E91AB3 /* FrameCleaner.icns */,
 				A984C1E4196EE85100038A64 /* pngcrush */,
 				A984C1E5196EE85100038A64 /* pngnq */,
 				A984C1E6196EE85100038A64 /* pngquant */,
@@ -371,6 +374,7 @@
 				A984C1E8196EE85100038A64 /* pngcrush in Resources */,
 				A9C44EAE196B2696001065B9 /* InfoPlist.strings in Resources */,
 				A9C44EBF196B2697001065B9 /* Images.xcassets in Resources */,
+				A9804BD7197F0B9200E91AB3 /* FrameCleaner.icns in Resources */,
 				A9C44EB4196B2696001065B9 /* Credits.rtf in Resources */,
 				A984C1E9196EE85100038A64 /* pngnq in Resources */,
 				A9C44EBA196B2696001065B9 /* SPDocument.xib in Resources */,
@@ -560,7 +564,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FrameCleaner/FrameCleaner-Prefix.pch";
@@ -579,7 +582,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FrameCleaner/FrameCleaner-Prefix.pch";
