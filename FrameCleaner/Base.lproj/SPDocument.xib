@@ -30,43 +30,77 @@
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="283" y="305" width="852" height="745"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
-            <view key="contentView" autoresizesSubviews="NO" id="pk8-ON-W62">
+            <view key="contentView" autoresizesSubviews="NO" id="pk8-ON-W62" userLabel="topView">
                 <rect key="frame" x="0.0" y="0.0" width="852" height="745"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hpr-XN-jR7">
-                        <rect key="frame" x="0.0" y="0.0" width="852" height="745"/>
+                    <splitView misplaced="YES" dividerStyle="paneSplitter" translatesAutoresizingMaskIntoConstraints="NO" id="w2o-41-ilr">
+                        <rect key="frame" x="-15" y="0.0" width="867" height="745"/>
                         <subviews>
-                            <imageView autoresizesSubviews="NO" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="doV-O9-ab8">
-                                <rect key="frame" x="402" y="348" width="48" height="48"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" id="OD9-rv-VtB"/>
-                            </imageView>
-                            <customView appearanceType="aqua" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tip-gp-fRU" userLabel="maskView" customClass="NSImageView">
-                                <rect key="frame" x="0.0" y="0.0" width="1" height="1"/>
+                            <customView misplaced="YES" id="TnM-uf-mdA">
+                                <rect key="frame" x="0.0" y="0.0" width="867" height="621"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <subviews>
+                                    <view autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hpr-XN-jR7">
+                                        <rect key="frame" x="7" y="-62" width="852" height="745"/>
+                                        <subviews>
+                                            <imageView autoresizesSubviews="NO" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="doV-O9-ab8">
+                                                <rect key="frame" x="402" y="348" width="48" height="48"/>
+                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" id="OD9-rv-VtB"/>
+                                            </imageView>
+                                            <customView appearanceType="aqua" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tip-gp-fRU" userLabel="maskView" customClass="NSImageView">
+                                                <rect key="frame" x="0.0" y="0.0" width="1" height="1"/>
+                                            </customView>
+                                            <customView autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zia-HJ-fh2" customClass="SPRegionsView">
+                                                <rect key="frame" x="176" y="122" width="500" height="500"/>
+                                            </customView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="doV-O9-ab8" firstAttribute="centerX" secondItem="hpr-XN-jR7" secondAttribute="centerX" id="78v-aq-vLz"/>
+                                            <constraint firstItem="tip-gp-fRU" firstAttribute="centerX" secondItem="doV-O9-ab8" secondAttribute="centerX" id="EmW-jp-E2u"/>
+                                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="leading" secondItem="doV-O9-ab8" secondAttribute="leading" id="Npy-Lv-y1f"/>
+                                            <constraint firstAttribute="centerX" secondItem="Zia-HJ-fh2" secondAttribute="centerX" id="Vsv-3H-LU3"/>
+                                            <constraint firstAttribute="centerY" secondItem="Zia-HJ-fh2" secondAttribute="centerY" id="cFx-dJ-Tao"/>
+                                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="bottom" secondItem="doV-O9-ab8" secondAttribute="bottom" id="g25-gG-vlt"/>
+                                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="trailing" secondItem="doV-O9-ab8" secondAttribute="trailing" id="r6V-dL-fyk"/>
+                                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="top" secondItem="doV-O9-ab8" secondAttribute="top" id="uHI-no-4gY"/>
+                                            <constraint firstItem="tip-gp-fRU" firstAttribute="centerY" secondItem="doV-O9-ab8" secondAttribute="centerY" id="vqg-Cs-2Jl"/>
+                                            <constraint firstItem="doV-O9-ab8" firstAttribute="centerY" secondItem="hpr-XN-jR7" secondAttribute="centerY" id="z0V-Mi-IL6"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="hpr-XN-jR7" firstAttribute="centerY" secondItem="TnM-uf-mdA" secondAttribute="centerY" id="9Fn-1q-HmB"/>
+                                    <constraint firstItem="hpr-XN-jR7" firstAttribute="centerX" secondItem="TnM-uf-mdA" secondAttribute="centerX" id="mlQ-KP-M7u"/>
+                                </constraints>
                             </customView>
-                            <customView autoresizesSubviews="NO" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zia-HJ-fh2" customClass="SPRegionsView">
-                                <rect key="frame" x="176" y="122" width="500" height="500"/>
+                            <customView misplaced="YES" id="MGA-GC-KVO">
+                                <rect key="frame" x="0.0" y="631" width="867" height="114"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <subviews>
+                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ypM-u9-ZZ8">
+                                        <rect key="frame" x="20" y="0.0" width="839" height="114"/>
+                                    </customView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="ypM-u9-ZZ8" firstAttribute="top" secondItem="MGA-GC-KVO" secondAttribute="top" id="2Z3-Ti-5Z4"/>
+                                    <constraint firstItem="ypM-u9-ZZ8" firstAttribute="leading" secondItem="MGA-GC-KVO" secondAttribute="leading" id="EBt-Uv-V9J"/>
+                                    <constraint firstAttribute="trailing" secondItem="ypM-u9-ZZ8" secondAttribute="trailing" id="Rrd-Mn-IYq"/>
+                                    <constraint firstAttribute="bottom" secondItem="ypM-u9-ZZ8" secondAttribute="bottom" id="zJh-el-YQA"/>
+                                </constraints>
                             </customView>
                         </subviews>
-                        <constraints>
-                            <constraint firstItem="doV-O9-ab8" firstAttribute="centerX" secondItem="hpr-XN-jR7" secondAttribute="centerX" id="78v-aq-vLz"/>
-                            <constraint firstItem="tip-gp-fRU" firstAttribute="centerX" secondItem="doV-O9-ab8" secondAttribute="centerX" id="EmW-jp-E2u"/>
-                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="leading" secondItem="doV-O9-ab8" secondAttribute="leading" id="Npy-Lv-y1f"/>
-                            <constraint firstAttribute="centerX" secondItem="Zia-HJ-fh2" secondAttribute="centerX" id="Vsv-3H-LU3"/>
-                            <constraint firstAttribute="centerY" secondItem="Zia-HJ-fh2" secondAttribute="centerY" id="cFx-dJ-Tao"/>
-                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="bottom" secondItem="doV-O9-ab8" secondAttribute="bottom" id="g25-gG-vlt"/>
-                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="trailing" secondItem="doV-O9-ab8" secondAttribute="trailing" id="r6V-dL-fyk"/>
-                            <constraint firstItem="Zia-HJ-fh2" firstAttribute="top" secondItem="doV-O9-ab8" secondAttribute="top" id="uHI-no-4gY"/>
-                            <constraint firstItem="tip-gp-fRU" firstAttribute="centerY" secondItem="doV-O9-ab8" secondAttribute="centerY" id="vqg-Cs-2Jl"/>
-                            <constraint firstItem="doV-O9-ab8" firstAttribute="centerY" secondItem="hpr-XN-jR7" secondAttribute="centerY" id="z0V-Mi-IL6"/>
-                        </constraints>
-                    </view>
+                        <holdingPriorities>
+                            <real value="250"/>
+                            <real value="250"/>
+                        </holdingPriorities>
+                    </splitView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="hpr-XN-jR7" secondAttribute="bottom" id="Z3v-Vp-BOL"/>
-                    <constraint firstItem="hpr-XN-jR7" firstAttribute="leading" secondItem="pk8-ON-W62" secondAttribute="leading" id="bP4-pa-5Ja"/>
-                    <constraint firstAttribute="trailing" secondItem="hpr-XN-jR7" secondAttribute="trailing" id="ews-lS-aer"/>
-                    <constraint firstItem="hpr-XN-jR7" firstAttribute="top" secondItem="pk8-ON-W62" secondAttribute="top" id="s5Y-dN-C9i"/>
+                    <constraint firstAttribute="trailing" secondItem="w2o-41-ilr" secondAttribute="trailing" id="g2E-Q3-QVN"/>
+                    <constraint firstAttribute="bottom" secondItem="w2o-41-ilr" secondAttribute="bottom" id="hJd-Xy-k1u"/>
+                    <constraint firstItem="w2o-41-ilr" firstAttribute="leading" secondItem="pk8-ON-W62" secondAttribute="leading" id="nJ3-dv-FCi"/>
+                    <constraint firstItem="w2o-41-ilr" firstAttribute="top" secondItem="pk8-ON-W62" secondAttribute="top" id="pnK-e8-j0W"/>
                 </constraints>
             </view>
             <toolbar key="toolbar" implicitIdentifier="BFC2A2E6-AD8E-44BE-AF36-EA114F026D38" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="Vc2-bY-MZS">
@@ -122,6 +156,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="iJp-Yg-3nN"/>
             </connections>
+            <point key="canvasLocation" x="8" y="-590.5"/>
         </window>
         <customView id="qf8-3d-E77" userLabel="Drawer Content View">
             <rect key="frame" x="0.0" y="0.0" width="210" height="562"/>
