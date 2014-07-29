@@ -7,7 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "FCImage.h"
 
 @interface SPTimelineView : NSView
+
+@property (strong) NSMutableArray *frames;
+@property (assign) CGFloat maxDiff;
+
+- (void)setFCImageFrames:(NSMutableArray *)newValue;
 
 @end

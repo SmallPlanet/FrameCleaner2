@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "SPRegionsView.h"
+#import "SPTimelineView.h"
 #import "FCImage.h"
 
 #define DEFAULT_FRAMERATE 12
@@ -18,33 +19,34 @@
     NSMutableArray *playbackCache;
 }
 
-@property (nonatomic, strong) NSString *directoryPath;
-@property (nonatomic, assign) BOOL shouldTrimImages;
-@property (nonatomic, assign) BOOL compareWithMD5;
-@property (nonatomic, strong) NSMutableData *subregionData;
-@property (nonatomic, assign) CGSize imageSize;
-@property (nonatomic, strong) NSDictionary *settings;
+@property (strong) NSString *directoryPath;
+@property (assign) BOOL shouldTrimImages;
+@property (assign) BOOL compareWithMD5;
+@property (strong) NSMutableData *subregionData;
+@property (assign) CGSize imageSize;
+@property (strong) NSDictionary *settings;
 
-@property (nonatomic, strong) NSMutableArray *allFiles;
-@property (nonatomic, strong) NSMutableArray *allImages;
-@property (nonatomic, strong) FCImage *firstImage;
-@property (nonatomic, strong) IBOutlet NSMatrix *exportMatrix;
-@property (nonatomic, strong) IBOutlet NSPopUpButton *maxSubregions;
-@property (nonatomic, strong) IBOutlet NSImageView *imageView;
-@property (nonatomic, strong) IBOutlet NSImageView *maskView;
-@property (nonatomic, strong) IBOutlet SPRegionsView *regionsView;
-@property (nonatomic, strong) IBOutlet NSView *mainView;
-@property (nonatomic, strong) IBOutlet NSButton *removeDuplicateFrames;
+@property (strong) NSMutableArray *allFiles;
+@property (strong) NSMutableArray *allImages;
+@property (strong) FCImage *firstImage;
+@property (strong) IBOutlet NSMatrix *exportMatrix;
+@property (strong) IBOutlet NSPopUpButton *maxSubregions;
+@property (strong) IBOutlet NSImageView *imageView;
+@property (strong) IBOutlet NSImageView *maskView;
+@property (strong) IBOutlet SPRegionsView *regionsView;
+@property (strong) IBOutlet NSView *mainView;
+@property (strong) IBOutlet NSButton *removeDuplicateFrames;
+@property (strong) IBOutlet SPTimelineView *timelineView;
 
-@property (nonatomic, strong) IBOutlet NSPanel *progressPanel;
-@property (nonatomic, strong) IBOutlet NSProgressIndicator *progressTopIndicator;
-@property (nonatomic, strong) IBOutlet NSTextField *progressTopLabel;
-@property (nonatomic, strong) IBOutlet NSProgressIndicator *progressIndicator;
-@property (nonatomic, strong) IBOutlet NSTextField *progressLabel;
-@property (nonatomic, strong) IBOutlet NSTextField *framerateField;
+@property (strong) IBOutlet NSPanel *progressPanel;
+@property (strong) IBOutlet NSProgressIndicator *progressTopIndicator;
+@property (strong) IBOutlet NSTextField *progressTopLabel;
+@property (strong) IBOutlet NSProgressIndicator *progressIndicator;
+@property (strong) IBOutlet NSTextField *progressLabel;
+@property (strong) IBOutlet NSTextField *framerateField;
 
-@property (nonatomic, strong) NSOperationQueue *queue;
-@property (nonatomic, strong) NSString *maskImageTmpFilename;
-@property (nonatomic, strong) NSTimer *playbackTimer;
+@property (strong) NSOperationQueue *queue;
+@property (strong) NSString *maskImageTmpFilename;
+@property (strong) NSTimer *playbackTimer;
 
 @end

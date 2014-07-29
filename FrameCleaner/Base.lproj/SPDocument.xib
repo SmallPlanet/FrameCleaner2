@@ -20,6 +20,7 @@
                 <outlet property="progressTopLabel" destination="YlV-gB-07f" id="ZDR-oz-UL8"/>
                 <outlet property="regionsView" destination="Zia-HJ-fh2" id="K0T-eH-Lvj"/>
                 <outlet property="removeDuplicateFrames" destination="wCf-3s-Rc9" id="Hi9-fS-Qde"/>
+                <outlet property="timelineView" destination="ypM-u9-ZZ8" id="qH0-cm-MVl"/>
                 <outlet property="window" destination="PKU-kz-iPV" id="JaA-VB-d6Y"/>
             </connections>
         </customObject>

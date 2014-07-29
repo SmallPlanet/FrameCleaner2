@@ -162,6 +162,7 @@
         }
         [self drawMask];
     }
+    [self.timelineView setFCImageFrames:self.allImages];
 }
 
 - (NSInteger) subregionsCount {
