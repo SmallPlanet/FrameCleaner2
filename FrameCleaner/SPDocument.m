@@ -113,6 +113,15 @@
         [playbackCache removeAllObjects];
         playbackIndex = -1;
     }
+    [self.timelineView setCurrentFrameIndex:playbackIndex];
+}
+
+- (void) showFrameAtIndex:(NSInteger)index {
+    if (index > 0 && index < self.allImages.count) {
+        NSImage *image = [[NSImage alloc] initWithContentsOfFile:[self filepathAtIndex:index]];
+        image.size = self.firstImage.size;
+        self.imageView.image = image;
+    }
 }
 
 - (void) processFrames {
@@ -568,6 +577,7 @@
     self.imageView.layer.zPosition = 0;
     self.maskView.layer.zPosition = 10;
     self.regionsView.layer.zPosition = 20;
+    self.timelineView.document = self;
 }
 
 + (BOOL)autosavesInPlace

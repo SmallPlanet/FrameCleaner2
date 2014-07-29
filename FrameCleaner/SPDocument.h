@@ -36,7 +36,7 @@
 @property (strong) IBOutlet SPRegionsView *regionsView;
 @property (strong) IBOutlet NSView *mainView;
 @property (strong) IBOutlet NSButton *removeDuplicateFrames;
-@property (strong) IBOutlet SPTimelineView *timelineView;
+@property (assign) IBOutlet SPTimelineView *timelineView;
 
 @property (strong) IBOutlet NSPanel *progressPanel;
 @property (strong) IBOutlet NSProgressIndicator *progressTopIndicator;
@@ -49,4 +49,5 @@
 @property (strong) NSString *maskImageTmpFilename;
 @property (strong) NSTimer *playbackTimer;
 
+- (void) showFrameAtIndex:(NSInteger)index;
 @end
