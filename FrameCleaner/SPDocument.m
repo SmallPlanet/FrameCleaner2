@@ -490,6 +490,11 @@
     [self processFrames];
 }
 
+- (IBAction) toggleCallback:(id)sender {
+    self.maskView.hidden = !self.maskView.hidden;
+    self.regionsView.hidden = self.maskView.hidden;
+}
+
 - (IBAction) editCallback:(id)sender {
     NSLog(@"iV.f: %@  (%.0f, %0.f)", NSStringFromRect(self.regionsView.frame), self.imageSize.width, self.imageSize.height);
     NSLog(@"rV.f: %@", NSStringFromRect(self.regionsView.frame));

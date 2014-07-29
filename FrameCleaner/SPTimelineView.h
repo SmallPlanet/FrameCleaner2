@@ -18,6 +18,7 @@
 @property (strong) NSMutableArray *frames;
 @property (assign) CGFloat maxDiff;
 @property (assign) SPDocument *document;
+@property (strong) NSMutableArray *zones;
 
 - (void)setFCImageFrames:(NSMutableArray *)newValue;
 - (void) setCurrentFrameIndex:(NSInteger)index;

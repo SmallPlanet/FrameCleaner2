@@ -132,6 +132,11 @@
                             <action selector="editCallback:" target="-2" id="LZ6-uX-90E"/>
                         </connections>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="47178732-1893-4CD4-9070-A525370C7B7B" label="Toggle" paletteLabel="Toggle" tag="-1" image="eye-icon" id="B2Q-QM-rdB">
+                        <connections>
+                            <action selector="toggleCallback:" target="-2" id="dWz-mo-KwL"/>
+                        </connections>
+                    </toolbarItem>
                     <toolbarItem implicitItemIdentifier="D497F8E9-8A86-4C29-B630-7B12DF2A948B" label="Reset" paletteLabel="Reset" tag="-1" image="NSCaution" id="BF8-aI-vmA">
                         <connections>
                             <action selector="resetCallback:" target="-2" id="6Q9-xE-nyB"/>
@@ -154,6 +159,7 @@
                     <toolbarItem reference="zOo-IN-Y4w"/>
                     <toolbarItem reference="m2I-gm-WU7"/>
                     <toolbarItem reference="95v-dZ-Nd3"/>
+                    <toolbarItem reference="B2Q-QM-rdB"/>
                     <toolbarItem reference="BF8-aI-vmA"/>
                     <toolbarItem reference="31D-zd-Qla"/>
                     <toolbarItem reference="tio-Lg-0oc"/>
@@ -351,6 +357,7 @@
         <image name="NSFolder" width="32" height="32"/>
         <image name="NSInfo" width="32" height="32"/>
         <image name="NSMultipleDocuments" width="32" height="32"/>
+        <image name="eye-icon" width="512" height="512"/>
         <image name="play-icon" width="100.08000183105469" height="100.08000183105469"/>
     </resources>
 </document>
