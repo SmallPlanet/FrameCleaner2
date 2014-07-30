@@ -8,11 +8,21 @@
 
 #import <Cocoa/Cocoa.h>
 #import "FCImage.h"
+
+typedef enum : NSUInteger {
+    idle,
+    creatingZone
+} SPTimelineEventState;
+
+
 @class SPDocument;
 
 @interface SPTimelineView : NSView {
     NSInteger currentFrameIndex;
     NSPoint originalOrigin;
+    NSPoint currentPosition;
+    SPTimelineEventState eventState;
+    NSView *newZone;
 }
 
 @property (strong) NSMutableArray *frames;
