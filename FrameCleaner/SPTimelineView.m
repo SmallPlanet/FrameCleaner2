@@ -8,6 +8,7 @@
 
 #import "SPTimelineView.h"
 #import "SPDocument.h"
+#import "SPBorderedView.h"
 
 #define OFFSET 5.0
 
@@ -76,6 +77,16 @@
 
 #pragma mark -
 
+- (SPBorderedView *) addRegionWithFrame:(NSRect)frame {
+    SPBorderedView *newRegion = [[SPBorderedView alloc] initWithFrame:frame];
+    [self addSubview:newRegion];
+    return newRegion;
+}
+
+- (CGFloat) midpointBetweenNearestFramesForX:(CGFloat)x {
+    return x;
+}
+
 - (NSPoint) processMouseEvent:(NSEvent *)theEvent {
     NSPoint point = [self convertPoint:theEvent.locationInWindow fromView:nil];
     CGFloat betweenFrames = (self.frame.size.width - 2*OFFSET) / self.frames.count;
@@ -88,19 +99,38 @@
 }
 
 - (void) mouseDown:(NSEvent *)theEvent {
-    if( NSShiftKeyMask & [NSEvent modifierFlags] ){
-        eventState = creatingZone;
-    }
     originalOrigin = [self processMouseEvent:theEvent];
     currentPosition = originalOrigin;
+    if( NSShiftKeyMask & [NSEvent modifierFlags] ){
+        eventState = creatingZone;
+        CGFloat x = [self midpointBetweenNearestFramesForX:originalOrigin.x];
+        NSRect zoneRect = NSMakeRect(x,self.frame.size.height*0.4,1,self.frame.size.height*0.2);
+        newZone = [self addRegionWithFrame:zoneRect];
+    }
 }
 
 - (void) mouseDragged:(NSEvent *)theEvent {
     currentPosition = [self processMouseEvent:theEvent];
+    if (eventState == creatingZone) {
+        NSRect zoneRect = newZone.frame;
+        if (zoneRect.origin.x < currentPosition.x) {
+            zoneRect.size.width = currentPosition.x - zoneRect.origin.x;
+        } else {
+            zoneRect.size.width = zoneRect.origin.x - currentPosition.x;
+            zoneRect.origin.x = currentPosition.x;
+        }
+        newZone.frame = zoneRect;
+    }
 }
 
 - (void) mouseUp:(NSEvent *)theEvent {
     eventState = idle;
+    [self setCurrentFrameIndex:-1];
+    if (eventState == creatingZone) {
+        [self.zones addObject:newZone];
+        newZone = nil;
+        eventState = idle;
+    }
 }
 
 - (BOOL)acceptsFirstResponder {

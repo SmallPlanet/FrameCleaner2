@@ -85,10 +85,12 @@
         if ([filePath hasSuffix:@".png"]) {
             FCImage *image = [[FCImage alloc] initWithSource:filePath];
             if (image) {
+                image.diffCount = 1;
                 [self.allImages addObject:image];
             }
         }
     }
+    [self.timelineView setFCImageFrames:self.allImages];
 }
 
 - (void) play {
