@@ -8,7 +8,6 @@
 
 #import "SPTimelineView.h"
 #import "SPDocument.h"
-#import "SPBorderedView.h"
 
 #define OFFSET 5.0
 
@@ -38,6 +37,19 @@
     self.needsDisplay = YES;
 }
 
+- (CGFloat) xPositionForFrameIndex:(NSInteger)index {
+    return OFFSET + (self.frame.size.width - 2*OFFSET) / self.frames.count * index;
+}
+
+- (BOOL) isFrameInZone:(FCImage *)frame {
+    for (SPBorderedView *zone in self.zones) {
+        if ([zone.data containsObject:frame]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (void)drawTimeline {
     if (!self.frames) {
         return;
@@ -46,7 +58,8 @@
     [NSBezierPath setDefaultLineWidth:2.f];
     NSColor *defaultColor = [NSColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
     NSColor *highlightColor = [NSColor colorWithRed:0.9 green:0.2 blue:0.2 alpha:1.0];
-    NSColor *zoneColor = [NSColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
+    NSColor *zoneColor = [NSColor colorWithRed:0.2 green:0.2 blue:0.9 alpha:1.0];
+    NSColor *zoneNewColor = [NSColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
     CGFloat width = self.frame.size.width - 2*OFFSET;
     CGFloat height = self.frame.size.height - 2*OFFSET;
     CGFloat x = OFFSET;
@@ -57,10 +70,16 @@
         zoneRange.y = (originalOrigin.x > currentPosition.x ? originalOrigin.x : currentPosition.x);
     }
     for (FCImage *frame in self.frames) {
-        if (frame.inZone || (x-OFFSET >= zoneRange.x && x-OFFSET <= zoneRange.y)) {
-            [zoneColor setStroke];
+        if (currentFrameIndex == [self.frames indexOfObject:frame]) {
+            [highlightColor setStroke];
+        } else if (x-OFFSET >= zoneRange.x && x-OFFSET <= zoneRange.y) {
+            [zoneNewColor setStroke];
         } else {
-            (currentFrameIndex == [self.frames indexOfObject:frame] ? [highlightColor setStroke] : [defaultColor setStroke]);
+            if ([self isFrameInZone:frame]) {
+                [zoneColor setStroke];
+            } else {
+                [defaultColor setStroke];
+            }
         }
         CGFloat y = OFFSET + frame.diffCount * scale;
         [NSBezierPath strokeLineFromPoint:NSMakePoint(x, OFFSET) toPoint:NSMakePoint(x, y)];
@@ -124,13 +143,20 @@
 }
 
 - (void) mouseUp:(NSEvent *)theEvent {
-    eventState = idle;
-    [self setCurrentFrameIndex:-1];
     if (eventState == creatingZone) {
+        [newZone.data removeAllObjects];
+        for (FCImage *frame in self.frames) {
+            CGFloat x = [self xPositionForFrameIndex:[self.frames indexOfObject:frame]];
+            if (x >= newZone.frame.origin.x && x <= newZone.frame.origin.x+newZone.frame.size.width) {
+                [newZone.data addObject:frame];
+            }
+        }
+        
         [self.zones addObject:newZone];
         newZone = nil;
         eventState = idle;
     }
+    [self setCurrentFrameIndex:-1];
 }
 
 - (BOOL)acceptsFirstResponder {

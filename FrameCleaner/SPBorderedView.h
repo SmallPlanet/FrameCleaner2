@@ -10,6 +10,8 @@
 
 @interface SPBorderedView : NSView
 
+@property (strong) NSMutableArray *data;
+
 - (CGRect) cgrect;
 - (BOOL) containsPoint:(CGPoint)point withInset:(CGFloat)inset;
 - (CGFloat) areaWithPoint:(CGPoint)point;

@@ -169,6 +169,7 @@
         layer.borderWidth = 1.f;
         self.layer = layer;
         [self setWantsLayer:YES];
+        self.data = [NSMutableArray array];
     }
     return self;
 }

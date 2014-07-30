@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "FCImage.h"
+#import "SPBorderedView.h"
 
 typedef enum : NSUInteger {
     idle,
@@ -22,7 +23,7 @@ typedef enum : NSUInteger {
     NSPoint originalOrigin;
     NSPoint currentPosition;
     SPTimelineEventState eventState;
-    NSView *newZone;
+    SPBorderedView *newZone;
 }
 
 @property (strong) NSMutableArray *frames;
