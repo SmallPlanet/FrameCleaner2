@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+@class SPDocument;
 
 @interface SPRegionsView : NSImageView {
     NSView *activeView;
@@ -14,6 +15,7 @@
 }
 
 @property (nonatomic, strong) NSMutableArray *regions;
+@property (assign) SPDocument *document;
 
 - (void)reset;
 - (void) optimize;

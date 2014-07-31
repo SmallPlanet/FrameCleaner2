@@ -71,6 +71,9 @@
     if (!self.maskImageTmpFilename) {
         self.maskImageTmpFilename = [self temporaryFilename];
     }
+    if (!self.subregionData) {
+        return;
+    }
     [FCImage writeMaskImageFromData:self.subregionData size:self.imageSize toPath:self.maskImageTmpFilename];
     self.maskView.image = [[NSImage alloc] initWithContentsOfFile:self.maskImageTmpFilename];
 }
@@ -569,6 +572,7 @@
 - (void)windowControllerDidLoadNib:(NSWindowController *)aController
 {
     [super windowControllerDidLoadNib:aController];
+    self.hasUndoManager = YES;
 
 /*    if (NSAppKitVersionNumber > NSAppKitVersionNumber10_9) {
         NSWindow *window = [self windowForSheet];
@@ -602,6 +606,7 @@
     self.maskView.layer.zPosition = 10;
     self.regionsView.layer.zPosition = 20;
     self.timelineView.document = self;
+    self.regionsView.document = self;
 }
 
 + (BOOL)autosavesInPlace

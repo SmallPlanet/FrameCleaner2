@@ -96,6 +96,28 @@
 
 #pragma mark -
 
+- (void) removeZone:(id)object {
+    if ([self.zones containsObject:object]) {
+        [self.zones removeObject:object];
+        if ([self.subviews containsObject:object]) {
+            [object removeFromSuperview];
+        }
+        [[self.document undoManager] registerUndoWithTarget:self selector:@selector(addZone:) object:object];
+        self.needsDisplay = YES;
+    }
+}
+
+- (void) addZone:(id)object {
+    if (![self.zones containsObject:object]) {
+        [self.zones addObject:object];
+        if (![self.subviews containsObject:object]) {
+            [self addSubview:object];
+        }
+        [[self.document undoManager] registerUndoWithTarget:self selector:@selector(removeZone:) object:object];
+        self.needsDisplay = YES;
+    }
+}
+
 - (SPBorderedView *) addRegionWithFrame:(NSRect)frame {
     SPBorderedView *newRegion = [[SPBorderedView alloc] initWithFrame:frame];
     [self addSubview:newRegion];
@@ -152,7 +174,7 @@
             }
         }
         
-        [self.zones addObject:newZone];
+        [self addZone:newZone];
         newZone = nil;
         eventState = idle;
     }

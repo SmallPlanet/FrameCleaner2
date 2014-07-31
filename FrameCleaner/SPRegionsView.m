@@ -8,6 +8,7 @@
 
 #import "SPRegionsView.h"
 #import "SPBorderedView.h"
+#import "SPDocument.h"
 
 @implementation SPRegionsView
 
@@ -86,15 +87,30 @@
     for (NSString *regionString in array) {
         SPBorderedView *regionView = [[SPBorderedView alloc] initWithFrame:NSRectFromString(regionString)];
         if (regionView) {
-            [self addSubview:regionView];
-            [self.regions addObject:regionView];
+            [self addRegion:regionView];
         }
+    }
+}
+
+- (void) addRegion:(SPBorderedView *)region {
+    if (![self.regions containsObject:region]) {
+        [self addSubview:region];
+        [self.regions addObject:region];
+        [[self.document undoManager] registerUndoWithTarget:self selector:@selector(removeRegion:) object:region];
+    }
+}
+
+- (void) removeRegion:(SPBorderedView *)region {
+    if ([self.regions containsObject:region]) {
+        [region removeFromSuperview];
+        [self.regions removeObject:region];
+        [[self.document undoManager] registerUndoWithTarget:self selector:@selector(addRegion:) object:region];
     }
 }
 
 - (SPBorderedView *) addRegionWithFrame:(NSRect)frame {
     SPBorderedView *newRegion = [[SPBorderedView alloc] initWithFrame:frame];
-    [self addSubview:newRegion];
+    [self addRegion:newRegion];
     return newRegion;
 }
 
@@ -131,9 +147,7 @@
 }
 
 - (void) mouseUp:(NSEvent *)theEvent {
-    if (activeView) {
-        [self.regions addObject:activeView];
-    }
+    
 }
 
 - (void)reset {
