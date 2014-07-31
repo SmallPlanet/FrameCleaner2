@@ -185,4 +185,16 @@
     return YES;
 }
 
+#pragma mark - save/load
+
+- (NSMutableDictionary *) dataDictionary {
+    NSMutableDictionary *data = [NSMutableDictionary dictionary];
+//    for ()
+    return data;
+}
+
+- (void) loadWithDataDictionary:(NSDictionary *)data {
+    
+}
+
 @end
