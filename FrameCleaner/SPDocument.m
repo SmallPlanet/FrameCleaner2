@@ -304,7 +304,6 @@
     CGPoint max = CGPointMake(globalFrame.size.width + min.x, globalFrame.size.height + min.y);
     do {
         imageIndex = 0;
-        
         SPBorderedView *region = nil;
         NSString *suffix = @"";
         NSRect cropFrame;
@@ -326,8 +325,6 @@
             regionsSnippet = [regionsSnippet stringByAppendingFormat:@"\t<Image bounds=\"%d,%d,%d,%d\" urlPath=\"%@\">\n", (int)(cropFrame.origin.x), (int)(cropFrame.origin.y), (int)(cropFrame.size.width), (int)(cropFrame.size.height), [NSString stringWithFormat:@"bundle://%@",fileName]];
         }
         
-        [processedImages removeAllObjects];
-        [uniqueImages removeAllObjects];
         NSMutableArray *iterator = [NSMutableArray array];
         if (self.timelineView.zones.count > 0) {
             for (SPBorderedView *zone in self.timelineView.zones) {
@@ -337,10 +334,11 @@
             [iterator addObject:self.allImages];
         }
         
+        [uniqueImages removeAllObjects];
         for (NSArray *imageArray in iterator) {
+            [processedImages removeAllObjects];
             for (FCImage *newImage in imageArray) {
                 @autoreleasepool {
-                    [frameSequence setString:@""];
                     [self setProgress:((double)imageIndex/(double)[self.allFiles count])];
                     if (subregions) {
                         [self setProgressMessage:[NSString stringWithFormat:@"Region %d/%ld %@", currentRegion+1, [self subregionsCount], [newImage.sourceFile lastPathComponent]]];
@@ -394,6 +392,8 @@
                 [image dropMemory];
             }
             
+            [frameSequence setString:@""];
+
             for(int i = 0; i < [processedImages count]; i++) {
                 FCImage * image = [processedImages objectAtIndex:i];
                 BOOL didConversion = NO;
