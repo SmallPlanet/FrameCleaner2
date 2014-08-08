@@ -303,6 +303,7 @@
     CGPoint min = globalFrame.origin;
     CGPoint max = CGPointMake(globalFrame.size.width + min.x, globalFrame.size.height + min.y);
     do {
+        [uniqueImages removeAllObjects];
         imageIndex = 0;
         SPBorderedView *region = nil;
         NSString *suffix = @"";
@@ -334,9 +335,8 @@
             [iterator addObject:self.allImages];
         }
         
-        [uniqueImages removeAllObjects];
+        [processedImages removeAllObjects];
         for (NSArray *imageArray in iterator) {
-            [processedImages removeAllObjects];
             for (FCImage *newImage in imageArray) {
                 @autoreleasepool {
                     [self setProgress:((double)imageIndex/(double)[self.allFiles count])];
@@ -401,6 +401,9 @@
                 // Detect runs of the same number...
                 for(int j = i+1; j < [processedImages count]; j++) {
                     FCImage * nextImage = [processedImages objectAtIndex:j];
+                    if (nextImage.index < 0) {
+                        NSLog(@"yikes");
+                    }
                     if(nextImage.index != image.index || j+1 >= [processedImages count]) {
                         if(j-i > 1) {
                             [frameSequence appendFormat:@"%d*%d,", (int)image.index, j-i];
@@ -433,41 +436,41 @@
                 [frameSequence appendFormat:@"%d,", (int)image.index];
             }
             
-            // Export all of the images
-            for(FCImage * image in uniqueImages) {
-                NSString * fileName = [[[image sourceFile] lastPathComponent] stringByDeletingPathExtension];
-                
-                if (subregions) {
-                    fileName = [fileName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"]];
-                    fileName = [baseFileName stringByAppendingString:suffix];
-                    fileName = [exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%04d", fileName, (int)image.index]];
-                }
-                else if([self shouldRemoveDuplicateFrames])
-                {
-                    fileName = [fileName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"]];
-                    fileName = [exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%04d", fileName, (int)image.index]];
-                } else {
-                    fileName = [exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", fileName]];
-                }
-                
-                [image exportImageWithFormat:self.exportMatrix.selectedRow toFileName:fileName queue:self.queue cropped:YES toMin:min max:max];
-            }
-
-            while([self.queue operationCount])
-            {
-                usleep(50000);
-                NSLog(@"progress = %f",((double)[self.queue operationCount]/(double)[uniqueImages count]));
-                [self setProgress:1.0f - ((double)([self.queue operationCount]+1)/(double)[uniqueImages count])];
-            }
-            
-            
             if(subregions) {
                 NSString *pathFormat = [NSString stringWithFormat:@"%@%@#", baseFileName, suffix];
                 pathFormat = [pathFormat stringByAppendingPathExtension:[self.firstImage extensionForExportFormat:self.exportMatrix.selectedRow]];
                 regionsSnippet = [regionsSnippet stringByAppendingFormat:@"\t\t<FrameAnimation framerate=\"%ld\" sequence=\"%@\" pathFormat=\"bundle://%@\" digits=\"4\" />\n", [self frameRate], frameSequence, pathFormat];
                 NSLog(@"regionsSnippet = %@", regionsSnippet);
             }
+        } // for imageArray in iterator
+        
+        // Export all of the images
+        for(FCImage * image in uniqueImages) {
+            NSString * fileName = [[[image sourceFile] lastPathComponent] stringByDeletingPathExtension];
+            
+            if (subregions) {
+                fileName = [fileName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"]];
+                fileName = [baseFileName stringByAppendingString:suffix];
+                fileName = [exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%04d", fileName, (int)image.index]];
+            }
+            else if([self shouldRemoveDuplicateFrames])
+            {
+                fileName = [fileName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"]];
+                fileName = [exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%04d", fileName, (int)image.index]];
+            } else {
+                fileName = [exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", fileName]];
+            }
+            
+            [image exportImageWithFormat:self.exportMatrix.selectedRow toFileName:fileName queue:self.queue cropped:YES toMin:min max:max];
         }
+        
+        while([self.queue operationCount])
+        {
+            usleep(50000);
+            NSLog(@"progress = %f",((double)[self.queue operationCount]/(double)[uniqueImages count]));
+            [self setProgress:1.0f - ((double)([self.queue operationCount]+1)/(double)[uniqueImages count])];
+        }
+        
         if (subregions) {
             regionsSnippet = [regionsSnippet stringByAppendingString:@"\t</Image>\n"];
         }
