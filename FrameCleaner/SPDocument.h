@@ -37,6 +37,7 @@
 @property (strong) IBOutlet NSView *mainView;
 @property (strong) IBOutlet NSButton *removeDuplicateFrames;
 @property (assign) IBOutlet SPTimelineView *timelineView;
+@property (strong) IBOutlet NSButton *exportForImageBatch;
 
 @property (strong) IBOutlet NSPanel *progressPanel;
 @property (strong) IBOutlet NSProgressIndicator *progressTopIndicator;

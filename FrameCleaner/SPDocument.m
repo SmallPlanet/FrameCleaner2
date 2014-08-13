@@ -256,6 +256,8 @@
     [self setProgress:0.0];
     [self setProgressMessage:@"Reticulating splines"];
     [self.progressPanel setIsVisible:YES];
+    BOOL imageBatchExport = self.exportForImageBatch.state == NSOnState;
+    NSString *bundle = (imageBatchExport ? @"" : @"bundle://");
     BOOL subregions = ([self subregionsCount] > 0);
     [self setProgressTopHidden:!subregions];
 
@@ -297,7 +299,7 @@
         [baseImage exportImageWithFormat:self.exportMatrix.selectedRow toFileName:fullFileName queue:self.queue cropped:YES toMin:min max:max];
         
         fileName = [fileName stringByAppendingPathExtension:[baseImage extensionForExportFormat:self.exportMatrix.selectedRow]];
-        regionsSnippet = [regionsSnippet stringByAppendingFormat:@"<Image bounds=\"0,0,%d,%d\" urlPath=\"bundle://%@\">\n", (int)(self.imageSize.width), (int)(self.imageSize.height), fileName];
+        regionsSnippet = [regionsSnippet stringByAppendingFormat:@"<Image bounds=\"0,0,%d,%d\" urlPath=\"%@%@\">\n", (int)(self.imageSize.width), (int)(self.imageSize.height), bundle, fileName];
     }
     
     NSMutableArray *processedImages = [NSMutableArray array];
@@ -327,7 +329,7 @@
             suffix = [NSString stringWithFormat:@"region%02d_",currentRegion];
             NSString *fileName = [baseFileName stringByAppendingFormat:@"%@0000",suffix];
             fileName = [fileName stringByAppendingPathExtension:[self.firstImage extensionForExportFormat:[self.exportMatrix selectedRow]]];
-            regionsSnippet = [regionsSnippet stringByAppendingFormat:@"\t<Image bounds=\"%d,%d,%d,%d\" urlPath=\"%@\">\n", (int)(cropFrame.origin.x), (int)(cropFrame.origin.y), (int)(cropFrame.size.width), (int)(cropFrame.size.height), [NSString stringWithFormat:@"bundle://%@",fileName]];
+            regionsSnippet = [regionsSnippet stringByAppendingFormat:@"\t<Image bounds=\"%d,%d,%d,%d\" urlPath=\"%@%@\">\n", (int)(cropFrame.origin.x), (int)(cropFrame.origin.y), (int)(cropFrame.size.width), (int)(cropFrame.size.height), bundle, fileName];
         }
         
         NSMutableArray *iterator = [NSMutableArray array];
@@ -454,7 +456,7 @@
             if(subregions) {
                 NSString *pathFormat = [NSString stringWithFormat:@"%@%@#", baseFileName, suffix];
                 pathFormat = [pathFormat stringByAppendingPathExtension:[self.firstImage extensionForExportFormat:self.exportMatrix.selectedRow]];
-                regionsSnippet = [regionsSnippet stringByAppendingFormat:@"\t\t<FrameAnimation subscribe=\"note%lu\" framerate=\"%ld\" sequence=\"%@\" pathFormat=\"bundle://%@\" digits=\"4\" />\n", (unsigned long)[iterator indexOfObject:zoneImages], [self frameRate], frameSequence, pathFormat];
+                regionsSnippet = [regionsSnippet stringByAppendingFormat:@"\t\t<FrameAnimation subscribe=\"note%lu\" framerate=\"%ld\" sequence=\"%@\" pathFormat=\"%@%@\" digits=\"4\" />\n", (unsigned long)[iterator indexOfObject:zoneImages], [self frameRate], frameSequence, bundle, pathFormat];
                 NSLog(@"regionsSnippet = %@", regionsSnippet);
             }
         }
@@ -637,6 +639,7 @@
     return @{@"directoryPath": self.directoryPath,
              @"shouldTrimImages": @(self.shouldTrimImages),
              @"removeDuplicateFrames": @(self.removeDuplicateFrames.state == NSOnState),
+             @"exportForImageBatch": @(self.exportForImageBatch.state == NSOnState),
              @"compareWithMD5": @(self.compareWithMD5),
              @"exportFormatIndex": @(self.exportMatrix.selectedRow),
              @"frameRate": self.framerateField.stringValue,
@@ -648,6 +651,7 @@
     self.directoryPath = settings[@"directoryPath"];
     self.shouldTrimImages = [settings[@"shouldTrimImages"] boolValue];
     self.removeDuplicateFrames.state = ([settings[@"removeDuplicateFrames"] boolValue] ? NSOnState : NSOffState);
+    self.exportForImageBatch.state = ([settings[@"exportForImageBatch"] boolValue] ? NSOnState : NSOffState);
     self.compareWithMD5 = [settings[@"shouldTrimImages"] boolValue];
     if (settings[@"frameRate"]) {
         self.framerateField.stringValue = settings[@"frameRate"];

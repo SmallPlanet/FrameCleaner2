@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6185.11" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6205" systemVersion="14A314h" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6185.11"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6205"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SPDocument">
             <connections>
+                <outlet property="exportForImageBatch" destination="IkK-S4-vvJ" id="rKc-Lq-H1E"/>
                 <outlet property="exportMatrix" destination="9Gk-y3-Qe9" id="mNk-Va-57u"/>
                 <outlet property="framerateField" destination="2tP-7t-2Up" id="gau-bC-w4c"/>
                 <outlet property="imageView" destination="doV-O9-ab8" id="U9U-bd-nbL"/>
@@ -30,7 +31,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="283" y="305" width="873" height="756"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" autoresizesSubviews="NO" id="pk8-ON-W62" userLabel="topView">
                 <rect key="frame" x="0.0" y="0.0" width="873" height="756"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -302,6 +303,13 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IkK-S4-vvJ">
+                    <rect key="frame" x="10" y="85" width="271" height="18"/>
+                    <buttonCell key="cell" type="check" title="Export for ImageBatch" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="hAd-70-cM5">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
             </subviews>
             <point key="canvasLocation" x="429" y="143"/>
         </customView>
@@ -317,7 +325,7 @@
             <windowStyleMask key="styleMask" utility="YES" HUD="YES"/>
             <windowPositionMask key="initialPositionMask" rightStrut="YES" topStrut="YES"/>
             <rect key="contentRect" x="2061" y="1154" width="452" height="220"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="SfN-hy-3wD">
                 <rect key="frame" x="0.0" y="0.0" width="452" height="220"/>
                 <autoresizingMask key="autoresizingMask"/>
