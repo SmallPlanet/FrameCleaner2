@@ -329,109 +329,120 @@
         NSMutableArray *iterator = [NSMutableArray array];
         if (self.timelineView.zones.count > 0) {
             for (SPBorderedView *zone in self.timelineView.zones) {
-                [iterator addObject:zone.data];
+                [iterator addObjectsFromArray:zone.data];
             }
         } else {
-            [iterator addObject:self.allImages];
+            [iterator addObjectsFromArray:self.allImages];
         }
         
         [processedImages removeAllObjects];
-        for (NSArray *imageArray in iterator) {
-            for (FCImage *newImage in imageArray) {
-                @autoreleasepool {
-                    [self setProgress:((double)imageIndex/(double)[self.allFiles count])];
-                    if (subregions) {
-                        [self setProgressMessage:[NSString stringWithFormat:@"Region %d/%ld %@", currentRegion+1, [self subregionsCount], [newImage.sourceFile lastPathComponent]]];
-                    } else {
-                        [self setProgressMessage:[NSString stringWithFormat:@"Processing %@", [newImage.sourceFile lastPathComponent]]];
-                    }
+        for (FCImage *newImage in iterator) {
+            @autoreleasepool {
+                [self setProgress:((double)imageIndex/(double)[self.allFiles count])];
+                if (subregions) {
+                    [self setProgressMessage:[NSString stringWithFormat:@"Region %d/%ld %@", currentRegion+1, [self subregionsCount], [newImage.sourceFile lastPathComponent]]];
+                } else {
+                    [self setProgressMessage:[NSString stringWithFormat:@"Processing %@", [newImage.sourceFile lastPathComponent]]];
+                }
 
-                    FCImage *duplicateOfImage = NULL;
-                    
-                    newImage.index = imageIndex++;
-                    
-                    if([self shouldRemoveDuplicateFrames]) {
-                        // Check to see if another frame is like this frame.
-                        for(FCImage * existingImage in uniqueImages) {
-                            @autoreleasepool {
-                                if (subregions) {
-                                    if ([newImage compare:existingImage pixelsWithMin:min andMax:max]) {
-//                                        NSLog(@"DUPLICATE: %@ and %@", [newImage.sourceFile lastPathComponent], [existingImage.sourceFile lastPathComponent]);
-                                        duplicateOfImage = existingImage;
-                                        [newImage dropMemory];
-                                        [existingImage dropMemory];
-                                        break;
-                                    }
-                                }
-                                else if([newImage compare:existingImage]) {
-//                                    NSLog(@"DUPLICATE: %@ and %@", [newImage.sourceFile lastPathComponent], [existingImage.sourceFile lastPathComponent]);
+                FCImage *duplicateOfImage = NULL;
+                
+                newImage.index = imageIndex++;
+                
+                if([self shouldRemoveDuplicateFrames]) {
+                    // Check to see if another frame is like this frame.
+                    for(FCImage * existingImage in uniqueImages) {
+                        @autoreleasepool {
+                            if (subregions) {
+                                if ([newImage compare:existingImage pixelsWithMin:min andMax:max]) {
+                                    // NSLog(@"DUPLICATE: %@ and %@", [newImage.sourceFile lastPathComponent], [existingImage.sourceFile lastPathComponent]);
                                     duplicateOfImage = existingImage;
                                     [newImage dropMemory];
                                     [existingImage dropMemory];
                                     break;
                                 }
+                            }
+                            else if([newImage compare:existingImage]) {
+                                // NSLog(@"DUPLICATE: %@ and %@", [newImage.sourceFile lastPathComponent], [existingImage.sourceFile lastPathComponent]);
+                                duplicateOfImage = existingImage;
                                 [newImage dropMemory];
                                 [existingImage dropMemory];
+                                break;
                             }
+                            [newImage dropMemory];
+                            [existingImage dropMemory];
                         }
                     }
-
-                    if(duplicateOfImage) {
-                        newImage.index = duplicateOfImage.index;
-                    } else {
-                        [uniqueImages addObject:newImage];
-                    }
-                    [processedImages addObject:newImage];
                 }
-            }
 
-            // Translate the indices in processedImages to their uniqueImages equivalents
-            for(FCImage * image in processedImages) {
-                FCImage * otherImage = [processedImages objectAtIndex:image.index];
-                image.index = [uniqueImages indexOfObject:otherImage];
-                [image dropMemory];
+                if(duplicateOfImage) {
+                    newImage.index = duplicateOfImage.index;
+                } else {
+                    [uniqueImages addObject:newImage];
+                }
+                [processedImages addObject:newImage];
             }
-            
+        }
+
+        // Translate the indices in processedImages to their uniqueImages equivalents
+        for(FCImage * image in processedImages) {
+            FCImage * otherImage = [processedImages objectAtIndex:image.index];
+            image.index = [uniqueImages indexOfObject:otherImage];
+            [image dropMemory];
+        }
+        
+        [iterator removeAllObjects];
+        if (self.timelineView.zones.count > 0) {
+            for (SPBorderedView *zone in self.timelineView.zones) {
+                [iterator addObject:[NSMutableArray arrayWithArray:zone.data]];
+            }
+        } else {
+            [iterator addObject:self.allImages];
+        }
+        
+        BOOL shorten = YES;
+        for (NSMutableArray *zoneImages in iterator) {
             [frameSequence setString:@""];
-
-            for(int i = 0; i < [processedImages count]; i++) {
-                FCImage * image = [processedImages objectAtIndex:i];
+            for(int i = 0; i < [zoneImages count]; i++) {
+                FCImage * image = [zoneImages objectAtIndex:i];
                 BOOL didConversion = NO;
                 
-                // Detect runs of the same number...
-                for(int j = i+1; j < [processedImages count]; j++) {
-                    FCImage * nextImage = [processedImages objectAtIndex:j];
-                    if (nextImage.index < 0) {
-                        NSLog(@"yikes");
-                    }
-                    if(nextImage.index != image.index || j+1 >= [processedImages count]) {
-                        if(j-i > 1) {
-                            [frameSequence appendFormat:@"%d*%d,", (int)image.index, j-i];
-                            i = j-1;
-                            didConversion = YES;
+                if (shorten) {
+                    // Detect runs of the same number...
+                    for(int j = i+1; j < [zoneImages count]; j++) {
+                        FCImage * nextImage = [zoneImages objectAtIndex:j];
+                        if (nextImage.index < 0) {
+                            NSLog(@"yikes");
                         }
-                        break;
-                    }
-                }
-                if(didConversion) {
-                    continue;
-                }
-                // Detect runs of incremental number...
-                for(int j = i+1; j < [processedImages count]; j++) {
-                    FCImage * nextImage = [processedImages objectAtIndex:j];
-                    FCImage * prevImage = [processedImages objectAtIndex:j-1];
-                    
-                    if(nextImage.index != prevImage.index+1 || j+1 >= [processedImages count]) {
-                        if(prevImage.index-image.index > 1) {
-                            [frameSequence appendFormat:@"%d-%d,", (int)image.index, (int)prevImage.index];
-                            i = j-1;
-                            didConversion = YES;
+                        if(nextImage.index != image.index || j+1 >= [zoneImages count]) {
+                            if(j-i > 1) {
+                                [frameSequence appendFormat:@"%d*%d,", (int)image.index, j-i];
+                                i = j-1;
+                                didConversion = YES;
+                            }
+                            break;
                         }
-                        break;
                     }
-                }
-                if(didConversion) {
-                    continue;
+                    if(didConversion) {
+                        continue;
+                    }
+                    // Detect runs of incremental number...
+                    for(int j = i+1; j < [zoneImages count]; j++) {
+                        FCImage * nextImage = [zoneImages objectAtIndex:j];
+                        FCImage * prevImage = [zoneImages objectAtIndex:j-1];
+                        
+                        if(nextImage.index != prevImage.index+1 || j+1 >= [zoneImages count]) {
+                            if(prevImage.index-image.index > 1) {
+                                [frameSequence appendFormat:@"%d-%d,", (int)image.index, (int)prevImage.index];
+                                i = j-1;
+                                didConversion = YES;
+                            }
+                            break;
+                        }
+                    }
+                    if(didConversion) {
+                        continue;
+                    }
                 }
                 [frameSequence appendFormat:@"%d,", (int)image.index];
             }
@@ -439,11 +450,11 @@
             if(subregions) {
                 NSString *pathFormat = [NSString stringWithFormat:@"%@%@#", baseFileName, suffix];
                 pathFormat = [pathFormat stringByAppendingPathExtension:[self.firstImage extensionForExportFormat:self.exportMatrix.selectedRow]];
-                regionsSnippet = [regionsSnippet stringByAppendingFormat:@"\t\t<FrameAnimation framerate=\"%ld\" sequence=\"%@\" pathFormat=\"bundle://%@\" digits=\"4\" />\n", [self frameRate], frameSequence, pathFormat];
+                regionsSnippet = [regionsSnippet stringByAppendingFormat:@"\t\t<FrameAnimation subscribe=\"note%lu\" framerate=\"%ld\" sequence=\"%@\" pathFormat=\"bundle://%@\" digits=\"4\" />\n", (unsigned long)[iterator indexOfObject:zoneImages], [self frameRate], frameSequence, pathFormat];
                 NSLog(@"regionsSnippet = %@", regionsSnippet);
             }
-        } // for imageArray in iterator
-        
+        }
+    
         // Export all of the images
         for(FCImage * image in uniqueImages) {
             NSString * fileName = [[[image sourceFile] lastPathComponent] stringByDeletingPathExtension];
@@ -452,9 +463,7 @@
                 fileName = [fileName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"]];
                 fileName = [baseFileName stringByAppendingString:suffix];
                 fileName = [exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%04d", fileName, (int)image.index]];
-            }
-            else if([self shouldRemoveDuplicateFrames])
-            {
+            } else if([self shouldRemoveDuplicateFrames]) {
                 fileName = [fileName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"]];
                 fileName = [exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%04d", fileName, (int)image.index]];
             } else {
@@ -475,8 +484,7 @@
             regionsSnippet = [regionsSnippet stringByAppendingString:@"\t</Image>\n"];
         }
         
-        currentRegion++;
-    } while (currentRegion < [self subregionsCount]);
+    } while (++currentRegion < [self subregionsCount]);
     
     if(subregions) {
         regionsSnippet = [regionsSnippet stringByAppendingString:@"</Image>"];
