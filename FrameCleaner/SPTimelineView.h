@@ -31,7 +31,8 @@ typedef enum : NSUInteger {
 @property (assign) SPDocument *document;
 @property (strong) NSMutableArray *zones;
 
-- (void)setFCImageFrames:(NSMutableArray *)newValue;
+- (void) reset;
+- (void) setFCImageFrames:(NSMutableArray *)newValue;
 - (void) setCurrentFrameIndex:(NSInteger)index;
 - (NSArray *) zonesArrayForPlist;
 - (void) setZonesArrayFromPlist:(NSArray *)array;

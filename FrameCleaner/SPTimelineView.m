@@ -181,9 +181,10 @@
     [self setCurrentFrameIndex:-1];
 }
 
-- (void)reset {
+- (void) reset {
     [self.zones makeObjectsPerformSelector: @selector(removeFromSuperview)];
     [self.zones removeAllObjects];
+    self.needsDisplay = YES;
 }
 
 - (NSArray *) zonesArrayForPlist {
@@ -222,7 +223,7 @@
     [self setCurrentFrameIndex:-1];
 }
 
-- (BOOL)acceptsFirstResponder {
+- (BOOL) acceptsFirstResponder {
     return YES;
 }
 

@@ -18,6 +18,10 @@
     [self.regionsView reset];
 }
 
+- (void) resetZones {
+    [self.timelineView reset];
+}
+
 - (NSString *)filepathAtIndex:(NSUInteger)index {
     return [self.directoryPath stringByAppendingPathComponent:self.allFiles[index]];
 }
@@ -538,6 +542,10 @@
 
 - (IBAction) resetCallback:(id)sender {
     [self resetRegions];
+}
+
+- (IBAction) resetZonesCallback:(id)sender {
+    [self resetZones];
 }
 
 - (IBAction) exportCallback:(id)sender {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6185.11" systemVersion="14A298i" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6185.11" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6185.11"/>
     </dependencies>
     <objects>
@@ -29,7 +30,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="283" y="305" width="873" height="756"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <view key="contentView" autoresizesSubviews="NO" id="pk8-ON-W62" userLabel="topView">
                 <rect key="frame" x="0.0" y="0.0" width="873" height="756"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -136,9 +137,14 @@
                             <action selector="toggleCallback:" target="-2" id="dWz-mo-KwL"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="D497F8E9-8A86-4C29-B630-7B12DF2A948B" label="Reset" paletteLabel="Reset" tag="-1" image="NSCaution" id="BF8-aI-vmA">
+                    <toolbarItem implicitItemIdentifier="D497F8E9-8A86-4C29-B630-7B12DF2A948B" label="Reset Regions" paletteLabel="Reset Regions" tag="-1" image="NSCaution" id="BF8-aI-vmA" userLabel="Reset Regions">
                         <connections>
                             <action selector="resetCallback:" target="-2" id="6Q9-xE-nyB"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="ECB3B2E2-1DBE-47C0-802C-56B3EEFE6013" label="Reset Zones" paletteLabel="Reset Zones" tag="-1" image="NSCaution" id="B7W-Hm-SX4" userLabel="Reset Zones">
+                        <connections>
+                            <action selector="resetZonesCallback:" target="-2" id="TnE-pV-XNR"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="91440E1B-E559-4C7A-8CB2-2F9C2B97A760" label="Export" paletteLabel="Export" tag="-1" image="NSMultipleDocuments" id="31D-zd-Qla">
@@ -160,6 +166,7 @@
                     <toolbarItem reference="95v-dZ-Nd3"/>
                     <toolbarItem reference="B2Q-QM-rdB"/>
                     <toolbarItem reference="BF8-aI-vmA"/>
+                    <toolbarItem reference="B7W-Hm-SX4"/>
                     <toolbarItem reference="31D-zd-Qla"/>
                     <toolbarItem reference="tio-Lg-0oc"/>
                     <toolbarItem reference="FNb-Yl-fWp"/>
@@ -310,7 +317,7 @@
             <windowStyleMask key="styleMask" utility="YES" HUD="YES"/>
             <windowPositionMask key="initialPositionMask" rightStrut="YES" topStrut="YES"/>
             <rect key="contentRect" x="2061" y="1154" width="452" height="220"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <view key="contentView" id="SfN-hy-3wD">
                 <rect key="frame" x="0.0" y="0.0" width="452" height="220"/>
                 <autoresizingMask key="autoresizingMask"/>
