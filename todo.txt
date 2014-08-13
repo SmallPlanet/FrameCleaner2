@@ -2,7 +2,5 @@ zero regions should remove themselves after optimization
 remove region overlap
 opt: bundle path formatters (ie ar_ub-bundle://ar_ub/anim1/ as prefix)
 
-save state of zones
 zero diff items on timeline should show up (maybe negative?)
-undo
 

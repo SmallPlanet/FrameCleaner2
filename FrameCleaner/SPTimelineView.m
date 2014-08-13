@@ -181,6 +181,47 @@
     [self setCurrentFrameIndex:-1];
 }
 
+- (void)reset {
+    [self.zones makeObjectsPerformSelector: @selector(removeFromSuperview)];
+    [self.zones removeAllObjects];
+}
+
+- (NSArray *) zonesArrayForPlist {
+    NSMutableArray *array = [NSMutableArray array];
+    for (SPBorderedView *zone in self.zones) {
+        NSRect rect = zone.frame;
+        rect.origin.x /= self.frame.size.width;
+        rect.origin.y /= self.frame.size.height;
+        rect.size.width /= self.frame.size.width;
+        rect.size.height /= self.frame.size.height;
+        [array addObject:NSStringFromRect(rect)];
+    }
+    return array;
+}
+
+- (void) setZonesArrayFromPlist:(NSArray *)array {
+    if (!array) {
+        return;
+    }
+    [self reset];
+    for (NSString *zoneString in array) {
+        NSRect rect = NSRectFromString(zoneString);
+        rect.origin.x *= self.frame.size.width;
+        rect.origin.y *= self.frame.size.height;
+        rect.size.width *= self.frame.size.width;
+        rect.size.height *= self.frame.size.height;
+        SPBorderedView *zoneView = [self addRegionWithFrame:rect];
+        [self.zones addObject:zoneView];
+        for (FCImage *frame in self.frames) {
+            CGFloat x = [self xPositionForFrameIndex:[self.frames indexOfObject:frame]];
+            if (x >= zoneView.frame.origin.x && x <= zoneView.frame.origin.x+zoneView.frame.size.width) {
+                [zoneView.data addObject:frame];
+            }
+        }
+    }
+    [self setCurrentFrameIndex:-1];
+}
+
 - (BOOL)acceptsFirstResponder {
     return YES;
 }

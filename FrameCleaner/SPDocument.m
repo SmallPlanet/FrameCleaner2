@@ -632,7 +632,8 @@
              @"compareWithMD5": @(self.compareWithMD5),
              @"exportFormatIndex": @(self.exportMatrix.selectedRow),
              @"frameRate": self.framerateField.stringValue,
-             @"regions": [self.regionsView regionsArrayForPlist]};
+             @"regions": [self.regionsView regionsArrayForPlist],
+             @"zones": [self.timelineView zonesArrayForPlist]};
 }
 
 - (void)setDocumentSettings:(NSDictionary *)settings {
@@ -646,6 +647,7 @@
     [self.exportMatrix selectCellAtRow:[settings[@"exportFormatIndex"] integerValue] column:0];
     [self loadFrames];
     [self.regionsView setRegionsArrayFromPlist:settings[@"regions"]];
+    [self.timelineView setZonesArrayFromPlist:settings[@"zones"]];
     [self drawMask];
 }
 

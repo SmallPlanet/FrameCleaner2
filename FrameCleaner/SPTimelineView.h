@@ -33,5 +33,7 @@ typedef enum : NSUInteger {
 
 - (void)setFCImageFrames:(NSMutableArray *)newValue;
 - (void) setCurrentFrameIndex:(NSInteger)index;
+- (NSArray *) zonesArrayForPlist;
+- (void) setZonesArrayFromPlist:(NSArray *)array;
 
 @end
