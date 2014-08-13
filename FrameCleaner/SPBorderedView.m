@@ -88,7 +88,7 @@
     if (CGRectContainsPoint([region cgrect], p2)) count++;
     if (CGRectContainsPoint([region cgrect], p3)) count++;
     if (CGRectContainsPoint([region cgrect], p4)) count++;
-    return YES;
+    return count;
 }
 
 - (BOOL) overlaps:(SPBorderedView *)region {
