@@ -71,7 +71,6 @@
     
 }
 
-
 #pragma mark -
 
 - (NSArray *) regionsArrayForPlist {
@@ -97,6 +96,7 @@
         [self addSubview:region];
         [self.regions addObject:region];
         [[self.document undoManager] registerUndoWithTarget:self selector:@selector(removeRegion:) object:region];
+        [self setNeedsDisplay:YES];
     }
 }
 
@@ -151,8 +151,8 @@
 }
 
 - (void)reset {
+    [self.regions makeObjectsPerformSelector: @selector(removeFromSuperview)];
     [self.regions removeAllObjects];
-    [self.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
 }
 
 - (instancetype)initWithFrame:(NSRect)frame {

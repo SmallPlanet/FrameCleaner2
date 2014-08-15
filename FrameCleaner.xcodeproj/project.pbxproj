@@ -18,6 +18,7 @@
 		A984C1E9196EE85100038A64 /* pngnq in Resources */ = {isa = PBXBuildFile; fileRef = A984C1E5196EE85100038A64 /* pngnq */; };
 		A984C1EA196EE85100038A64 /* pngquant in Resources */ = {isa = PBXBuildFile; fileRef = A984C1E6196EE85100038A64 /* pngquant */; };
 		A984C1EB196EE85100038A64 /* texturetool in Resources */ = {isa = PBXBuildFile; fileRef = A984C1E7196EE85100038A64 /* texturetool */; };
+		A99FB4E2199E983E00BA2A0F /* NSMutableArray+Shuffle.m in Sources */ = {isa = PBXBuildFile; fileRef = A99FB4E1199E983E00BA2A0F /* NSMutableArray+Shuffle.m */; };
 		A9C44EA4196B2696001065B9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C44EA3196B2696001065B9 /* Cocoa.framework */; };
 		A9C44EAE196B2696001065B9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A9C44EAC196B2696001065B9 /* InfoPlist.strings */; };
 		A9C44EB0196B2696001065B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C44EAF196B2696001065B9 /* main.m */; };
@@ -79,6 +80,8 @@
 		A984C1E5196EE85100038A64 /* pngnq */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = pngnq; path = tools/pngnq; sourceTree = "<group>"; };
 		A984C1E6196EE85100038A64 /* pngquant */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = pngquant; path = tools/pngquant; sourceTree = "<group>"; };
 		A984C1E7196EE85100038A64 /* texturetool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = texturetool; path = tools/texturetool; sourceTree = "<group>"; };
+		A99FB4E0199E983E00BA2A0F /* NSMutableArray+Shuffle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Shuffle.h"; sourceTree = "<group>"; };
+		A99FB4E1199E983E00BA2A0F /* NSMutableArray+Shuffle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Shuffle.m"; sourceTree = "<group>"; };
 		A9C44EA0196B2696001065B9 /* FrameCleaner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FrameCleaner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9C44EA3196B2696001065B9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		A9C44EA6196B2696001065B9 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -223,6 +226,8 @@
 				A938C7B919702F3500CDA8F3 /* SPBackgroundView.m */,
 				A95FFB501986CC7000CDBE54 /* SPTimelineView.h */,
 				A95FFB511986CC7000CDBE54 /* SPTimelineView.m */,
+				A99FB4E0199E983E00BA2A0F /* NSMutableArray+Shuffle.h */,
+				A99FB4E1199E983E00BA2A0F /* NSMutableArray+Shuffle.m */,
 			);
 			path = FrameCleaner;
 			sourceTree = "<group>";
@@ -428,6 +433,7 @@
 				A9D4FA14196B519B002BE703 /* pngwrite.c in Sources */,
 				A950A15B196C5F13002B6F6B /* fastlz.c in Sources */,
 				A938C7BD1970738C00CDA8F3 /* SPBorderedView.m in Sources */,
+				A99FB4E2199E983E00BA2A0F /* NSMutableArray+Shuffle.m in Sources */,
 				A9D4F9DE196B4FE0002BE703 /* FCImage.m in Sources */,
 				A9D4FA10196B519B002BE703 /* pngset.c in Sources */,
 				A938C7BA19702F3500CDA8F3 /* SPBackgroundView.m in Sources */,

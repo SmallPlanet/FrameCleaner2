@@ -47,7 +47,7 @@
     return [NSString stringWithFormat:@"Region frame {%f,%f; %f,%f}", frame.origin.x,frame.origin.y,frame.size.width,frame.size.height];
 }
 
-- (void) expandframeBy:(CGFloat)pixels toMaxSize:(CGSize)size {
+- (void) expandFrameBy:(CGFloat)pixels toMaxSize:(CGSize)size {
     NSRect frame = self.frame;
     frame.origin.x -= pixels;
     frame.origin.x = (frame.origin.x < 0.f ? 0.f: frame.origin.x);
@@ -60,15 +60,15 @@
     self.frame = frame;
 }
 
-- (void) setframe:(CGRect)frame {
+- (void) setFrame:(CGRect)frame {
     _frame = NSRectFromCGRect(frame);
 }
 
-- (CGRect) unionWithframe:(CGRect)rect {
+- (CGRect) unionWithFrame:(CGRect)rect {
     return CGRectUnion(self.cgrect, rect);
 }
 
-- (CGFloat) unionAreaWithframe:(CGRect)rect {
+- (CGFloat) unionAreaWithFrame:(CGRect)rect {
     CGRect total = CGRectUnion(self.cgrect, rect);
     return total.size.width * total.size.height;
 }
@@ -158,6 +158,17 @@
     return newFrame;
 }
 
+- (void) addPoint:(CGPoint)point
+{
+    CGRect pointRect = CGRectZero;
+    pointRect.origin = point;
+    pointRect.size = CGSizeMake(1.f,1.f);
+    
+    self.frame = (CGRectIsNull(NSRectToCGRect(self.frame)) ? pointRect : CGRectUnion(NSRectToCGRect(self.frame), pointRect));
+    self.numberOfPoints++;
+    self.needsDisplay = YES;
+}
+
 #pragma mark -
 
 - (id) initWithFrame:(NSRect)frameRect {
@@ -170,6 +181,7 @@
         self.layer = layer;
         [self setWantsLayer:YES];
         self.data = [NSMutableArray array];
+        self.numberOfPoints = 0;
     }
     return self;
 }

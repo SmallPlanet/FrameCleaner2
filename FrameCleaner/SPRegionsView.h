@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 @class SPDocument;
+@class SPBorderedView;
 
 @interface SPRegionsView : NSImageView {
     NSView *activeView;
@@ -21,5 +22,6 @@
 - (void) optimize;
 - (NSArray *) regionsArrayForPlist;
 - (void) setRegionsArrayFromPlist:(NSArray *)array;
+- (void) addRegion:(SPBorderedView *)region;
 
 @end

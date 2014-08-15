@@ -128,6 +128,11 @@
                             <action selector="processCallback:" target="-2" id="s92-lK-ZhC"/>
                         </connections>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="9DFCBD0F-D95E-4B70-87DB-A1B8E81E1CFE" label="Generate" paletteLabel="Generate" tag="-1" image="NSBonjour" id="bZ3-HO-NGo" userLabel="Generate">
+                        <connections>
+                            <action selector="generateCallback:" target="-2" id="Gq9-UE-tU5"/>
+                        </connections>
+                    </toolbarItem>
                     <toolbarItem implicitItemIdentifier="C0831C0C-2F9B-4019-B3D7-06A9C5ACC851" label="Optimize" paletteLabel="Optimize" tag="-1" image="NSAdvanced" id="95v-dZ-Nd3">
                         <connections>
                             <action selector="editCallback:" target="-2" id="LZ6-uX-90E"/>
@@ -164,6 +169,7 @@
                     <toolbarItem reference="De7-vN-RnO"/>
                     <toolbarItem reference="zOo-IN-Y4w"/>
                     <toolbarItem reference="m2I-gm-WU7"/>
+                    <toolbarItem reference="bZ3-HO-NGo"/>
                     <toolbarItem reference="95v-dZ-Nd3"/>
                     <toolbarItem reference="B2Q-QM-rdB"/>
                     <toolbarItem reference="BF8-aI-vmA"/>

@@ -9,6 +9,7 @@
 #import "SPDocument.h"
 #import "FCImage.h"
 #import "SPBorderedView.h"
+#import "NSMutableArray+Shuffle.h"
 
 @implementation SPDocument
 
@@ -196,9 +197,165 @@
     return CGRectMake(frame.origin.x, self.imageSize.height - frame.origin.y - frame.size.height, frame.size.width, frame.size.height);
 }
 
-- (NSArray *) subregions {
+- (NSMutableArray *) subregions {
     return self.regionsView.regions;
 }
+
+// SUBREGION_THRESHOLD compare stored difference of each pixel channel to this, if lower ignore the diff
+#define SUBREGION_THRESHOLD 0
+// SUBREGION_INSET (negative) expands the bounds of an existing rect when searching for determining if a point should be inside a region
+#define SUBREGION_INSET -1
+// regions with fewer than MIN_POINTS_PER_SUBREGION will be rejected. 1 means keep all
+#define MIN_POINTS_PER_SUBREGION 1
+// largest edge allowed when building small subregions
+#define EDGE_THRESHOLD 40
+// subregion padding to overlap the cropped images over the knocked out background, needed for proper rendering when scaled down
+//#define SUBREGION_PADDING 1
+
+//#define INSET(r) CGRectInset(r,2,2)
+
+- (void) autogenerateMaxSubregions:(NSUInteger)max
+{
+    NSData *data = self.subregionData;
+    CGSize size = self.imageSize;
+    NSMutableArray *subregions = [self subregions];
+    unsigned char *ptr = (unsigned char*)[data bytes];
+    
+    for (int r=0; r<size.height; r++) {
+        for (int c=0; c<size.width; c++) {
+            if (abs(*ptr) +abs(*(ptr+1)) + abs(*(ptr+2)) + abs(*(ptr+3)) > SUBREGION_THRESHOLD) {
+                CGPoint point = CGPointMake(1.f*c,1.f*(size.height - r - 1));
+                CGFloat minArea = -1;
+                SPBorderedView *minRegion = nil;
+                for (SPBorderedView *region in self.subregions) {
+                    if ([region containsPoint:point withInset:SUBREGION_INSET] && [region maxSideWithPoint:point] < EDGE_THRESHOLD) {
+                        CGFloat newArea = [region areaWithPoint:point];
+                        if (minArea < 0 || minArea > newArea) {
+                            minRegion = region;
+                            minArea = newArea;
+                        }
+                    }
+                }
+                if (minArea > 0) {
+                    [minRegion addPoint:point];
+                } else {
+                    SPBorderedView *region = [[SPBorderedView alloc] init];
+                    [region addPoint:point];
+                    [self.regionsView addRegion:region];
+                }
+            }
+            ptr+=4;
+        }
+    }
+    
+    NSMutableSet *set = [NSMutableSet setWithArray:subregions];
+    
+//     Initial pass through regions to find regions entirely contained in other regions
+    for (SPBorderedView *region in subregions)
+    {
+        if ([region numberOfPoints] < MIN_POINTS_PER_SUBREGION)
+        {
+            [set removeObject:region];
+        }
+        else
+        {
+            for (SPBorderedView *cregion in subregions)
+            {
+                if ([set containsObject:cregion] && [set containsObject:region] && cregion != region)
+                {
+                    if (CGRectContainsRect([cregion bounds], [region bounds]))
+                    {
+                        [set removeObject:region];
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    // Pass through regions to find some to combine that yield smaller areas
+    int reduce = [set count]-max;
+    int loopmax = [set count]-1;
+    //    for (int c=0; c<loopmax; c++)
+    //    {
+    //        NSMutableArray *allObjects = [[set allObjects] mutableCopy];
+    //        [allObjects shuffle];
+    //        for (FCRegion *r1 in allObjects)
+    //        {
+    //            if ([set containsObject:r1])
+    //            {
+    //                for (int compare=[allObjects indexOfObject:r1]+1; compare < [allObjects count]; compare++)
+    //                {
+    //                    FCRegion *r2 = [allObjects objectAtIndex:compare];
+    //                    if ([set containsObject:r2])
+    //                    {
+    //                        CGFloat comboArea = [r1 unionAreaWithBounds:[r2 bounds]];
+    //                        CGFloat sumArea = [r1 area] + [r2 area];
+    //                        if (sumArea > comboArea)
+    //                        {
+    //                            [r1 mergeWithRegion:r2];
+    //                            [set removeObject:r2];
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    
+    // main optimization loop -- reduce to find the bare minimum
+    reduce = [set count]-max;
+    loopmax = [set count]-1;
+    for (int c=0; c<loopmax; c++)
+    {
+        NSMutableArray *allObjects = [[set allObjects] mutableCopy];
+        [allObjects shuffle];
+        CGFloat minArea = -1;
+        SPBorderedView *min1=nil, *min2=nil;
+        for (SPBorderedView *r1 in allObjects)
+        {
+            for (int compare=[allObjects indexOfObject:r1]+1; compare < [allObjects count]; compare++)
+            {
+                SPBorderedView *r2 = [allObjects objectAtIndex:compare];
+                CGFloat comboArea = [r1 unionAreaWithFrame:[r2 cgrect]];
+                if (c < reduce && (comboArea < minArea || minArea < 0))
+                {
+                    minArea = comboArea;
+                    min1 = r1;
+                    min2 = r2;
+                }
+            }
+        }
+        if (min1 && min2)
+        {
+            [min1 mergeWithRegion:min2];
+            [set removeObject:min2];
+        }
+    }
+    
+    // Another pass through remaining regions to find some to combine that yield smaller areas
+    reduce = [set count]-max;
+    loopmax = [set count]-1;
+    for (int c=0; c<loopmax; c++)
+    {
+        NSMutableArray *allObjects = [[set allObjects] mutableCopy];
+        [allObjects shuffle];
+        for (SPBorderedView *r1 in allObjects)
+        {
+            for (int compare=[allObjects indexOfObject:r1]+1; compare < [allObjects count]; compare++)
+            {
+                SPBorderedView *r2 = [allObjects objectAtIndex:compare];
+                CGFloat comboArea = [r1 unionAreaWithFrame:[r2 cgrect]];
+                CGFloat sumArea = [r1 area] + [r2 area];
+                if ([set containsObject:r1] && [set containsObject:r2] && sumArea > comboArea)
+                {
+                    [r1 mergeWithRegion:r2];
+                    [set removeObject:r2];
+                }
+            }
+        }
+    }
+}
+
 
 - (void) optimizeRegions {
     FCImage *diffImage = [[FCImage alloc] init];
@@ -527,6 +684,10 @@
 
 - (IBAction) processCallback:(id)sender {
     [self processFrames];
+}
+
+- (IBAction) generateCallback:(id)sender {
+    [self autogenerateMaxSubregions:100];
 }
 
 - (IBAction) toggleCallback:(id)sender {
