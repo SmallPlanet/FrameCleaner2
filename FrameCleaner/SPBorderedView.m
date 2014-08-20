@@ -60,7 +60,7 @@
     self.frame = frame;
 }
 
-- (void) setFrame:(CGRect)frame {
+- (void) setFrameBounds:(CGRect)frame {
     _frame = NSRectFromCGRect(frame);
 }
 

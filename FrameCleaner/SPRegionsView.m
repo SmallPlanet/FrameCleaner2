@@ -118,8 +118,7 @@
 
 - (void) mouseDown:(NSEvent *)theEvent {
     originalOrigin = [self convertPoint:theEvent.locationInWindow fromView:nil];
-    SPBorderedView *subview = [self addRegionWithFrame:NSMakeRect(originalOrigin.x, originalOrigin.y, 1, 1)];
-    activeView = subview;
+    activeView = [self addRegionWithFrame:NSMakeRect(originalOrigin.x, originalOrigin.y, 1, 1)];
 }
 
 - (void) mouseDragged:(NSEvent *)theEvent {
@@ -143,11 +142,13 @@
             frameRect.size.height = self.frame.size.height - frameRect.origin.y;
         }
         activeView.frame = NSRectFromCGRect(frameRect);
+        [self setNeedsDisplay:YES];
     }
 }
 
 - (void) mouseUp:(NSEvent *)theEvent {
-    
+    activeView = nil;
+    [self setNeedsDisplay:YES];
 }
 
 - (void)reset {
