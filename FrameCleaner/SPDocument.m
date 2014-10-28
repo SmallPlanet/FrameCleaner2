@@ -42,7 +42,7 @@
     
     // show first image
     if (self.allFiles.count > 0) {
-        NSString *filePath = [self filepathAtIndex:13];
+        NSString *filePath = [self filepathAtIndex:0];
         self.firstImage = [[FCImage alloc] initWithSource:filePath];
         [self.firstImage pixelData];
         NSImage *image = [[NSImage alloc] initWithContentsOfFile:filePath];
@@ -655,6 +655,11 @@
                          atomically:NO
                            encoding:NSUTF8StringEncoding
                               error:NULL];
+        
+        [frameSequence writeToFile:[exportDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"sequence.txt"]]
+                        atomically:NO
+                          encoding:NSUTF8StringEncoding
+                             error:NULL];
     } else if ([self shouldRemoveDuplicateFrames]) {
         NSString *bounds = [NSString stringWithFormat:@"%d,%d,%d,%d", (int)(min.x), (int)(min.y), (int)(max.x-min.x), (int)(max.y-min.y)];
         
@@ -691,8 +696,8 @@
 }
 
 - (IBAction) toggleCallback:(id)sender {
-    self.maskView.hidden = !self.maskView.hidden;
-    self.regionsView.hidden = self.maskView.hidden;
+    self.maskView.hidden = !self.maskView.isHidden;
+    self.regionsView.hidden = self.maskView.isHidden;
 }
 
 - (IBAction) editCallback:(id)sender {
