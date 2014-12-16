@@ -51,7 +51,7 @@
 }
 
 - (void)drawTimeline {
-    if (!self.frames) {
+    if (self.frames.count < 2) {
         return;
     }
     
